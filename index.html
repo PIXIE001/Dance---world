@@ -3,849 +3,1223 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#070810">
-<title>WORLD OF DANCE — Build 04</title>
+<meta name="theme-color" content="#05060b">
+<title>WORLD OF DANCE — Build 05</title>
 
 <style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+*{
+ box-sizing:border-box;
+ -webkit-tap-highlight-color:transparent;
+}
 
 html,body{
-    margin:0;
-    width:100%;
-    height:100%;
-    overflow:hidden;
-    background:#070810;
-    color:#fff;
-    font-family:Arial,Helvetica,sans-serif
+ margin:0;
+ width:100%;
+ height:100%;
+ overflow:hidden;
+ background:#05060b;
+ color:#fff;
+ font-family:Arial,Helvetica,sans-serif;
 }
 
-button,select,input{font:inherit}
-button{cursor:pointer}
+button,select{
+ font:inherit;
+}
+
+button{
+ cursor:pointer;
+}
 
 .screen{
-    width:100%;
-    height:100%;
-    display:none
+ display:none;
+ width:100%;
+ height:100%;
 }
 
-.screen.active{display:flex}
+.screen.active{
+ display:flex;
+}
+
+/* =====================================================
+GLOBAL
+===================================================== */
 
 .panel{
-    width:100%;
-    height:100%;
-    overflow:auto;
-    padding:16px;
-    background:
-    radial-gradient(circle at 85% 5%,rgba(118,63,190,.25),transparent 28%),
-    radial-gradient(circle at 10% 90%,rgba(15,120,170,.13),transparent 30%),
-    #070810
+ width:100%;
+ height:100%;
+ overflow:auto;
+ padding:16px;
+ background:
+ radial-gradient(circle at 85% 5%,rgba(111,57,177,.22),transparent 30%),
+ radial-gradient(circle at 10% 90%,rgba(17,101,148,.13),transparent 32%),
+ #070810;
 }
 
 .panel-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:12px;
-    margin-bottom:16px
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:12px;
+ margin-bottom:16px;
 }
 
 .panel-title{
-    font-size:clamp(25px,5vw,45px);
-    font-weight:1000;
-    letter-spacing:1px
+ font-size:clamp(25px,5vw,46px);
+ font-weight:1000;
+ letter-spacing:1px;
 }
 
 .btn{
-    min-height:44px;
-    border-radius:11px;
-    padding:9px 14px;
-    border:1px solid #30364c;
-    background:#121622;
-    color:#fff;
-    font-weight:900
+ min-height:44px;
+ padding:9px 15px;
+ border-radius:11px;
+ border:1px solid #30364b;
+ background:#121622;
+ color:#fff;
+ font-weight:900;
 }
 
-.btn:active{transform:scale(.96)}
+.btn:active{
+ transform:scale(.96);
+}
 
 .btn.primary{
-    background:#fff;
-    color:#070810;
-    border-color:#fff
+ background:#fff;
+ color:#070810;
+ border-color:#fff;
 }
 
 .btn.purple{
-    background:#7045b8;
-    border-color:#9165d0
+ background:#7148b7;
+ border-color:#9666d0;
 }
 
 .btn.danger{
-    background:#35151d;
-    border-color:#71313d
+ background:#35151d;
+ border-color:#6f303c;
 }
 
-.btn.wide{width:100%}
-
-.action-row{
-    display:flex;
-    flex-wrap:wrap;
-    gap:9px;
-    margin-top:13px
+.btn.wide{
+ width:100%;
 }
 
 .card{
-    border:1px solid #292f42;
-    border-radius:17px;
-    padding:17px;
-    background:#10131e
+ background:#10131e;
+ border:1px solid #292f42;
+ border-radius:17px;
+ padding:17px;
 }
 
 .card-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:11px
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:11px;
 }
 
 .muted{
-    color:#858da1;
-    line-height:1.5
-}
-
-.stat{
-    font-size:31px;
-    font-weight:1000
-}
-
-/* HOME */
-
-#home{
-    flex-direction:column;
-    overflow:auto
-}
-
-.home-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:11px 16px;
-    border-bottom:1px solid #1e2332;
-    background:rgba(7,8,16,.8);
-    backdrop-filter:blur(12px)
-}
-
-.brand{
-    font-size:clamp(18px,4vw,28px);
-    font-weight:1000;
-    letter-spacing:2px
-}
-
-.sub{
-    color:#737b8f;
-    font-size:9px;
-    letter-spacing:2px;
-    margin-top:3px
-}
-
-.pills{
-    display:flex;
-    gap:8px
-}
-
-.pill{
-    padding:9px 13px;
-    border:1px solid #30364c;
-    background:#111521;
-    border-radius:30px;
-    font-size:11px;
-    font-weight:900
-}
-
-.home-content{
-    width:100%;
-    max-width:1400px;
-    margin:auto;
-    padding:16px
-}
-
-.hero{
-    min-height:270px;
-    display:grid;
-    grid-template-columns:1.4fr 1fr;
-    gap:15px;
-    padding:22px;
-    border-radius:22px;
-    border:1px solid #3b3151;
-    background:
-    linear-gradient(125deg,rgba(101,59,159,.36),rgba(12,16,28,.94)),
-    #10131e
+ color:#858da1;
+ line-height:1.5;
 }
 
 .kicker{
-    color:#ba9be7;
-    font-size:10px;
-    font-weight:900;
-    letter-spacing:2px
+ color:#b28ad9;
+ font-size:10px;
+ font-weight:900;
+ letter-spacing:2px;
+}
+
+.stat{
+ font-size:31px;
+ font-weight:1000;
+}
+
+/* =====================================================
+HOME
+===================================================== */
+
+#home{
+ flex-direction:column;
+ overflow:auto;
+}
+
+.home-top{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ padding:11px 16px;
+ border-bottom:1px solid #1e2332;
+ background:rgba(7,8,16,.85);
+ backdrop-filter:blur(12px);
+}
+
+.brand{
+ font-size:clamp(18px,4vw,28px);
+ font-weight:1000;
+ letter-spacing:2px;
+}
+
+.sub{
+ color:#737b8f;
+ font-size:9px;
+ letter-spacing:2px;
+ margin-top:3px;
+}
+
+.pills{
+ display:flex;
+ gap:8px;
+}
+
+.pill{
+ padding:9px 13px;
+ border:1px solid #30364c;
+ background:#111521;
+ border-radius:30px;
+ font-size:11px;
+ font-weight:900;
+}
+
+.home-content{
+ width:100%;
+ max-width:1450px;
+ margin:auto;
+ padding:16px;
+}
+
+.hero{
+ min-height:285px;
+ display:grid;
+ grid-template-columns:1.4fr 1fr;
+ gap:15px;
+ padding:22px;
+ border-radius:22px;
+ border:1px solid #3b3151;
+ background:
+ linear-gradient(125deg,rgba(101,59,159,.36),rgba(12,16,28,.94)),
+ #10131e;
 }
 
 .hero h1{
-    margin:8px 0;
-    font-size:clamp(30px,6vw,57px);
-    line-height:.98
+ margin:8px 0;
+ font-size:clamp(30px,6vw,57px);
+ line-height:.98;
 }
 
 .hero p{
-    max-width:650px;
-    color:#9aa2b6;
-    line-height:1.5
+ max-width:650px;
+ color:#9aa2b6;
+ line-height:1.5;
 }
 
 .hero-stage{
-    min-height:210px;
-    border-radius:19px;
-    border:1px solid #383b4c;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    background:
-    radial-gradient(circle,#27223b 0%,#0c1019 65%)
+ min-height:215px;
+ border-radius:19px;
+ border:1px solid #383b4c;
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+ align-items:center;
+ background:
+ radial-gradient(circle,#28223d 0,#0c1019 68%);
 }
 
 .stage-ring{
-    width:125px;
-    height:125px;
-    border-radius:50%;
-    border:2px solid #8059b9;
-    box-shadow:0 0 45px rgba(125,75,190,.35);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    animation:pulse 2.4s infinite
+ width:125px;
+ height:125px;
+ border-radius:50%;
+ border:2px solid #8059b9;
+ box-shadow:0 0 50px rgba(125,75,190,.35);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ animation:homePulse 2s infinite;
 }
 
-.stage-person{
-    width:55px;
-    height:85px;
-    position:relative;
-    transform-origin:center bottom;
-    animation:danceIdle 1.2s infinite ease-in-out
-}
-
-.head{
-    width:22px;
-    height:22px;
-    border-radius:50%;
-    background:#ddd;
-    position:absolute;
-    left:17px;
-    top:0
-}
-
-.body{
-    width:20px;
-    height:42px;
-    border-radius:12px;
-    background:#8d63c5;
-    position:absolute;
-    left:18px;
-    top:25px
-}
-
-.arm{
-    position:absolute;
-    width:9px;
-    height:39px;
-    border-radius:9px;
-    background:#aaa;
-    top:28px
-}
-
-.arm.left{
-    left:7px;
-    transform:rotate(28deg)
-}
-
-.arm.right{
-    right:7px;
-    transform:rotate(-28deg)
-}
-
-.leg{
-    position:absolute;
-    width:10px;
-    height:35px;
-    border-radius:8px;
-    background:#777;
-    top:60px
-}
-
-.leg.left{
-    left:18px;
-    transform:rotate(14deg)
-}
-
-.leg.right{
-    right:18px;
-    transform:rotate(-14deg)
-}
-
-@keyframes pulse{
-    50%{transform:scale(1.04);box-shadow:0 0 70px rgba(125,75,190,.5)}
-}
-
-@keyframes danceIdle{
-    50%{transform:rotate(-5deg) translateY(-4px)}
+@keyframes homePulse{
+ 50%{
+  transform:scale(1.05);
+  box-shadow:0 0 75px rgba(125,75,190,.55);
+ }
 }
 
 .quick-grid{
-    display:grid;
-    grid-template-columns:repeat(6,1fr);
-    gap:9px;
-    margin-top:14px
+ display:grid;
+ grid-template-columns:repeat(6,1fr);
+ gap:9px;
+ margin-top:14px;
 }
 
 .quick{
-    min-height:98px;
-    border-radius:15px;
-    border:1px solid #292f42;
-    background:#10131e;
-    color:#fff;
-    padding:13px;
-    text-align:left
+ min-height:98px;
+ border-radius:15px;
+ border:1px solid #292f42;
+ background:#10131e;
+ color:#fff;
+ padding:13px;
+ text-align:left;
 }
 
-.quick:active{transform:scale(.97)}
+.quick:active{
+ transform:scale(.97);
+}
 
 .qicon{
-    font-size:21px;
-    margin-bottom:12px
+ font-size:20px;
+ margin-bottom:12px;
 }
 
 .qtitle{
-    font-size:11px;
-    font-weight:900
+ font-size:11px;
+ font-weight:900;
 }
 
 .qdesc{
-    color:#737b8f;
-    font-size:9px;
-    margin-top:4px
+ color:#737b8f;
+ font-size:9px;
+ margin-top:4px;
 }
 
-/* SETUP */
+/* =====================================================
+SETUP
+===================================================== */
 
 .setup-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:13px
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:13px;
 }
 
 .field{
-    display:flex;
-    flex-direction:column;
-    gap:7px
+ display:flex;
+ flex-direction:column;
+ gap:7px;
 }
 
 .field label{
-    color:#838b9f;
-    font-size:10px;
-    font-weight:900;
-    letter-spacing:1px
+ color:#838b9f;
+ font-size:10px;
+ font-weight:900;
+ letter-spacing:1px;
 }
 
 .field select{
-    background:#0b0f18;
-    border:1px solid #30364c;
-    color:#fff;
-    border-radius:11px;
-    padding:12px
+ background:#0b0f18;
+ border:1px solid #30364c;
+ color:#fff;
+ border-radius:11px;
+ padding:12px;
 }
 
-/* MUSIC */
+/* =====================================================
+MUSIC
+===================================================== */
 
 .music-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:11px
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:11px;
 }
 
 .music-card{
-    padding:16px;
-    border-radius:16px;
-    border:1px solid #2b3042;
-    background:#10131e;
-    cursor:pointer
+ padding:16px;
+ border-radius:16px;
+ border:1px solid #2b3042;
+ background:#10131e;
 }
 
 .music-card.selected{
-    border-color:#a06ae0;
-    background:linear-gradient(145deg,#1b1530,#10131e)
+ border-color:#a06ae0;
+ background:linear-gradient(145deg,#1b1530,#10131e);
 }
 
-.music-wave{
-    height:42px;
-    display:flex;
-    gap:3px;
-    align-items:center;
-    margin-bottom:12px
-}
-
-.wave{
-    width:4px;
-    border-radius:5px;
-    background:#8d62c3
-}
-
-.music-card.playing .wave{
-    animation:wave .55s infinite alternate
-}
-
-.music-card.playing .wave:nth-child(2){animation-delay:.1s}
-.music-card.playing .wave:nth-child(3){animation-delay:.2s}
-.music-card.playing .wave:nth-child(4){animation-delay:.3s}
-.music-card.playing .wave:nth-child(5){animation-delay:.4s}
-
-@keyframes wave{
-    from{height:8px}
-    to{height:38px}
-}
-
-/* MOVE LIBRARY */
+/* =====================================================
+MOVES
+===================================================== */
 
 .move-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:10px
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:10px;
 }
 
 .move-card{
-    border:1px solid #292f42;
-    border-radius:15px;
-    padding:14px;
-    background:#10131e
+ border:1px solid #292f42;
+ border-radius:15px;
+ padding:14px;
+ background:#10131e;
 }
 
 .move-card.selected{
-    border-color:#9d68db
+ border-color:#9d68db;
 }
 
 .move-type{
-    color:#a98ac7;
-    font-size:9px;
-    font-weight:900;
-    letter-spacing:1px
+ color:#a98ac7;
+ font-size:9px;
+ font-weight:900;
+ letter-spacing:1px;
 }
 
 .move-name{
-    font-size:15px;
-    font-weight:900;
-    margin:7px 0
+ font-size:15px;
+ font-weight:900;
+ margin:7px 0;
 }
 
-.move-difficulty{
-    color:#737b8e;
-    font-size:10px
+/* =====================================================
+VS SCREEN
+===================================================== */
+
+#vsScreen{
+ background:#05060a;
+ position:relative;
+ overflow:hidden;
 }
 
-.move-score{
-    margin-top:10px;
-    font-weight:900
+.vs-bg{
+ position:absolute;
+ inset:0;
+ background:
+ radial-gradient(circle at 20% 45%,rgba(56,105,184,.27),transparent 32%),
+ radial-gradient(circle at 80% 45%,rgba(181,61,91,.25),transparent 32%),
+ linear-gradient(90deg,#07101c,#090b12 50%,#18090f);
 }
 
-/* PERFORMANCE */
-
-#performance{
-    background:#05060b
+.vs-lines{
+ position:absolute;
+ inset:0;
+ opacity:.25;
+ background:
+ linear-gradient(90deg,transparent 49%,#fff 50%,transparent 51%),
+ linear-gradient(0deg,transparent 49%,#fff 50%,transparent 51%);
+ background-size:100% 100%;
+ transform:perspective(500px) rotateX(55deg) scale(1.7);
 }
 
-.performance-screen{
-    width:100%;
-    height:100%;
-    display:flex;
-    flex-direction:column
+.vs-content{
+ position:relative;
+ z-index:3;
+ width:100%;
+ height:100%;
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+ align-items:center;
+ padding:20px;
 }
 
-.perf-top{
-    min-height:58px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:10px 14px;
-    border-bottom:1px solid #222638;
-    background:#090b12
+.vs-title{
+ font-size:clamp(12px,2vw,18px);
+ letter-spacing:6px;
+ color:#9ca4b7;
+ font-weight:900;
+ margin-bottom:30px;
 }
 
-.song-info strong{
-    display:block;
-    font-size:14px
+.vs-teams{
+ width:min(1000px,95%);
+ display:grid;
+ grid-template-columns:1fr 150px 1fr;
+ align-items:center;
+ gap:20px;
 }
 
-.song-info span{
-    color:#737b8f;
-    font-size:10px
+.vs-team{
+ text-align:center;
 }
 
-.perf-score{
-    text-align:right
+.vs-team-name{
+ font-size:clamp(24px,5vw,55px);
+ font-weight:1000;
 }
 
-.perf-score-label{
-    color:#747c90;
-    font-size:9px;
-    letter-spacing:1px
+.vs-team-type{
+ color:#858da1;
+ font-size:11px;
+ letter-spacing:2px;
+ margin-top:6px;
 }
 
-.perf-score-value{
-    font-size:25px;
-    font-weight:1000
+.vs-logo{
+ width:clamp(100px,17vw,180px);
+ height:clamp(100px,17vw,180px);
+ margin:18px auto;
+ border-radius:50%;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ font-size:clamp(25px,6vw,60px);
+ font-weight:1000;
+ border:2px solid #596075;
+ background:radial-gradient(circle,#252b3b,#090b12);
+ box-shadow:0 0 60px rgba(255,255,255,.08);
 }
 
-.perf-main{
-    flex:1;
-    min-height:0;
-    display:grid;
-    grid-template-columns:1fr 330px
+.vs-home .vs-logo{
+ border-color:#5683c5;
 }
 
-.stage{
-    position:relative;
-    overflow:hidden;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:
-    radial-gradient(circle at center,#282039 0,#11131e 28%,#06070d 72%)
+.vs-away .vs-logo{
+ border-color:#ad536c;
 }
 
-.stage-floor{
-    position:absolute;
-    width:80%;
-    height:28%;
-    bottom:8%;
-    border-radius:50%;
-    border:1px solid #4d3a64;
-    transform:perspective(300px) rotateX(65deg);
-    box-shadow:0 0 70px rgba(117,70,175,.16)
+.vs{
+ font-size:clamp(40px,9vw,90px);
+ font-weight:1000;
+ font-style:italic;
 }
 
-.avatar-dancer{
-    position:relative;
-    width:100px;
-    height:170px;
-    z-index:3;
-    transform-origin:center bottom
+.vs-info{
+ margin-top:35px;
+ text-align:center;
 }
 
-.avatar-dancer.active{
-    animation:performMove .5s ease
+.vs-info strong{
+ display:block;
+ font-size:12px;
+ letter-spacing:2px;
 }
 
-.avatar-dancer .head{
-    width:31px;
-    height:31px;
-    left:34px
+.vs-info span{
+ display:block;
+ color:#777f93;
+ font-size:10px;
+ margin-top:5px;
 }
 
-.avatar-dancer .body{
-    width:30px;
-    height:70px;
-    left:35px;
-    top:36px
+/* =====================================================
+ARENA
+===================================================== */
+
+#battle{
+ background:#030408;
 }
 
-.avatar-dancer .arm{
-    width:12px;
-    height:65px;
-    top:42px
+.battle{
+ width:100%;
+ height:100%;
+ display:flex;
+ flex-direction:column;
 }
 
-.avatar-dancer .arm.left{
-    left:18px
+.battle-top{
+ min-height:61px;
+ display:grid;
+ grid-template-columns:1fr auto 1fr;
+ align-items:center;
+ padding:8px 13px;
+ background:#090b12;
+ border-bottom:1px solid #202536;
+ z-index:20;
 }
 
-.avatar-dancer .arm.right{
-    right:18px
+.team-score{
+ display:flex;
+ align-items:center;
+ gap:9px;
 }
 
-.avatar-dancer .leg{
-    width:13px;
-    height:70px;
-    top:100px
+.team-score.away{
+ justify-content:flex-end;
 }
 
-.avatar-dancer .leg.left{
-    left:36px
+.team-dot{
+ width:9px;
+ height:9px;
+ border-radius:50%;
+ background:#568bd4;
+ box-shadow:0 0 12px #568bd4;
 }
 
-.avatar-dancer .leg.right{
-    right:36px
+.team-dot.red{
+ background:#c55d72;
+ box-shadow:0 0 12px #c55d72;
 }
 
-@keyframes performMove{
-    0%{transform:scale(1) rotate(0)}
-    30%{transform:scale(1.08) rotate(-10deg)}
-    60%{transform:scale(1.06) rotate(10deg)}
-    100%{transform:scale(1) rotate(0)}
+.team-name-small{
+ font-size:10px;
+ font-weight:1000;
+ letter-spacing:1px;
 }
 
-.stage-message{
-    position:absolute;
-    top:22%;
-    left:50%;
-    transform:translateX(-50%);
-    text-align:center;
-    z-index:5;
-    pointer-events:none
+.score-big{
+ font-size:26px;
+ font-weight:1000;
 }
 
-.stage-message .big{
-    font-size:clamp(35px,7vw,70px);
-    font-weight:1000;
-    opacity:0;
-    transform:translateY(15px) scale(.8);
-    transition:.2s
+.battle-clock{
+ text-align:center;
 }
 
-.stage-message.show .big{
-    opacity:1;
-    transform:translateY(0) scale(1)
+.battle-clock small{
+ color:#737b8f;
+ font-size:8px;
+ letter-spacing:2px;
 }
 
-.stage-message .small{
-    color:#aaa;
-    font-weight:900;
-    font-size:11px;
-    letter-spacing:2px
+.battle-clock strong{
+ display:block;
+ font-size:22px;
 }
 
-.perf-side{
-    padding:13px;
-    border-left:1px solid #202536;
-    background:#0a0c13;
-    overflow:auto
+/* ARENA */
+
+.arena{
+ position:relative;
+ flex:1;
+ overflow:hidden;
+ perspective:900px;
+ background:
+ radial-gradient(ellipse at center 53% 44%,#373043 0,#171722 24%,#080910 60%,#030408 100%);
 }
 
-.perf-panel{
-    border:1px solid #292f42;
-    border-radius:14px;
-    padding:13px;
-    margin-bottom:10px;
-    background:#10131e
+.arena.celeb{
+ animation:arenaShake .3s ease;
 }
 
-.perf-panel h3{
-    margin:0 0 10px;
-    font-size:11px;
-    color:#8a92a5;
-    letter-spacing:1px
+@keyframes arenaShake{
+ 25%{transform:translateX(-4px)}
+ 50%{transform:translateX(4px)}
+ 75%{transform:translateX(-2px)}
 }
 
-.combo{
-    font-size:31px;
-    font-weight:1000
+.ceiling{
+ position:absolute;
+ width:70%;
+ height:80%;
+ top:-48%;
+ left:15%;
+ border:1px solid #5a526c;
+ transform:rotateX(72deg);
+ background:repeating-linear-gradient(
+  90deg,
+  rgba(255,255,255,.04) 0,
+  rgba(255,255,255,.04) 2px,
+  transparent 2px,
+  transparent 70px
+ );
 }
 
-.combo span{
-    color:#8f63c5;
-    font-size:12px
+.back-wall{
+ position:absolute;
+ inset:0;
+ background:
+ linear-gradient(
+  90deg,
+  rgba(20,65,125,.12),
+  transparent 35%,
+  transparent 65%,
+  rgba(144,37,61,.12)
+ );
 }
 
-.timing{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:6px
+.laser{
+ position:absolute;
+ width:2px;
+ height:70%;
+ top:5%;
+ opacity:.4;
+ transform-origin:top center;
+ animation:laserMove 4s infinite alternate ease-in-out;
 }
 
-.timing-box{
-    text-align:center;
-    padding:9px 4px;
-    border-radius:9px;
-    background:#0b0e16
+.laser.one{
+ left:17%;
+ background:#5485c8;
+ transform:rotate(-20deg);
 }
 
-.timing-box strong{
-    display:block;
-    font-size:18px
+.laser.two{
+ right:18%;
+ background:#c15c70;
+ transform:rotate(20deg);
+ animation-delay:1s;
 }
 
-.timing-box span{
-    color:#737b8f;
-    font-size:8px
+@keyframes laserMove{
+ to{
+  transform:rotate(25deg) scaleY(1.1);
+  opacity:.65;
+ }
 }
 
-.perf-controls{
-    padding:12px;
-    border-top:1px solid #202536;
-    background:#090b12
+.arena-floor{
+ position:absolute;
+ width:75%;
+ height:45%;
+ left:12.5%;
+ bottom:2%;
+ border-radius:50%;
+ border:1px solid #665878;
+ background:
+ radial-gradient(
+  ellipse,
+  rgba(104,78,125,.4),
+  rgba(13,14,21,.95) 65%
+ );
+ transform:rotateX(65deg);
+ box-shadow:
+ 0 0 100px rgba(111,67,155,.2),
+ inset 0 0 80px rgba(255,255,255,.04);
 }
 
-.control-row{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:8px;
-    max-width:900px;
-    margin:auto
+.floor-grid{
+ position:absolute;
+ width:80%;
+ height:30%;
+ left:10%;
+ bottom:5%;
+ border-radius:50%;
+ transform:rotateX(65deg);
+ background:
+ repeating-linear-gradient(
+  90deg,
+  transparent 0,
+  transparent 39px,
+  rgba(151,120,180,.13) 40px
+ ),
+ repeating-linear-gradient(
+  0deg,
+  transparent 0,
+  transparent 25px,
+  rgba(151,120,180,.1) 26px
+ );
 }
 
-.move-button{
-    min-height:60px;
-    border:1px solid #34394d;
-    border-radius:13px;
-    background:#151927;
-    color:#fff;
-    font-weight:1000
+/* CROWD */
+
+.crowd{
+ position:absolute;
+ left:0;
+ right:0;
+ bottom:15%;
+ height:25%;
+ display:flex;
+ justify-content:center;
+ align-items:flex-end;
+ gap:4px;
+ overflow:hidden;
+ opacity:.7;
 }
 
-.move-button:active{
-    transform:scale(.94)
+.person{
+ width:15px;
+ height:40px;
+ position:relative;
+ transform-origin:bottom;
+ animation:crowdDance 1.2s infinite alternate ease-in-out;
 }
 
-.move-button span{
-    display:block;
-    color:#858da0;
-    font-size:8px;
-    margin-top:4px
+.person:nth-child(2n){
+ animation-delay:.2s;
 }
 
-.beat-indicator{
-    width:100%;
-    max-width:900px;
-    height:5px;
-    margin:0 auto 9px;
-    background:#242a39;
-    border-radius:10px;
-    overflow:hidden
+.person:nth-child(3n){
+ animation-delay:.4s;
 }
 
-.beat-fill{
-    height:100%;
-    width:0;
-    background:#a16ade
+.person-head{
+ position:absolute;
+ width:9px;
+ height:9px;
+ border-radius:50%;
+ background:#777;
+ left:3px;
+ top:0;
 }
 
-/* RESULTS */
-
-.result-score{
-    font-size:65px;
-    font-weight:1000
+.person-body{
+ position:absolute;
+ width:13px;
+ height:25px;
+ border-radius:7px 7px 3px 3px;
+ background:#454957;
+ left:1px;
+ top:10px;
 }
 
-.result-grade{
-    font-size:26px;
-    font-weight:1000;
-    color:#b98de5
+@keyframes crowdDance{
+ to{
+  transform:translateY(-9px) rotate(3deg);
+ }
 }
 
-.result-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:10px
+/* DANCERS */
+
+.dancer{
+ position:absolute;
+ z-index:10;
+ width:120px;
+ height:210px;
+ bottom:18%;
+ transform-origin:center bottom;
 }
 
-.result-stat{
-    padding:14px;
-    border-radius:13px;
-    background:#0b0e16;
-    border:1px solid #282d40
+.dancer.left{
+ left:19%;
 }
 
-.result-stat strong{
-    display:block;
-    font-size:24px;
-    margin-top:6px
+.dancer.right{
+ right:19%;
 }
 
-/* TOAST */
+.dancer .head{
+ width:32px;
+ height:32px;
+ left:44px;
+ top:0;
+ border-radius:50%;
+ background:#d7d7d7;
+ position:absolute;
+}
+
+.dancer .body{
+ width:32px;
+ height:78px;
+ left:44px;
+ top:37px;
+ border-radius:16px;
+ background:#7d5bb0;
+ position:absolute;
+}
+
+.dancer.right .body{
+ background:#a44f66;
+}
+
+.dancer .arm{
+ position:absolute;
+ width:13px;
+ height:68px;
+ top:45px;
+ border-radius:12px;
+ background:#aaa;
+}
+
+.dancer .arm.left{
+ left:27px;
+ transform:rotate(25deg);
+}
+
+.dancer .arm.right{
+ right:27px;
+ transform:rotate(-25deg);
+}
+
+.dancer .leg{
+ position:absolute;
+ width:14px;
+ height:76px;
+ top:108px;
+ border-radius:12px;
+ background:#777;
+}
+
+.dancer .leg.left{
+ left:45px;
+ transform:rotate(11deg);
+}
+
+.dancer .leg.right{
+ right:45px;
+ transform:rotate(-11deg);
+}
+
+.dancer.perform{
+ animation:dancerMove .55s ease;
+}
+
+.dancer.special{
+ animation:dancerSpecial .8s ease;
+}
+
+@keyframes dancerMove{
+ 0%{transform:translateY(0) rotate(0) scale(1)}
+ 35%{transform:translateY(-20px) rotate(-9deg) scale(1.08)}
+ 70%{transform:translateY(-7px) rotate(10deg) scale(1.03)}
+ 100%{transform:translateY(0) rotate(0) scale(1)}
+}
+
+@keyframes dancerSpecial{
+ 0%{transform:rotate(0) scale(1)}
+ 30%{transform:rotate(-22deg) scale(1.12)}
+ 60%{transform:rotate(18deg) scale(1.12)}
+ 100%{transform:rotate(0) scale(1)}
+}
+
+/* JUDGES */
+
+.judges{
+ position:absolute;
+ top:12%;
+ left:50%;
+ transform:translateX(-50%);
+ display:flex;
+ gap:8px;
+ z-index:12;
+}
+
+.judge{
+ width:55px;
+ padding:7px 4px;
+ border-radius:8px;
+ border:1px solid #303546;
+ background:rgba(8,10,16,.78);
+ text-align:center;
+ backdrop-filter:blur(6px);
+}
+
+.judge-face{
+ width:22px;
+ height:22px;
+ border-radius:50%;
+ background:#aaa;
+ margin:auto;
+}
+
+.judge-score{
+ font-size:11px;
+ font-weight:1000;
+ margin-top:4px;
+}
+
+.judge-name{
+ color:#727a8e;
+ font-size:7px;
+}
+
+/* GAME HUD */
+
+.battle-message{
+ position:absolute;
+ z-index:30;
+ top:25%;
+ left:50%;
+ transform:translate(-50%,-20px) scale(.7);
+ opacity:0;
+ text-align:center;
+ pointer-events:none;
+ transition:.18s;
+}
+
+.battle-message.show{
+ opacity:1;
+ transform:translate(-50%,0) scale(1);
+}
+
+.battle-message strong{
+ display:block;
+ font-size:clamp(35px,8vw,78px);
+ font-weight:1000;
+ font-style:italic;
+}
+
+.battle-message span{
+ color:#a6adbe;
+ font-size:10px;
+ letter-spacing:3px;
+ font-weight:900;
+}
+
+/* CONTROLS */
+
+.battle-controls{
+ padding:9px 12px;
+ background:#080a11;
+ border-top:1px solid #202536;
+ z-index:25;
+}
+
+.beat-track{
+ width:min(900px,100%);
+ height:5px;
+ background:#272c3c;
+ border-radius:10px;
+ margin:0 auto 8px;
+ overflow:hidden;
+}
+
+.beat-progress{
+ width:0;
+ height:100%;
+ background:#9b65d3;
+}
+
+.control-buttons{
+ width:min(900px,100%);
+ margin:auto;
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:8px;
+}
+
+.control{
+ min-height:55px;
+ border-radius:12px;
+ border:1px solid #353b4f;
+ background:#151927;
+ color:#fff;
+ font-weight:1000;
+}
+
+.control:active{
+ transform:scale(.94);
+ background:#2a2140;
+}
+
+.control small{
+ display:block;
+ color:#737b8f;
+ font-size:8px;
+ margin-top:3px;
+}
+
+/* =====================================================
+BATTLE RESULT
+===================================================== */
+
+#battleResult{
+ background:#05060b;
+}
+
+.result-wrap{
+ width:100%;
+ height:100%;
+ overflow:auto;
+ padding:18px;
+ background:
+ radial-gradient(circle at center top,rgba(109,67,155,.25),transparent 40%),
+ #070810;
+}
+
+.result-card{
+ width:min(1000px,100%);
+ margin:20px auto;
+}
+
+.result-title{
+ text-align:center;
+ letter-spacing:5px;
+ font-size:11px;
+ color:#939bad;
+}
+
+.winner{
+ text-align:center;
+ margin:18px 0;
+}
+
+.winner-label{
+ font-size:clamp(35px,7vw,75px);
+ font-weight:1000;
+}
+
+.winner-name{
+ color:#b88ce3;
+ font-size:clamp(18px,4vw,30px);
+ font-weight:1000;
+}
+
+.result-versus{
+ display:grid;
+ grid-template-columns:1fr 120px 1fr;
+ align-items:center;
+ gap:12px;
+ margin-top:20px;
+}
+
+.result-team{
+ padding:20px;
+ border-radius:16px;
+ background:#10131e;
+ border:1px solid #292f42;
+ text-align:center;
+}
+
+.result-team strong{
+ display:block;
+ font-size:26px;
+}
+
+.result-team span{
+ display:block;
+ color:#737b8f;
+ margin-top:5px;
+}
+
+.result-final-score{
+ font-size:40px;
+ font-weight:1000;
+ text-align:center;
+}
+
+.result-bars{
+ margin-top:15px;
+ display:grid;
+ gap:10px;
+}
+
+.bar-row{
+ display:grid;
+ grid-template-columns:100px 1fr 45px;
+ align-items:center;
+ gap:8px;
+ font-size:10px;
+ font-weight:900;
+}
+
+.bar{
+ height:7px;
+ background:#242a38;
+ border-radius:10px;
+ overflow:hidden;
+}
+
+.bar i{
+ display:block;
+ height:100%;
+ width:0;
+ background:#8d60c4;
+}
+
+/* =====================================================
+TOAST
+===================================================== */
 
 .toast{
-    position:fixed;
-    left:50%;
-    bottom:20px;
-    transform:translate(-50%,20px);
-    opacity:0;
-    pointer-events:none;
-    padding:11px 17px;
-    background:#fff;
-    color:#070810;
-    border-radius:30px;
-    font-weight:900;
-    z-index:99999;
-    transition:.2s
+ position:fixed;
+ left:50%;
+ bottom:20px;
+ transform:translate(-50%,20px);
+ opacity:0;
+ pointer-events:none;
+ padding:11px 17px;
+ background:#fff;
+ color:#070810;
+ border-radius:30px;
+ font-weight:900;
+ z-index:99999;
+ transition:.2s;
 }
 
 .toast.show{
-    opacity:1;
-    transform:translate(-50%,0)
+ opacity:1;
+ transform:translate(-50%,0);
 }
 
-/* MOBILE */
+/* =====================================================
+MOBILE
+===================================================== */
 
 @media(max-width:1000px){
 
-    .quick-grid{
-        grid-template-columns:repeat(3,1fr)
-    }
+.quick-grid{
+ grid-template-columns:repeat(3,1fr);
+}
 
-    .card-grid{
-        grid-template-columns:repeat(2,1fr)
-    }
+.card-grid{
+ grid-template-columns:repeat(2,1fr);
+}
 
-    .music-grid{
-        grid-template-columns:repeat(2,1fr)
-    }
+.music-grid{
+ grid-template-columns:repeat(2,1fr);
+}
 
-    .move-grid{
-        grid-template-columns:repeat(2,1fr)
-    }
-
-    .perf-main{
-        grid-template-columns:1fr
-    }
-
-    .perf-side{
-        display:none
-    }
+.move-grid{
+ grid-template-columns:repeat(2,1fr);
+}
 
 }
 
-@media(max-width:650px){
+@media(max-width:700px){
 
-    .home-content,
-    .panel{
-        padding:12px
-    }
-
-    .hero{
-        grid-template-columns:1fr;
-        padding:17px
-    }
-
-    .hero-stage{
-        min-height:180px
-    }
-
-    .quick-grid{
-        grid-template-columns:repeat(2,1fr)
-    }
-
-    .card-grid,
-    .setup-grid,
-    .music-grid,
-    .move-grid{
-        grid-template-columns:1fr
-    }
-
-    .control-row{
-        grid-template-columns:repeat(4,1fr)
-    }
-
-    .move-button{
-        min-height:58px
-    }
-
-    .result-grid{
-        grid-template-columns:1fr
-    }
+.panel{
+ padding:12px;
 }
+
+.hero{
+ grid-template-columns:1fr;
+ padding:17px;
+}
+
+.quick-grid{
+ grid-template-columns:repeat(2,1fr);
+}
+
+.setup-grid,
+.music-grid,
+.move-grid{
+ grid-template-columns:1fr;
+}
+
+.vs-teams{
+ grid-template-columns:1fr 70px 1fr;
+ gap:5px;
+}
+
+.vs-title{
+ margin-bottom:12px;
+}
+
+.dancer.left{
+ left:8%;
+}
+
+.dancer.right{
+ right:8%;
+}
+
+.dancer{
+ transform:scale(.8);
+}
+
+.crowd{
+ bottom:13%;
+}
+
+.result-versus{
+ grid-template-columns:1fr;
+}
+
+.result-final-score{
+ order:-1;
+}
+
+}
+
+@media(max-height:500px){
+
+.battle-top{
+ min-height:48px;
+}
+
+.battle-controls{
+ padding:6px 9px;
+}
+
+.control{
+ min-height:45px;
+}
+
+.dancer{
+ bottom:16%;
+ transform:scale(.65);
+}
+
+.dancer.left{
+ left:14%;
+}
+
+.dancer.right{
+ right:14%;
+}
+
+.judges{
+ top:7%;
+}
+
+}
+
 </style>
 </head>
 
@@ -868,7 +1242,7 @@ HOME
 
 <div class="pills">
 <div class="pill" id="rankPill">ROOKIE</div>
-<div class="pill">🪙 <span id="coinDisplay">1000</span></div>
+<div class="pill">COINS <span id="coinDisplay">1000</span></div>
 </div>
 
 </header>
@@ -879,26 +1253,29 @@ HOME
 
 <div>
 
-<div class="kicker">NEXT COMPETITION</div>
+<div class="kicker">WORLD STAGE</div>
 
-<h1>NAIROBI<br>DANCE BATTLE</h1>
+<h1>
+DANCE.<br>
+COMPETE.<br>
+DOMINATE.
+</h1>
 
 <p>
-Build your crew. Choose your music. Select your
-dance style. Create your move sequence and perform
-with timing, rhythm, technique and creativity.
+Build your crew, prepare your choreography and enter
+live dance battles against rival crews.
 </p>
 
-<div class="action-row">
+<div style="display:flex;gap:9px;flex-wrap:wrap">
 
 <button class="btn primary"
-onclick="showScreen('performanceSetup')">
-PREPARE PERFORMANCE
+onclick="startVS()">
+ENTER BATTLE
 </button>
 
 <button class="btn"
-onclick="showScreen('crew')">
-MY CREW
+onclick="showScreen('performanceSetup')">
+PREPARE
 </button>
 
 </div>
@@ -909,84 +1286,108 @@ MY CREW
 
 <div class="stage-ring">
 
-<div class="stage-person">
+<div style="
+width:34px;
+height:80px;
+position:relative;
+animation:homePulse 1.1s infinite;
+">
 
-<div class="head"></div>
-<div class="body"></div>
+<div style="
+position:absolute;
+width:20px;
+height:20px;
+border-radius:50%;
+background:#ddd;
+left:7px;
+top:0;
+"></div>
 
-<div class="arm left"></div>
-<div class="arm right"></div>
+<div style="
+position:absolute;
+width:18px;
+height:42px;
+border-radius:10px;
+background:#8d63c5;
+left:8px;
+top:23px;
+"></div>
 
-<div class="leg left"></div>
-<div class="leg right"></div>
+<div style="
+position:absolute;
+width:8px;
+height:35px;
+border-radius:8px;
+background:#aaa;
+left:0;
+top:27px;
+transform:rotate(25deg);
+"></div>
+
+<div style="
+position:absolute;
+width:8px;
+height:35px;
+border-radius:8px;
+background:#aaa;
+right:0;
+top:27px;
+transform:rotate(-25deg);
+"></div>
 
 </div>
 
 </div>
 
-<div style="margin-top:13px;color:#777f93;font-size:10px;letter-spacing:2px">
-LIVE PERFORMANCE ENGINE
+<div style="
+margin-top:13px;
+color:#777f93;
+font-size:10px;
+letter-spacing:2px;
+">
+LIVE 3D-STYLE ARENA
 </div>
 
 </div>
 
 </section>
 
-
 <div class="quick-grid">
 
-<button class="quick"
-onclick="showScreen('performanceSetup')">
-
-<div class="qicon">▶</div>
-<div class="qtitle">PERFORM</div>
-<div class="qdesc">Start dance battle</div>
-
+<button class="quick" onclick="startVS()">
+<div class="qicon">VS</div>
+<div class="qtitle">BATTLE</div>
+<div class="qdesc">Challenge a rival crew</div>
 </button>
 
-<button class="quick"
-onclick="showScreen('music')">
+<button class="quick" onclick="showScreen('performanceSetup')">
+<div class="qicon">▶</div>
+<div class="qtitle">PERFORM</div>
+<div class="qdesc">Prepare performance</div>
+</button>
 
+<button class="quick" onclick="showScreen('music')">
 <div class="qicon">♫</div>
 <div class="qtitle">MUSIC</div>
 <div class="qdesc">Choose soundtrack</div>
-
 </button>
 
-<button class="quick"
-onclick="showScreen('moves')">
-
+<button class="quick" onclick="showScreen('moves')">
 <div class="qicon">◆</div>
 <div class="qtitle">MOVES</div>
 <div class="qdesc">Build choreography</div>
-
 </button>
 
-<button class="quick"
-onclick="showScreen('crew')">
-
+<button class="quick" onclick="showScreen('crew')">
 <div class="qicon">★</div>
 <div class="qtitle">MY CREW</div>
 <div class="qdesc">Manage dancers</div>
-
 </button>
 
-<button class="quick"
-onclick="showScreen('training')">
-
+<button class="quick" onclick="showScreen('training')">
 <div class="qicon">▲</div>
 <div class="qtitle">TRAINING</div>
-<div class="qdesc">Improve skills</div>
-
-</button>
-
-<button class="quick"
-onclick="showScreen('settings')">
-
-<div class="qicon">⚙</div>
-<div class="qtitle">SETTINGS</div>
-<div class="qdesc">Save & options</div>
-
+<div class="qdesc">Improve dancers</div>
 </button>
 
 </div>
@@ -1010,25 +1411,20 @@ PERFORMANCE SETUP
 PERFORMANCE SETUP
 </div>
 
-<button class="btn"
-onclick="showScreen('home')">
+<button class="btn" onclick="showScreen('home')">
 BACK
 </button>
 
 </div>
 
-
 <div class="card">
 
-<div class="kicker">
-STEP 1
-</div>
+<div class="kicker">PRE-MATCH PREPARATION</div>
 
 <h2>Choose Your Performance</h2>
 
 <p class="muted">
-Your selected music, dance style and choreography
-will be used in the performance engine.
+Your setup becomes locked when the battle begins.
 </p>
 
 <div class="setup-grid">
@@ -1051,36 +1447,25 @@ will be used in the performance engine.
 
 </div>
 
-<div class="action-row">
+<div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:14px">
 
-<button class="btn"
-onclick="showScreen('music')">
-BROWSE MUSIC
+<button class="btn" onclick="showScreen('music')">
+MUSIC LIBRARY
 </button>
 
-<button class="btn"
-onclick="showScreen('moves')">
-BUILD MOVES
+<button class="btn" onclick="showScreen('moves')">
+MOVE LIBRARY
 </button>
 
-<button class="btn primary"
-onclick="confirmSetup()">
-CONFIRM PERFORMANCE
+<button class="btn primary" onclick="confirmSetup()">
+CONFIRM
 </button>
 
 </div>
 
-<div id="setupMessage"
-class="muted"
-style="margin-top:13px">
-Performance is editable before starting.
 </div>
 
-</div>
-
-
-<div class="card"
-style="margin-top:12px">
+<div class="card" style="margin-top:12px">
 
 <h3>ACTIVE SETUP</h3>
 
@@ -1103,7 +1488,7 @@ style="margin-top:12px">
 
 <div>
 <div class="muted">CREW</div>
-<strong id="activeCrew">Street Pulse</strong>
+<strong>Street Pulse</strong>
 </div>
 
 </div>
@@ -1129,18 +1514,11 @@ MUSIC
 MUSIC LIBRARY
 </div>
 
-<button class="btn"
-onclick="showScreen('performanceSetup')">
+<button class="btn" onclick="showScreen('performanceSetup')">
 BACK
 </button>
 
 </div>
-
-<p class="muted">
-Select the soundtrack for your performance.
-The tracks below are built-in game placeholders;
-the engine is ready for real audio files to be added later.
-</p>
 
 <div class="music-grid" id="musicGrid"></div>
 
@@ -1163,8 +1541,7 @@ MOVES
 MOVE LIBRARY
 </div>
 
-<button class="btn"
-onclick="showScreen('performanceSetup')">
+<button class="btn" onclick="showScreen('performanceSetup')">
 BACK
 </button>
 
@@ -1176,66 +1553,43 @@ BACK
 
 <div class="field">
 
-<label>STYLE FILTER</label>
+<label>STYLE</label>
 
-<select id="moveStyleFilter"
-onchange="renderMoves()">
-</select>
+<select id="moveStyleFilter" onchange="renderMoves()"></select>
 
 </div>
 
 <div>
-
-<label style="display:block;color:#838b9f;font-size:10px;font-weight:900;letter-spacing:1px;margin-bottom:7px">
-SEQUENCE
-</label>
-
-<strong id="sequenceCount">0 / 8</strong>
-
+<div class="muted">SEQUENCE</div>
+<div class="stat" style="font-size:24px" id="sequenceCount">
+0 / 8
+</div>
 </div>
 
 </div>
 
 <p class="muted">
-Tap moves to add them to your choreography.
-Maximum sequence length: 8 moves.
+Create your choreography before entering the battle.
 </p>
 
 </div>
 
-<div class="section-heading"
-style="margin-top:14px">
+<div class="move-grid" id="moveGrid" style="margin-top:13px"></div>
 
-<h2>AVAILABLE MOVES</h2>
-
-<span id="moveHint">SELECT MOVES</span>
-
-</div>
-
-<div class="move-grid"
-id="moveGrid">
-</div>
-
-
-<div class="card"
-style="margin-top:14px">
+<div class="card" style="margin-top:13px">
 
 <h3>YOUR CHOREOGRAPHY</h3>
 
-<div id="sequenceList"
-class="action-row">
-</div>
+<div id="sequenceList" style="display:flex;gap:7px;flex-wrap:wrap"></div>
 
-<div class="action-row">
+<div style="display:flex;gap:8px;margin-top:13px">
 
-<button class="btn danger"
-onclick="clearSequence()">
-CLEAR SEQUENCE
+<button class="btn danger" onclick="clearSequence()">
+CLEAR
 </button>
 
-<button class="btn primary"
-onclick="showScreen('performanceSetup')">
-USE SEQUENCE
+<button class="btn primary" onclick="showScreen('performanceSetup')">
+USE
 </button>
 
 </div>
@@ -1261,8 +1615,7 @@ CREW
 MY CREW
 </div>
 
-<button class="btn"
-onclick="showScreen('home')">
+<button class="btn" onclick="showScreen('home')">
 BACK
 </button>
 
@@ -1271,45 +1624,40 @@ BACK
 <div class="card-grid">
 
 <div class="card">
-<h3>CREW</h3>
-<div class="stat">STREET PULSE</div>
+<div class="muted">CREW</div>
+<div class="stat" style="font-size:20px">STREET PULSE</div>
 </div>
 
 <div class="card">
-<h3>RATING</h3>
+<div class="muted">RATING</div>
 <div class="stat" id="crewRating">82</div>
 </div>
 
 <div class="card">
-<h3>LINEUP</h3>
+<div class="muted">STARTERS</div>
 <div class="stat" id="lineupCount">4</div>
 </div>
 
 <div class="card">
-<h3>STYLE</h3>
-<div class="stat">URBAN</div>
+<div class="muted">STYLE</div>
+<div class="stat" style="font-size:20px">URBAN</div>
 </div>
 
 </div>
 
-<div class="card"
-style="margin-top:12px">
+<div class="card" style="margin-top:13px">
 
 <h3>STARTING LINEUP</h3>
 
-<div id="crewDancers"
-class="card-grid">
-</div>
+<div id="crewDancers" class="card-grid"></div>
 
-<div class="action-row">
+<div style="display:flex;gap:8px;margin-top:13px">
 
-<button class="btn primary"
-onclick="autoLineup()">
-AUTO BUILD
+<button class="btn primary" onclick="autoLineup()">
+BEST LINEUP
 </button>
 
-<button class="btn"
-onclick="clearLineup()">
+<button class="btn" onclick="clearLineup()">
 CLEAR
 </button>
 
@@ -1336,8 +1684,7 @@ TRAINING
 TRAINING
 </div>
 
-<button class="btn"
-onclick="showScreen('home')">
+<button class="btn" onclick="showScreen('home')">
 BACK
 </button>
 
@@ -1347,11 +1694,9 @@ BACK
 
 <div class="field">
 
-<label>SELECT DANCER</label>
+<label>DANCER</label>
 
-<select id="trainingDancer"
-onchange="renderTraining()">
-</select>
+<select id="trainingDancer" onchange="renderTraining()"></select>
 
 </div>
 
@@ -1359,7 +1704,7 @@ onchange="renderTraining()">
 
 <div id="trainingContent"
 class="card-grid"
-style="margin-top:12px">
+style="margin-top:13px">
 </div>
 
 </div>
@@ -1368,191 +1713,246 @@ style="margin-top:12px">
 
 
 <!-- =====================================================
-PERFORMANCE GAME
+VS SCREEN
 ===================================================== -->
 
-<section id="gamePerformance" class="screen">
+<section id="vsScreen" class="screen">
 
-<div class="performance-screen">
+<div class="vs-bg"></div>
+<div class="vs-lines"></div>
 
-<header class="perf-top">
+<div class="vs-content">
 
-<div class="song-info">
+<div class="vs-title">
+WORLD OF DANCE • CHAMPIONSHIP BATTLE
+</div>
 
-<strong id="playingSong">
-Performance Track
+<div class="vs-teams">
+
+<div class="vs-team vs-home">
+
+<div class="vs-team-name">
+STREET PULSE
+</div>
+
+<div class="vs-team-type">
+NAIROBI • YOUR CREW
+</div>
+
+<div class="vs-logo">
+SP
+</div>
+
+</div>
+
+<div class="vs">
+VS
+</div>
+
+<div class="vs-team vs-away">
+
+<div class="vs-team-name" id="opponentName">
+SHADOW SYNDICATE
+</div>
+
+<div class="vs-team-type">
+RIVAL CREW
+</div>
+
+<div class="vs-logo">
+SS
+</div>
+
+</div>
+
+</div>
+
+<div class="vs-info">
+
+<strong id="vsCompetition">
+NAIROBI NIGHT BATTLE
 </strong>
 
-<span id="playingStyle">
-Hip-Hop
+<span id="vsStyle">
+HIP-HOP • LIVE ARENA
 </span>
 
 </div>
 
-<div class="perf-score">
+<button
+class="btn primary"
+style="margin-top:30px"
+onclick="beginBattle()">
 
-<div class="perf-score-label">
-LIVE SCORE
+START BATTLE
+
+</button>
+
 </div>
 
-<div class="perf-score-value"
-id="liveScore">
+</section>
+
+
+<!-- =====================================================
+BATTLE
+===================================================== -->
+
+<section id="battle" class="screen">
+
+<div class="battle">
+
+<header class="battle-top">
+
+<div class="team-score">
+
+<div class="team-dot"></div>
+
+<div>
+<div class="team-name-small">
+STREET PULSE
+</div>
+
+<div class="score-big" id="playerScore">
 0
 </div>
+</div>
+
+</div>
+
+<div class="battle-clock">
+
+<small>ROUND</small>
+<strong id="battleClock">
+00:30
+</strong>
+
+</div>
+
+<div class="team-score away">
+
+<div>
+<div class="team-name-small">
+<span id="battleOpponentShort">
+SHADOW
+</span>
+</div>
+
+<div class="score-big" id="opponentScore">
+0
+</div>
+</div>
+
+<div class="team-dot red"></div>
 
 </div>
 
 </header>
 
 
-<main class="perf-main">
+<main class="arena" id="arena">
 
-<div class="stage">
+<div class="back-wall"></div>
+<div class="ceiling"></div>
 
-<div class="stage-floor"></div>
+<div class="laser one"></div>
+<div class="laser two"></div>
+
+<div class="arena-floor"></div>
+<div class="floor-grid"></div>
+
+<div class="crowd" id="crowd"></div>
 
 
-<div class="avatar-dancer"
-id="performanceAvatar">
+<div class="judges">
+
+<div class="judge">
+<div class="judge-face"></div>
+<div class="judge-score" id="judge1">--</div>
+<div class="judge-name">J1</div>
+</div>
+
+<div class="judge">
+<div class="judge-face"></div>
+<div class="judge-score" id="judge2">--</div>
+<div class="judge-name">J2</div>
+</div>
+
+<div class="judge">
+<div class="judge-face"></div>
+<div class="judge-score" id="judge3">--</div>
+<div class="judge-name">J3</div>
+</div>
+
+</div>
+
+
+<div class="dancer left" id="playerDancer">
 
 <div class="head"></div>
 <div class="body"></div>
-
 <div class="arm left"></div>
 <div class="arm right"></div>
-
 <div class="leg left"></div>
 <div class="leg right"></div>
 
 </div>
 
 
-<div class="stage-message"
-id="stageMessage">
+<div class="dancer right" id="opponentDancer">
 
-<div class="big"
-id="stageBig">
+<div class="head"></div>
+<div class="body"></div>
+<div class="arm left"></div>
+<div class="arm right"></div>
+<div class="leg left"></div>
+<div class="leg right"></div>
+
+</div>
+
+
+<div class="battle-message" id="battleMessage">
+
+<strong id="battleMessageBig">
 PERFECT
-</div>
+</strong>
 
-<div class="small"
-id="stageSmall">
-TIMING
-</div>
-
-</div>
-
-</div>
-
-
-<aside class="perf-side">
-
-<div class="perf-panel">
-
-<h3>COMBO</h3>
-
-<div class="combo">
-
-<span id="combo">0</span>
-
-<span>
-CHAIN
+<span id="battleMessageSmall">
+ON BEAT
 </span>
 
 </div>
 
-</div>
-
-
-<div class="perf-panel">
-
-<h3>TIMING</h3>
-
-<div class="timing">
-
-<div class="timing-box">
-<strong id="perfectCount">0</strong>
-<span>PERFECT</span>
-</div>
-
-<div class="timing-box">
-<strong id="goodCount">0</strong>
-<span>GOOD</span>
-</div>
-
-<div class="timing-box">
-<strong id="missCount">0</strong>
-<span>MISS</span>
-</div>
-
-</div>
-
-</div>
-
-
-<div class="perf-panel">
-
-<h3>PERFORMANCE</h3>
-
-<div id="performanceStats"></div>
-
-</div>
-
-
-<div class="perf-panel">
-
-<h3>MOVE</h3>
-
-<div id="currentMoveName">
-GET READY
-</div>
-
-<div class="muted"
-id="moveProgress">
-0 / 0
-</div>
-
-</div>
-
-</aside>
-
 </main>
 
 
-<footer class="perf-controls">
+<footer class="battle-controls">
 
-<div class="beat-indicator">
+<div class="beat-track">
 
-<div class="beat-fill"
-id="beatFill">
-</div>
+<div class="beat-progress" id="beatProgress"></div>
 
 </div>
 
-<div class="control-row">
+<div class="control-buttons">
 
-<button class="move-button"
-onclick="performInput(0)">
+<button class="control" onclick="battleInput(0)">
 A
-<span>LEFT</span>
+<small>LEFT</small>
 </button>
 
-<button class="move-button"
-onclick="performInput(1)">
+<button class="control" onclick="battleInput(1)">
 B
-<span>RIGHT</span>
+<small>RIGHT</small>
 </button>
 
-<button class="move-button"
-onclick="performInput(2)">
+<button class="control" onclick="battleInput(2)">
 X
-<span>POWER</span>
+<small>POWER</small>
 </button>
 
-<button class="move-button"
-onclick="performInput(3)">
+<button class="control" onclick="battleInput(3)">
 Y
-<span>FLOW</span>
+<small>FLOW</small>
 </button>
 
 </div>
@@ -1565,166 +1965,118 @@ Y
 
 
 <!-- =====================================================
-RESULTS
+RESULT
 ===================================================== -->
 
-<section id="results" class="screen">
+<section id="battleResult" class="screen">
 
-<div class="panel">
+<div class="result-wrap">
 
-<div class="panel-header">
+<div class="result-card">
 
-<div class="panel-title">
-RESULTS
+<div class="result-title">
+FINAL RESULT
 </div>
 
-<button class="btn"
-onclick="showScreen('home')">
+<div class="winner">
+
+<div class="winner-label" id="winnerLabel">
+WINNER
+</div>
+
+<div class="winner-name" id="winnerName">
+STREET PULSE
+</div>
+
+</div>
+
+<div class="result-versus">
+
+<div class="result-team">
+
+<strong>
+STREET PULSE
+</strong>
+
+<span id="finalPlayerScore">
+0
+</span>
+
+</div>
+
+<div class="result-final-score">
+VS
+</div>
+
+<div class="result-team">
+
+<strong id="finalOpponentName">
+SHADOW SYNDICATE
+</strong>
+
+<span id="finalOpponentScore">
+0
+</span>
+
+</div>
+
+</div>
+
+<div class="card" style="margin-top:14px">
+
+<h3>JUDGES' SCORECARD</h3>
+
+<div class="result-bars">
+
+<div class="bar-row">
+<span>RHYTHM</span>
+<div class="bar"><i id="barRhythm"></i></div>
+<strong id="scoreRhythm">0</strong>
+</div>
+
+<div class="bar-row">
+<span>TECHNIQUE</span>
+<div class="bar"><i id="barTechnique"></i></div>
+<strong id="scoreTechnique">0</strong>
+</div>
+
+<div class="bar-row">
+<span>CREATIVITY</span>
+<div class="bar"><i id="barCreativity"></i></div>
+<strong id="scoreCreativity">0</strong>
+</div>
+
+<div class="bar-row">
+<span>POWER</span>
+<div class="bar"><i id="barPower"></i></div>
+<strong id="scorePower">0</strong>
+</div>
+
+<div class="bar-row">
+<span>EXPRESSION</span>
+<div class="bar"><i id="barExpression"></i></div>
+<strong id="scoreExpression">0</strong>
+</div>
+
+</div>
+
+</div>
+
+<div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:13px">
+
+<button class="btn primary" onclick="startVS()">
+REMATCH
+</button>
+
+<button class="btn" onclick="showScreen('home')">
 HOME
 </button>
 
-</div>
-
-
-<div class="card"
-style="text-align:center">
-
-<div class="kicker">
-PERFORMANCE COMPLETE
-</div>
-
-<div class="result-score"
-id="resultScore">
-0
-</div>
-
-<div class="result-grade"
-id="resultGrade">
-D
-</div>
-
-<p class="muted"
-id="resultMessage">
-Performance complete.
-</p>
-
-</div>
-
-
-<div class="result-grid"
-style="margin-top:12px">
-
-<div class="result-stat">
-RHYTHM
-<strong id="resultRhythm">0</strong>
-</div>
-
-<div class="result-stat">
-TECHNIQUE
-<strong id="resultTechnique">0</strong>
-</div>
-
-<div class="result-stat">
-CREATIVITY
-<strong id="resultCreativity">0</strong>
-</div>
-
-<div class="result-stat">
-POWER
-<strong id="resultPower">0</strong>
-</div>
-
-<div class="result-stat">
-EXPRESSION
-<strong id="resultExpression">0</strong>
-</div>
-
-<div class="result-stat">
-COMBO
-<strong id="resultCombo">0</strong>
-</div>
-
-</div>
-
-
-<div class="action-row">
-
-<button class="btn primary"
-onclick="showScreen('performanceSetup')">
-PERFORM AGAIN
-</button>
-
-<button class="btn"
-onclick="showScreen('crew')">
-MY CREW
+<button class="btn" onclick="showScreen('training')">
+TRAIN
 </button>
 
 </div>
-
-</div>
-
-</section>
-
-
-<!-- =====================================================
-SETTINGS
-===================================================== -->
-
-<section id="settings" class="screen">
-
-<div class="panel">
-
-<div class="panel-header">
-
-<div class="panel-title">
-SETTINGS
-</div>
-
-<button class="btn"
-onclick="showScreen('home')">
-BACK
-</button>
-
-</div>
-
-<div class="card">
-
-<h2>LOCAL SAVE</h2>
-
-<p class="muted">
-All current progress is stored in your browser using
-localStorage.
-</p>
-
-<div class="action-row">
-
-<button class="btn primary"
-onclick="saveGame();showToast('GAME SAVED')">
-SAVE NOW
-</button>
-
-<button class="btn danger"
-onclick="resetGame()">
-RESET GAME
-</button>
-
-</div>
-
-</div>
-
-<div class="card"
-style="margin-top:12px">
-
-<h3>BUILD 04 STATUS</h3>
-
-<p class="muted">Music system: ACTIVE</p>
-<p class="muted">Dance styles: ACTIVE</p>
-<p class="muted">Move library: ACTIVE</p>
-<p class="muted">Choreography sequence: ACTIVE</p>
-<p class="muted">Timing system: ACTIVE</p>
-<p class="muted">Combo system: ACTIVE</p>
-<p class="muted">Live scoring: ACTIVE</p>
-<p class="muted">Results system: ACTIVE</p>
 
 </div>
 
@@ -1735,95 +2087,35 @@ style="margin-top:12px">
 
 </div>
 
-<div id="toast" class="toast"></div>
+<div class="toast" id="toast"></div>
 
 
 <script>
 
-/* =========================================================
+/* =====================================================
 WORLD OF DANCE
-BUILD 04
-========================================================= */
+BUILD 05
+===================================================== */
 
 
-/* =========================
-SAVE
-========================= */
-
-const SAVE_KEY="WORLD_OF_DANCE_BUILD_04";
-
-
-/* =========================
-MUSIC
-========================= */
+/* =====================================================
+DATA
+===================================================== */
 
 const MUSIC=[
 
-{
-id:"m1",
-name:"Street Energy",
-genre:"Hip-Hop",
-bpm:96
-},
-
-{
-id:"m2",
-name:"Urban Pulse",
-genre:"Popping",
-bpm:108
-},
-
-{
-id:"m3",
-name:"Break The Floor",
-genre:"Breaking",
-bpm:128
-},
-
-{
-id:"m4",
-name:"African Motion",
-genre:"Afro Fusion",
-bpm:110
-},
-
-{
-id:"m5",
-name:"Modern Flow",
-genre:"Contemporary",
-bpm:82
-},
-
-{
-id:"m6",
-name:"Dancehall Heat",
-genre:"Dancehall",
-bpm:102
-},
-
-{
-id:"m7",
-name:"House Drive",
-genre:"House",
-bpm:124
-},
-
-{
-id:"m8",
-name:"Jazz Stage",
-genre:"Jazz",
-bpm:118
-}
+{id:"m1",name:"Street Energy",genre:"Hip-Hop",bpm:96},
+{id:"m2",name:"Urban Pulse",genre:"Popping",bpm:108},
+{id:"m3",name:"Break The Floor",genre:"Breaking",bpm:128},
+{id:"m4",name:"African Motion",genre:"Afro Fusion",bpm:110},
+{id:"m5",name:"Modern Flow",genre:"Contemporary",bpm:82},
+{id:"m6",name:"Dancehall Heat",genre:"Dancehall",bpm:102},
+{id:"m7",name:"House Drive",genre:"House",bpm:124},
+{id:"m8",name:"Jazz Stage",genre:"Jazz",bpm:118}
 
 ];
 
-
-/* =========================
-DANCE STYLES
-========================= */
-
 const STYLES=[
-
 "Hip-Hop",
 "Popping",
 "Breaking",
@@ -1840,222 +2132,91 @@ const STYLES=[
 "Lyrical",
 "Afrobeat",
 "Street Jazz"
+];
+
+const MOVES=[
+
+{id:"mv1",name:"Top Rock",style:"Breaking",type:"Footwork",difficulty:2,power:75,creativity:65},
+{id:"mv2",name:"Six Step",style:"Breaking",type:"Footwork",difficulty:3,power:82,creativity:72},
+{id:"mv3",name:"Freeze",style:"Breaking",type:"Power",difficulty:5,power:96,creativity:82},
+{id:"mv4",name:"Pop Hit",style:"Popping",type:"Isolation",difficulty:2,power:68,creativity:79},
+{id:"mv5",name:"Wave",style:"Popping",type:"Isolation",difficulty:3,power:60,creativity:91},
+{id:"mv6",name:"Robot",style:"Popping",type:"Animation",difficulty:2,power:62,creativity:88},
+{id:"mv7",name:"Groove",style:"Hip-Hop",type:"Foundation",difficulty:1,power:66,creativity:62},
+{id:"mv8",name:"Running Man",style:"Hip-Hop",type:"Footwork",difficulty:2,power:71,creativity:70},
+{id:"mv9",name:"Body Roll",style:"Hip-Hop",type:"Groove",difficulty:2,power:59,creativity:78},
+{id:"mv10",name:"Power Step",style:"Afro Fusion",type:"Power",difficulty:2,power:88,creativity:76},
+{id:"mv11",name:"Afro Bounce",style:"Afro Fusion",type:"Groove",difficulty:1,power:80,creativity:82},
+{id:"mv12",name:"Leg Sweep",style:"Afro Fusion",type:"Footwork",difficulty:3,power:83,creativity:80},
+{id:"mv13",name:"Isolation",style:"Dancehall",type:"Groove",difficulty:2,power:71,creativity:78},
+{id:"mv14",name:"Bounce Step",style:"Dancehall",type:"Foundation",difficulty:1,power:74,creativity:68},
+{id:"mv15",name:"House Jack",style:"House",type:"Footwork",difficulty:2,power:77,creativity:76},
+{id:"mv16",name:"Pas De Bourrée",style:"House",type:"Footwork",difficulty:3,power:72,creativity:83},
+{id:"mv17",name:"Jazz Kick",style:"Jazz",type:"Technique",difficulty:2,power:67,creativity:75},
+{id:"mv18",name:"Jazz Turn",style:"Jazz",type:"Technique",difficulty:3,power:63,creativity:84},
+{id:"mv19",name:"Contraction",style:"Contemporary",type:"Expression",difficulty:2,power:58,creativity:92},
+{id:"mv20",name:"Floor Roll",style:"Contemporary",type:"Floorwork",difficulty:3,power:69,creativity:94}
 
 ];
 
 
-/* =========================
-MOVE LIBRARY
-========================= */
+/* =====================================================
+OPPONENTS
+===================================================== */
 
-const MOVES=[
+const OPPONENTS=[
 
 {
-id:"mv1",
-name:"Top Rock",
-style:"Breaking",
-type:"Footwork",
-difficulty:2,
-power:75,
-creativity:65
+name:"Shadow Syndicate",
+short:"SHADOW",
+rating:87,
+style:"Popping"
 },
 
 {
-id:"mv2",
-name:"Six Step",
-style:"Breaking",
-type:"Footwork",
-difficulty:3,
-power:82,
-creativity:72
+name:"Urban Kings",
+short:"URBAN",
+rating:84,
+style:"Hip-Hop"
 },
 
 {
-id:"mv3",
-name:"Freeze",
-style:"Breaking",
-type:"Power",
-difficulty:5,
-power:96,
-creativity:82
+name:"Motion Empire",
+short:"MOTION",
+rating:90,
+style:"Afro Fusion"
 },
 
 {
-id:"mv4",
-name:"Pop Hit",
-style:"Popping",
-type:"Isolation",
-difficulty:2,
-power:68,
-creativity:79
+name:"Velocity Crew",
+short:"VELOCITY",
+rating:88,
+style:"House"
 },
 
 {
-id:"mv5",
-name:"Wave",
-style:"Popping",
-type:"Isolation",
-difficulty:3,
-power:60,
-creativity:91
+name:"Rhythm Nation",
+short:"RHYTHM",
+rating:86,
+style:"Dancehall"
 },
 
 {
-id:"mv6",
-name:"Robot",
-style:"Popping",
-type:"Animation",
-difficulty:2,
-power:62,
-creativity:88
-},
-
-{
-id:"mv7",
-name:"Groove",
-style:"Hip-Hop",
-type:"Foundation",
-difficulty:1,
-power:66,
-creativity:62
-},
-
-{
-id:"mv8",
-name:"Running Man",
-style:"Hip-Hop",
-type:"Footwork",
-difficulty:2,
-power:71,
-creativity:70
-},
-
-{
-id:"mv9",
-name:"Body Roll",
-style:"Hip-Hop",
-type:"Groove",
-difficulty:2,
-power:59,
-creativity:78
-},
-
-{
-id:"mv10",
-name:"Power Step",
-style:"Afro Fusion",
-type:"Power",
-difficulty:2,
-power:88,
-creativity:76
-},
-
-{
-id:"mv11",
-name:"Afro Bounce",
-style:"Afro Fusion",
-type:"Groove",
-difficulty:1,
-power:80,
-creativity:82
-},
-
-{
-id:"mv12",
-name:"Leg Sweep",
-style:"Afro Fusion",
-type:"Footwork",
-difficulty:3,
-power:83,
-creativity:80
-},
-
-{
-id:"mv13",
-name:"Isolation",
-style:"Dancehall",
-type:"Groove",
-difficulty:2,
-power:71,
-creativity:78
-},
-
-{
-id:"mv14",
-name:"Bounce Step",
-style:"Dancehall",
-type:"Foundation",
-difficulty:1,
-power:74,
-creativity:68
-},
-
-{
-id:"mv15",
-name:"House Jack",
-style:"House",
-type:"Footwork",
-difficulty:2,
-power:77,
-creativity:76
-},
-
-{
-id:"mv16",
-name:"Pas De Bourrée",
-style:"House",
-type:"Footwork",
-difficulty:3,
-power:72,
-creativity:83
-},
-
-{
-id:"mv17",
-name:"Jazz Kick",
-style:"Jazz",
-type:"Technique",
-difficulty:2,
-power:67,
-creativity:75
-},
-
-{
-id:"mv18",
-name:"Jazz Turn",
-style:"Jazz",
-type:"Technique",
-difficulty:3,
-power:63,
-creativity:84
-},
-
-{
-id:"mv19",
-name:"Contraction",
-style:"Contemporary",
-type:"Expression",
-difficulty:2,
-power:58,
-creativity:92
-},
-
-{
-id:"mv20",
-name:"Floor Roll",
-style:"Contemporary",
-type:"Floorwork",
-difficulty:3,
-power:69,
-creativity:94
+name:"Blackout Unit",
+short:"BLACKOUT",
+rating:92,
+style:"Breaking"
 }
 
 ];
 
 
-/* =========================
-DEFAULT GAME
-========================= */
+/* =====================================================
+DEFAULT SAVE
+===================================================== */
+
+const SAVE_KEY=
+"WORLD_OF_DANCE_BUILD_05";
 
 const DEFAULT_GAME={
 
@@ -2066,8 +2227,7 @@ rankPoints:0
 },
 
 crew:{
-name:"Street Pulse",
-style:"Urban"
+name:"Street Pulse"
 },
 
 dancers:[
@@ -2160,15 +2320,16 @@ expression:82
 ],
 
 performance:{
-
 music:"m1",
-
 style:"Hip-Hop",
-
-sequence:[],
-
-confirmed:false
-
+sequence:[
+"mv7",
+"mv8",
+"mv9",
+"mv11",
+"mv15",
+"mv10"
+]
 },
 
 record:{
@@ -2180,52 +2341,44 @@ losses:0
 };
 
 
-/* =========================
-LOAD
-========================= */
-
 function clone(o){
-return JSON.parse(JSON.stringify(o))
+ return JSON.parse(JSON.stringify(o));
 }
+
 
 function loadGame(){
 
-const raw=localStorage.getItem(SAVE_KEY);
+const raw=
+localStorage.getItem(SAVE_KEY);
 
-if(!raw)return clone(DEFAULT_GAME);
+if(!raw)
+ return clone(DEFAULT_GAME);
 
 try{
 
 const saved=JSON.parse(raw);
 
 return{
-
-...clone(DEFAULT_GAME),
-...saved,
-
-player:{
-...DEFAULT_GAME.player,
-...(saved.player||{})
-},
-
-crew:{
-...DEFAULT_GAME.crew,
-...(saved.crew||{})
-},
-
-dancers:
-saved.dancers||clone(DEFAULT_GAME.dancers),
-
-performance:{
-...DEFAULT_GAME.performance,
-...(saved.performance||{})
-},
-
-record:{
-...DEFAULT_GAME.record,
-...(saved.record||{})
-}
-
+ ...clone(DEFAULT_GAME),
+ ...saved,
+ player:{
+  ...DEFAULT_GAME.player,
+  ...(saved.player||{})
+ },
+ crew:{
+  ...DEFAULT_GAME.crew,
+  ...(saved.crew||{})
+ },
+ dancers:
+ saved.dancers||clone(DEFAULT_GAME.dancers),
+ performance:{
+  ...DEFAULT_GAME.performance,
+  ...(saved.performance||{})
+ },
+ record:{
+  ...DEFAULT_GAME.record,
+  ...(saved.record||{})
+ }
 };
 
 }catch(e){
@@ -2236,12 +2389,9 @@ return clone(DEFAULT_GAME);
 
 }
 
+
 let game=loadGame();
 
-
-/* =========================
-SAVE
-========================= */
 
 function saveGame(){
 
@@ -2253,113 +2403,189 @@ JSON.stringify(game)
 }
 
 
-/* =========================
+/* =====================================================
 NAVIGATION
-========================= */
+===================================================== */
 
 function showScreen(id){
 
 document
 .querySelectorAll(".screen")
-.forEach(s=>s.classList.remove("active"));
+.forEach(
+s=>s.classList.remove("active")
+);
 
-const target=document.getElementById(id);
+const screen=
+document.getElementById(id);
 
-if(target)target.classList.add("active");
+if(screen)
+ screen.classList.add("active");
 
-if(id==="music")renderMusic();
-if(id==="moves")renderMoves();
-if(id==="crew")renderCrew();
-if(id==="training")renderTraining();
-if(id==="performanceSetup")renderSetup();
+if(id==="music")
+ renderMusic();
+
+if(id==="moves")
+ renderMoves();
+
+if(id==="crew")
+ renderCrew();
+
+if(id==="training")
+ renderTraining();
+
+if(id==="performanceSetup")
+ renderSetup();
 
 }
 
 
-/* =========================
-TEXT
-========================= */
+/* =====================================================
+UTILITY
+===================================================== */
 
-function text(id,value){
+function setText(id,value){
 
-const e=document.getElementById(id);
+const el=
+document.getElementById(id);
 
-if(e)e.textContent=value;
+if(el)
+ el.textContent=value;
 
 }
 
-
-/* =========================
-TOAST
-========================= */
 
 let toastTimer;
 
-function showToast(message){
+function toast(message){
 
-const t=document.getElementById("toast");
+const el=
+document.getElementById("toast");
 
-t.textContent=message;
+el.textContent=message;
 
-t.classList.add("show");
+el.classList.add("show");
 
 clearTimeout(toastTimer);
 
-toastTimer=setTimeout(
-()=>t.classList.remove("show"),
+toastTimer=
+setTimeout(
+()=>el.classList.remove("show"),
 1800
 );
 
 }
 
 
-/* =========================
+/* =====================================================
+HOME
+===================================================== */
+
+function updateHome(){
+
+setText(
+"coinDisplay",
+game.player.coins
+);
+
+const ranks=[
+
+["ROOKIE",0],
+["RISING STAR",100],
+["PRO",250],
+["ELITE",500],
+["MASTER",900],
+["LEGEND",1500],
+["WORLD ICON",2500]
+
+];
+
+let rank=ranks[0];
+
+ranks.forEach(r=>{
+
+if(game.player.rankPoints>=r[1])
+ rank=r;
+
+});
+
+setText(
+"rankPill",
+rank[0]
+);
+
+}
+
+
+/* =====================================================
 MUSIC
-========================= */
+===================================================== */
 
 function renderMusic(){
 
-const grid=document.getElementById("musicGrid");
+const grid=
+document.getElementById("musicGrid");
+
+if(!grid)return;
 
 grid.innerHTML="";
 
 MUSIC.forEach(track=>{
 
-const card=document.createElement("div");
+const card=
+document.createElement("div");
 
 card.className=
 "music-card"+
-(game.performance.music===track.id?" selected":"");
+(
+game.performance.music===track.id
+?" selected"
+:""
+);
 
 card.innerHTML=`
 
-<div class="music-wave">
+<div style="
+height:35px;
+display:flex;
+align-items:center;
+gap:4px;
+margin-bottom:13px;
+">
 
-<div class="wave" style="height:18px"></div>
-<div class="wave" style="height:30px"></div>
-<div class="wave" style="height:14px"></div>
-<div class="wave" style="height:35px"></div>
-<div class="wave" style="height:22px"></div>
-<div class="wave" style="height:29px"></div>
+${[15,28,19,32,23,29].map(
+h=>`
+<span style="
+width:4px;
+height:${h}px;
+border-radius:4px;
+background:#895ec0;
+"></span>
+`
+).join("")}
 
 </div>
 
-<div style="font-weight:900">
+<strong>
 ${track.name}
-</div>
+</strong>
 
 <div class="muted">
 ${track.genre} • ${track.bpm} BPM
 </div>
 
 <button
-class="btn ${game.performance.music===track.id?"primary":""} wide"
+class="btn ${
+game.performance.music===track.id
+?"primary":""
+} wide"
 style="margin-top:12px"
 onclick="selectMusic('${track.id}')">
 
-${game.performance.music===track.id
-?"✓ SELECTED"
-:"SELECT"}
+${
+game.performance.music===track.id
+?"SELECTED"
+:"SELECT"
+}
 
 </button>
 
@@ -2382,20 +2608,22 @@ renderMusic();
 
 renderSetup();
 
-showToast("Music selected");
+toast("Music selected");
 
 }
 
 
-/* =========================
-STYLES
-========================= */
+/* =====================================================
+SETUP
+===================================================== */
 
 function populateStyles(){
 
-const setup=document.getElementById("setupStyle");
+const setup=
+document.getElementById("setupStyle");
 
-const filter=document.getElementById("moveStyleFilter");
+const filter=
+document.getElementById("moveStyleFilter");
 
 if(setup){
 
@@ -2403,7 +2631,8 @@ setup.innerHTML="";
 
 STYLES.forEach(style=>{
 
-const option=document.createElement("option");
+const option=
+document.createElement("option");
 
 option.value=style;
 option.textContent=style;
@@ -2412,7 +2641,8 @@ setup.appendChild(option);
 
 });
 
-setup.value=game.performance.style;
+setup.value=
+game.performance.style;
 
 }
 
@@ -2420,7 +2650,8 @@ if(filter){
 
 filter.innerHTML="";
 
-const all=document.createElement("option");
+const all=
+document.createElement("option");
 
 all.value="ALL";
 all.textContent="ALL STYLES";
@@ -2429,7 +2660,8 @@ filter.appendChild(all);
 
 STYLES.forEach(style=>{
 
-const option=document.createElement("option");
+const option=
+document.createElement("option");
 
 option.value=style;
 option.textContent=style;
@@ -2443,27 +2675,25 @@ filter.appendChild(option);
 }
 
 
-/* =========================
-SETUP
-========================= */
-
 function renderSetup(){
 
 populateStyles();
 
-const musicSelect=document.getElementById("setupMusic");
+const music=
+document.getElementById("setupMusic");
 
-if(musicSelect){
+if(music){
 
-musicSelect.innerHTML="";
+music.innerHTML="";
 
 MUSIC.forEach(track=>{
 
-const o=document.createElement("option");
+const option=
+document.createElement("option");
 
-o.value=track.id;
+option.value=track.id;
 
-o.textContent=
+option.textContent=
 track.name+
 " • "+
 track.genre+
@@ -2471,104 +2701,92 @@ track.genre+
 track.bpm+
 "BPM";
 
-musicSelect.appendChild(o);
+music.appendChild(option);
 
 });
 
-musicSelect.value=
+music.value=
 game.performance.music;
 
 }
 
-const style=document.getElementById("setupStyle");
+const style=
+document.getElementById("setupStyle");
 
-if(style){
-style.value=game.performance.style;
-}
+if(style)
+ style.value=game.performance.style;
 
-const track=MUSIC.find(
+const track=
+MUSIC.find(
 m=>m.id===game.performance.music
 );
 
-text(
+setText(
 "activeMusic",
 track?track.name:"None"
 );
 
-text(
+setText(
 "activeStyle",
 game.performance.style
 );
 
-text(
+setText(
 "activeMoveCount",
 game.performance.sequence.length
 );
 
-text(
-"activeCrew",
-game.crew.name
-);
-
 }
 
-
-/* =========================
-CONFIRM SETUP
-========================= */
 
 function confirmSetup(){
 
-const music=
-document.getElementById("setupMusic").value;
+game.performance.music=
+document.getElementById(
+"setupMusic"
+).value;
 
-const style=
-document.getElementById("setupStyle").value;
-
-game.performance.music=music;
-
-game.performance.style=style;
-
-game.performance.confirmed=true;
+game.performance.style=
+document.getElementById(
+"setupStyle"
+).value;
 
 saveGame();
 
-renderSetup();
-
-showToast(
-"Performance setup confirmed"
-);
-
-setTimeout(
-()=>showScreen("gamePerformance"),
-400
+toast(
+"Performance locked for battle"
 );
 
 }
 
 
-/* =========================
-MOVE LIBRARY
-========================= */
+/* =====================================================
+MOVES
+===================================================== */
 
 function renderMoves(){
 
 populateStyles();
 
 const filter=
-document.getElementById("moveStyleFilter");
+document.getElementById(
+"moveStyleFilter"
+);
 
 const chosen=
 filter.value;
 
 const grid=
-document.getElementById("moveGrid");
+document.getElementById(
+"moveGrid"
+);
 
 grid.innerHTML="";
 
-let moves=MOVES;
+let moves=
+MOVES;
 
-if(chosen&&chosen!=="ALL"){
+if(chosen!=="ALL"){
 
 moves=
 MOVES.filter(
@@ -2580,16 +2798,19 @@ m=>m.style===chosen
 moves.forEach(move=>{
 
 const selected=
-game.performance.sequence.includes(
-move.id
-);
+game.performance.sequence
+.includes(move.id);
 
 const card=
 document.createElement("div");
 
 card.className=
 "move-card"+
-(selected?" selected":"");
+(
+selected
+?" selected"
+:""
+);
 
 card.innerHTML=`
 
@@ -2601,22 +2822,35 @@ ${move.type}
 ${move.name}
 </div>
 
-<div class="move-difficulty">
+<div class="muted">
 Difficulty ${move.difficulty}/5
 </div>
 
-<div class="move-score">
+<div style="
+margin-top:9px;
+font-size:10px;
+font-weight:900;
+">
+
 Power ${move.power}
 •
 Creativity ${move.creativity}
+
 </div>
 
 <button
-class="btn ${selected?"primary":""} wide"
-style="margin-top:12px"
+class="btn ${
+selected
+?"primary":""
+} wide"
+style="margin-top:11px"
 onclick="toggleMove('${move.id}')">
 
-${selected?"✓ IN SEQUENCE":"ADD MOVE"}
+${
+selected
+?"IN CHOREOGRAPHY"
+:"ADD MOVE"
+}
 
 </button>
 
@@ -2647,7 +2881,7 @@ sequence.splice(index,1);
 
 if(sequence.length>=8){
 
-showToast(
+toast(
 "Maximum 8 moves"
 );
 
@@ -2668,48 +2902,51 @@ renderSetup();
 }
 
 
-/* =========================
-SEQUENCE
-========================= */
-
 function renderSequence(){
 
 const list=
-document.getElementById("sequenceList");
+document.getElementById(
+"sequenceList"
+);
 
 if(!list)return;
 
 list.innerHTML="";
 
-game.performance.sequence.forEach(
-(id,index)=>{
+game.performance.sequence
+.forEach((id,index)=>{
 
 const move=
 MOVES.find(m=>m.id===id);
 
 if(!move)return;
 
-const tag=document.createElement("button");
+const button=
+document.createElement("button");
 
-tag.className="btn";
+button.className="btn";
 
-tag.innerHTML=
+button.textContent=
 (index+1)+
 " • "+
 move.name;
 
-tag.onclick=()=>{
-game.performance.sequence.splice(index,1);
+button.onclick=()=>{
+
+game.performance.sequence
+.splice(index,1);
+
 saveGame();
+
 renderMoves();
-renderSetup();
+
 };
 
-list.appendChild(tag);
+list.appendChild(button);
 
 });
 
-text(
+setText(
 "sequenceCount",
 game.performance.sequence.length+
 " / 8"
@@ -2728,16 +2965,14 @@ renderMoves();
 
 renderSetup();
 
-showToast(
-"Choreography cleared"
-);
+toast("Choreography cleared");
 
 }
 
 
-/* =========================
+/* =====================================================
 CREW
-========================= */
+===================================================== */
 
 function selectedDancers(){
 
@@ -2750,17 +2985,17 @@ d=>d.selected
 
 function crewRating(){
 
-const selected=
+const list=
 selectedDancers();
 
-if(!selected.length)return 0;
+if(!list.length)
+ return 0;
 
 return Math.round(
-selected.reduce(
-(a,d)=>a+d.rating,
+list.reduce(
+(sum,d)=>sum+d.rating,
 0
-)/
-selected.length
+)/list.length
 );
 
 }
@@ -2769,7 +3004,9 @@ selected.length
 function renderCrew(){
 
 const grid=
-document.getElementById("crewDancers");
+document.getElementById(
+"crewDancers"
+);
 
 grid.innerHTML="";
 
@@ -2782,33 +3019,27 @@ card.className="card";
 
 card.innerHTML=`
 
-<div style="display:flex;justify-content:space-between">
-
-<div>
 <strong>
 ${d.name}
 </strong>
 
 <div class="muted">
-Rating ${d.rating}
-</div>
-
-</div>
-
-<strong>
-${d.selected?"STARTER":"BENCH"}
-</strong>
-
+Overall ${d.rating}
 </div>
 
 <button
-class="btn ${d.selected?"primary":""} wide"
+class="btn ${
+d.selected
+?"primary":""
+} wide"
 style="margin-top:10px"
 onclick="toggleDancer('${d.id}')">
 
-${d.selected
-?"REMOVE FROM LINEUP"
-:"ADD TO LINEUP"}
+${
+d.selected
+?"STARTER"
+:"ADD TO LINEUP"
+}
 
 </button>
 
@@ -2818,12 +3049,12 @@ grid.appendChild(card);
 
 });
 
-text(
+setText(
 "crewRating",
 crewRating()
 );
 
-text(
+setText(
 "lineupCount",
 selectedDancers().length
 );
@@ -2848,7 +3079,7 @@ dancer.selected=false;
 
 if(selectedDancers().length>=4){
 
-showToast(
+toast(
 "Maximum 4 starters"
 );
 
@@ -2874,19 +3105,27 @@ d=>d.selected=false
 );
 
 game.dancers
+.slice()
 .sort(
 (a,b)=>b.rating-a.rating
 )
 .slice(0,4)
 .forEach(
-d=>d.selected=true
+d=>{
+ const original=
+ game.dancers.find(
+ x=>x.id===d.id
+ );
+
+ original.selected=true;
+}
 );
 
 saveGame();
 
 renderCrew();
 
-showToast(
+toast(
 "Best lineup selected"
 );
 
@@ -2903,16 +3142,12 @@ saveGame();
 
 renderCrew();
 
-showToast(
-"Lineup cleared"
-);
-
 }
 
 
-/* =========================
+/* =====================================================
 TRAINING
-========================= */
+===================================================== */
 
 function renderTraining(){
 
@@ -2923,7 +3158,8 @@ document.getElementById(
 
 if(!select)return;
 
-const old=select.value;
+const old=
+select.value;
 
 select.innerHTML="";
 
@@ -2936,16 +3172,19 @@ option.value=d.id;
 
 option.textContent=
 d.name+
-" • Rating "+
+" • "+
 d.rating;
 
 select.appendChild(option);
 
 });
 
-if(game.dancers.some(d=>d.id===old)){
+if(
+game.dancers.some(
+d=>d.id===old
+)
+)
 select.value=old;
-}
 
 const dancer=
 game.dancers.find(
@@ -2961,13 +3200,10 @@ document.getElementById(
 
 content.innerHTML="";
 
-Object.keys(
+Object.entries(
 dancer.attributes
 )
-.forEach(attribute=>{
-
-const value=
-dancer.attributes[attribute];
+.forEach(([attribute,value])=>{
 
 const card=
 document.createElement("div");
@@ -2976,24 +3212,33 @@ card.className="card";
 
 card.innerHTML=`
 
-<h3>
+<div class="muted">
 ${attribute.toUpperCase()}
-</h3>
+</div>
 
 <div class="stat">
 ${value}
 </div>
 
-<div style="height:7px;background:#252a39;border-radius:10px;overflow:hidden;margin-top:8px">
+<div style="
+height:7px;
+background:#252a39;
+border-radius:10px;
+overflow:hidden;
+margin-top:7px;
+">
 
-<div style="height:100%;width:${value}%;background:linear-gradient(90deg,#7950c0,#df54a0)">
-</div>
+<div style="
+height:100%;
+width:${value}%;
+background:#895dc1;
+"></div>
 
 </div>
 
 <button
 class="btn primary wide"
-style="margin-top:13px"
+style="margin-top:11px"
 onclick="train('${attribute}')">
 
 TRAIN • 5 COINS
@@ -3025,7 +3270,7 @@ if(!dancer)return;
 
 if(game.player.coins<5){
 
-showToast(
+toast(
 "Not enough coins"
 );
 
@@ -3037,8 +3282,8 @@ if(
 dancer.attributes[attribute]>=100
 ){
 
-showToast(
-"Attribute already maxed"
+toast(
+"Already maxed"
 );
 
 return;
@@ -3056,7 +3301,10 @@ Math.round(
 Object.values(
 dancer.attributes
 )
-.reduce((a,b)=>a+b,0)/
+.reduce(
+(a,b)=>a+b,
+0
+)/
 Object.keys(
 dancer.attributes
 ).length
@@ -3072,7 +3320,7 @@ renderTraining();
 
 updateHome();
 
-showToast(
+toast(
 dancer.name+
 " improved"
 );
@@ -3080,17 +3328,141 @@ dancer.name+
 }
 
 
-/* =========================
-PERFORMANCE STATE
-========================= */
+/* =====================================================
+CROWD
+===================================================== */
 
-let performance={
+function createCrowd(){
+
+const crowd=
+document.getElementById("crowd");
+
+if(!crowd)return;
+
+crowd.innerHTML="";
+
+for(let i=0;i<70;i++){
+
+const p=
+document.createElement("div");
+
+p.className="person";
+
+p.innerHTML=`
+
+<div class="person-head"></div>
+<div class="person-body"></div>
+
+`;
+
+p.style.height=
+(30+
+Math.random()*40)+"px";
+
+p.style.animationDuration=
+(.7+
+Math.random()*.8)+"s";
+
+crowd.appendChild(p);
+
+}
+
+}
+
+
+/* =====================================================
+OPPONENT
+===================================================== */
+
+let opponent=null;
+
+
+function chooseOpponent(){
+
+opponent=
+OPPONENTS[
+Math.floor(
+Math.random()*OPPONENTS.length
+)
+];
+
+setText(
+"opponentName",
+opponent.name
+);
+
+setText(
+"battleOpponentShort",
+opponent.short
+);
+
+setText(
+"finalOpponentName",
+opponent.name
+);
+
+}
+
+
+/* =====================================================
+VS
+===================================================== */
+
+function startVS(){
+
+chooseOpponent();
+
+const style=
+game.performance.style;
+
+setText(
+"vsStyle",
+style.toUpperCase()+
+" • LIVE ARENA"
+);
+
+showScreen("vsScreen");
+
+}
+
+
+function beginBattle(){
+
+if(
+game.performance.sequence.length===0
+){
+
+game.performance.sequence=[
+"mv7",
+"mv8",
+"mv9",
+"mv11",
+"mv10",
+"mv15"
+];
+
+}
+
+saveGame();
+
+showScreen("battle");
+
+startBattleEngine();
+
+}
+
+
+/* =====================================================
+BATTLE STATE
+===================================================== */
+
+let battle={
 
 running:false,
 
-index:0,
-
 score:0,
+
+opponentScore:0,
 
 combo:0,
 
@@ -3102,7 +3474,17 @@ good:0,
 
 miss:0,
 
-lastInput:0,
+startTime:0,
+
+duration:30000,
+
+beatTimer:null,
+
+clockTimer:null,
+
+opponentTimer:null,
+
+currentMove:0,
 
 stats:{
 rhythm:0,
@@ -3110,151 +3492,214 @@ technique:0,
 creativity:0,
 power:0,
 expression:0
-},
-
-timer:null,
-
-beatTimer:null
+}
 
 };
 
 
-/* =========================
-START PERFORMANCE
-========================= */
+/* =====================================================
+START BATTLE ENGINE
+===================================================== */
 
-function startPerformance(){
+function startBattleEngine(){
+
+battle={
+
+running:true,
+
+score:0,
+
+opponentScore:0,
+
+combo:0,
+
+maxCombo:0,
+
+perfect:0,
+
+good:0,
+
+miss:0,
+
+startTime:Date.now(),
+
+duration:30000,
+
+beatTimer:null,
+
+clockTimer:null,
+
+opponentTimer:null,
+
+currentMove:0,
+
+stats:{
+rhythm:0,
+technique:0,
+creativity:0,
+power:0,
+expression:0
+}
+
+};
+
+createCrowd();
+
+setText(
+"playerScore",
+0
+);
+
+setText(
+"opponentScore",
+0
+);
+
+setText(
+"battleClock",
+"00:30"
+);
 
 const track=
 MUSIC.find(
 m=>m.id===game.performance.music
 )||MUSIC[0];
 
-if(!game.performance.sequence.length){
-
-game.performance.sequence=[
-"mv7",
-"mv8",
-"mv9",
-"mv10",
-"mv11",
-"mv15"
-];
-
-saveGame();
-
-}
-
-performance={
-
-running:true,
-
-index:0,
-
-score:0,
-
-combo:0,
-
-maxCombo:0,
-
-perfect:0,
-
-good:0,
-
-miss:0,
-
-lastInput:Date.now(),
-
-stats:{
-rhythm:0,
-technique:0,
-creativity:0,
-power:0,
-expression:0
-},
-
-timer:null,
-
-beatTimer:null
-
-};
-
-text(
-"playingSong",
-track.name
-);
-
-text(
-"playingStyle",
-game.performance.style+
-" • "+
-track.bpm+
-" BPM"
-);
-
-showScreen("gamePerformance");
-
-updatePerformanceUI();
-
-const bpm=track.bpm;
-
 const interval=
-60000/bpm;
+60000/track.bpm;
 
-performance.beatTimer=
+battle.beatTimer=
 setInterval(
-animateBeat,
+beatPulse,
 interval
 );
 
-performance.timer=
-setTimeout(
-finishPerformance,
+battle.clockTimer=
+setInterval(
+updateBattleClock,
+100
+);
+
+battle.opponentTimer=
+setInterval(
+opponentAction,
 Math.max(
-10000,
-game.performance.sequence.length*
-2300
+500,
+interval*2
 )
 );
 
 }
 
 
-/* =========================
-INPUT
-========================= */
+/* =====================================================
+BEAT
+===================================================== */
 
-function performInput(button){
+function beatPulse(){
 
-if(!performance.running)return;
+if(!battle.running)return;
 
-const now=Date.now();
+const progress=
+document.getElementById(
+"beatProgress"
+);
+
+progress.style.transition="none";
+
+progress.style.width="100%";
+
+setTimeout(
+()=>{
+
+progress.style.transition=
+"width .5s linear";
+
+progress.style.width="0%";
+
+},
+20
+);
+
+}
+
+
+/* =====================================================
+CLOCK
+===================================================== */
+
+function updateBattleClock(){
+
+if(!battle.running)return;
 
 const elapsed=
-now-performance.lastInput;
+Date.now()-
+battle.startTime;
+
+const remaining=
+Math.max(
+0,
+battle.duration-elapsed
+);
+
+const seconds=
+Math.ceil(
+remaining/1000
+);
+
+setText(
+"battleClock",
+"00:"+
+String(seconds).padStart(2,"0")
+);
+
+if(remaining<=0){
+
+finishBattle();
+
+}
+
+}
+
+
+/* =====================================================
+PLAYER INPUT
+===================================================== */
+
+function battleInput(button){
+
+if(!battle.running)return;
+
+const now=
+Date.now();
+
+const track=
+MUSIC.find(
+m=>m.id===game.performance.music
+)||MUSIC[0];
+
+const interval=
+60000/track.bpm;
+
+const position=
+now%interval;
+
+const distance=
+Math.min(
+position,
+interval-position
+);
 
 let timing;
 
-const expected=
-1000/
-(MUSIC.find(
-m=>m.id===game.performance.music
-)||MUSIC[0]).bpm;
-
-const distance=
-Math.abs(
-(elapsed%expected)-
-expected/2
-);
-
 if(
-distance<expected*.15
+distance<interval*.13
 ){
 
 timing="PERFECT";
 
 }else if(
-distance<expected*.32
+distance<interval*.30
 ){
 
 timing="GOOD";
@@ -3265,175 +3710,243 @@ timing="MISS";
 
 }
 
-scoreTiming(timing);
+applyPlayerScore(timing);
 
-animateDancer();
-
-performance.lastInput=now;
+animatePlayer();
 
 }
 
 
-/* =========================
-SCORING
-========================= */
+/* =====================================================
+PLAYER SCORE
+===================================================== */
 
-function scoreTiming(timing){
+function applyPlayerScore(timing){
 
 const dancer=
 bestDancer();
 
-const average=
-dancer
-?dancer.attributes
-:null;
-
 if(timing==="PERFECT"){
 
-performance.perfect++;
+battle.perfect++;
 
-performance.combo++;
+battle.combo++;
 
-performance.maxCombo=
+battle.maxCombo=
 Math.max(
-performance.maxCombo,
-performance.combo
+battle.maxCombo,
+battle.combo
 );
 
-performance.score+=100+
-performance.combo*3;
+battle.score+=
+110+
+battle.combo*4;
 
-performance.stats.rhythm+=4;
+battle.stats.rhythm+=5;
 
-performance.stats.technique+=3;
+battle.stats.technique+=
+3;
 
-performance.stats.creativity+=
+battle.stats.creativity+=
 Math.round(
 (dancer?.attributes.creativity||70)/30
 );
 
-performance.stats.power+=
+battle.stats.power+=
 Math.round(
-(dancer?.attributes.power||70)/35
+(dancer?.attributes.power||70)/30
 );
 
-performance.stats.expression+=
+battle.stats.expression+=
 Math.round(
-(dancer?.attributes.expression||70)/35
+(dancer?.attributes.expression||70)/30
 );
 
-showTiming(
+showBattleMessage(
 "PERFECT",
 "ON BEAT"
 );
 
 }else if(timing==="GOOD"){
 
-performance.good++;
+battle.good++;
 
-performance.combo++;
+battle.combo++;
 
-performance.maxCombo=
+battle.maxCombo=
 Math.max(
-performance.maxCombo,
-performance.combo
+battle.maxCombo,
+battle.combo
 );
 
-performance.score+=60;
+battle.score+=65;
 
-performance.stats.rhythm+=2;
+battle.stats.rhythm+=3;
+battle.stats.technique+=2;
+battle.stats.creativity+=1;
+battle.stats.power+=1;
+battle.stats.expression+=1;
 
-performance.stats.technique+=2;
-
-performance.stats.creativity+=1;
-
-performance.stats.power+=1;
-
-performance.stats.expression+=1;
-
-showTiming(
+showBattleMessage(
 "GOOD",
 "KEEP FLOW"
 );
 
 }else{
 
-performance.miss++;
+battle.miss++;
 
-performance.combo=0;
+battle.combo=0;
 
-performance.score+=10;
+battle.score+=8;
 
-showTiming(
+showBattleMessage(
 "MISS",
 "FIND THE BEAT"
 );
 
 }
 
-updatePerformanceUI();
-
-}
-
-
-/* =========================
-BEST DANCER
-========================= */
-
-function bestDancer(){
-
-const selected=
-selectedDancers();
-
-if(!selected.length)return null;
-
-return selected
-.slice()
-.sort(
-(a,b)=>b.rating-a.rating
-)[0];
-
-}
-
-
-/* =========================
-ANIMATION
-========================= */
-
-function animateDancer(){
-
-const avatar=
-document.getElementById(
-"performanceAvatar"
+setText(
+"playerScore",
+battle.score
 );
 
-avatar.classList.remove("active");
+}
 
-void avatar.offsetWidth;
 
-avatar.classList.add("active");
+/* =====================================================
+OPPONENT AI
+===================================================== */
+
+function opponentAction(){
+
+if(!battle.running)return;
+
+const quality=
+Math.random();
+
+let points;
+
+if(quality>.82){
+
+points=110+
+Math.floor(
+Math.random()*70
+);
+
+}else if(quality>.43){
+
+points=55+
+Math.floor(
+Math.random()*40
+);
+
+}else{
+
+points=15+
+Math.floor(
+Math.random()*25
+);
+
+}
+
+points*=
+opponent.rating/87;
+
+battle.opponentScore+=
+Math.round(points);
+
+setText(
+"opponentScore",
+Math.round(
+battle.opponentScore
+)
+);
+
+animateOpponent();
+
+updateJudges();
 
 }
 
 
-/* =========================
-TIMING MESSAGE
-========================= */
+/* =====================================================
+ANIMATION
+===================================================== */
 
-function showTiming(big,small){
+function animatePlayer(){
+
+const dancer=
+document.getElementById(
+"playerDancer"
+);
+
+dancer.classList.remove("perform");
+
+void dancer.offsetWidth;
+
+dancer.classList.add("perform");
+
+const arena=
+document.getElementById("arena");
+
+arena.classList.remove("celeb");
+
+if(battle.combo>0&&
+battle.combo%5===0){
+
+dancer.classList.remove(
+"special"
+);
+
+void dancer.offsetWidth;
+
+dancer.classList.add(
+"special"
+);
+
+arena.classList.add("celeb");
+
+}
+
+}
+
+
+function animateOpponent(){
+
+const dancer=
+document.getElementById(
+"opponentDancer"
+);
+
+dancer.classList.remove("perform");
+
+void dancer.offsetWidth;
+
+dancer.classList.add("perform");
+
+}
+
+
+/* =====================================================
+MESSAGE
+===================================================== */
+
+function showBattleMessage(big,small){
 
 const message=
 document.getElementById(
-"stageMessage"
+"battleMessage"
 );
 
-text(
-"stageBig",
+setText(
+"battleMessageBig",
 big
 );
 
-text(
-"stageSmall",
+setText(
+"battleMessageSmall",
 small
 );
 
@@ -3444,370 +3957,373 @@ void message.offsetWidth;
 message.classList.add("show");
 
 setTimeout(
-()=>message.classList.remove("show"),
-500
-);
-
-}
-
-
-/* =========================
-BEAT
-========================= */
-
-function animateBeat(){
-
-if(!performance.running)return;
-
-const fill=
-document.getElementById(
-"beatFill"
-);
-
-fill.style.transition="none";
-
-fill.style.width="100%";
-
-setTimeout(
 ()=>{
-fill.style.transition="width .5s linear";
-fill.style.width="0%";
+message.classList.remove("show")
 },
-20
+550
 );
 
 }
 
 
-/* =========================
-PERFORMANCE UI
-========================= */
+/* =====================================================
+JUDGES
+===================================================== */
 
-function updatePerformanceUI(){
+function updateJudges(){
 
-text(
-"liveScore",
-performance.score
+const base=
+Math.round(
+battle.score/
+Math.max(
+1,
+battle.perfect+
+battle.good+
+battle.miss
+)
 );
 
-text(
-"combo",
-performance.combo
-);
-
-text(
-"perfectCount",
-performance.perfect
-);
-
-text(
-"goodCount",
-performance.good
-);
-
-text(
-"missCount",
-performance.miss
-);
-
-text(
-"moveProgress",
+const s1=
 Math.min(
-performance.index+1,
-game.performance.sequence.length
-)+
-" / "+
-game.performance.sequence.length
+99,
+Math.max(
+50,
+base+
+Math.floor(Math.random()*12)
+)
 );
 
-const move=
-MOVES.find(
-m=>m.id===
-game.performance.sequence[
-performance.index
-]
+const s2=
+Math.min(
+99,
+Math.max(
+50,
+base+
+Math.floor(Math.random()*10)
+)
 );
 
-text(
-"currentMoveName",
-move
-?move.name
-:"COMPLETE"
+const s3=
+Math.min(
+99,
+Math.max(
+50,
+base+
+Math.floor(Math.random()*14)
+)
 );
 
-const stats=
-document.getElementById(
-"performanceStats"
-);
-
-if(stats){
-
-stats.innerHTML=`
-
-<div class="stat-line">
-<span>Rhythm</span>
-<strong>${performance.stats.rhythm}</strong>
-</div>
-
-<div class="stat-line">
-<span>Technique</span>
-<strong>${performance.stats.technique}</strong>
-</div>
-
-<div class="stat-line">
-<span>Creativity</span>
-<strong>${performance.stats.creativity}</strong>
-</div>
-
-<div class="stat-line">
-<span>Power</span>
-<strong>${performance.stats.power}</strong>
-</div>
-
-<div class="stat-line">
-<span>Expression</span>
-<strong>${performance.stats.expression}</strong>
-</div>
-
-`;
-
-}
+setText("judge1",s1);
+setText("judge2",s2);
+setText("judge3",s3);
 
 }
 
 
-/* =========================
-FINISH PERFORMANCE
-========================= */
+/* =====================================================
+BEST DANCER
+===================================================== */
 
-function finishPerformance(){
+function bestDancer(){
 
-if(!performance.running)return;
+const dancers=
+selectedDancers();
 
-performance.running=false;
+if(!dancers.length)
+ return null;
+
+return dancers
+.slice()
+.sort(
+(a,b)=>b.rating-a.rating
+)[0];
+
+}
+
+
+/* =====================================================
+FINISH BATTLE
+===================================================== */
+
+function finishBattle(){
+
+if(!battle.running)return;
+
+battle.running=false;
 
 clearInterval(
-performance.beatTimer
+battle.beatTimer
 );
 
-clearTimeout(
-performance.timer
+clearInterval(
+battle.clockTimer
 );
 
-const finalScore=
-Math.min(
-10000,
-performance.score+
-performance.maxCombo*20
+clearInterval(
+battle.opponentTimer
 );
 
-performance.score=
-finalScore;
+const performanceBonus=
+battle.maxCombo*25;
 
-const grade=
-getGrade(finalScore);
+battle.score+=
+performanceBonus;
 
-game.record.competitions++;
+const playerFinal=
+Math.round(
+battle.score
+);
 
-if(finalScore>=500){
+const opponentFinal=
+Math.round(
+battle.opponentScore
+);
+
+const playerWins=
+playerFinal>=opponentFinal;
+
+if(playerWins){
 
 game.record.wins++;
 
-game.player.rankPoints+=100;
+game.player.coins+=200;
 
-game.player.coins+=150;
+game.player.rankPoints+=150;
 
 }else{
 
 game.record.losses++;
 
-game.player.rankPoints+=30;
+game.player.coins+=60;
 
-game.player.coins+=50;
+game.player.rankPoints+=50;
 
 }
 
+game.record.competitions++;
+
 saveGame();
 
-showScreen("results");
+renderBattleResult(
+playerFinal,
+opponentFinal,
+playerWins
+);
 
-renderResults(grade);
+showScreen("battleResult");
 
 updateHome();
 
 }
 
 
-/* =========================
-GRADE
-========================= */
+/* =====================================================
+RESULT
+===================================================== */
 
-function getGrade(score){
+function renderBattleResult(
+playerScore,
+opponentScore,
+won
+){
 
-if(score>=1800)return"S";
-if(score>=1400)return"A";
-if(score>=1000)return"B";
-if(score>=650)return"C";
-if(score>=350)return"D";
-
-return"E";
-
-}
-
-
-/* =========================
-RESULTS
-========================= */
-
-function renderResults(grade){
-
-text(
-"resultScore",
-performance.score
+setText(
+"winnerLabel",
+won
+?"VICTORY"
+:"DEFEAT"
 );
 
-text(
-"resultGrade",
-grade
+setText(
+"winnerName",
+won
+?"STREET PULSE"
+:opponent.name
 );
 
-text(
-"resultRhythm",
-performance.stats.rhythm
+setText(
+"finalPlayerScore",
+playerScore
 );
 
-text(
-"resultTechnique",
-performance.stats.technique
+setText(
+"finalOpponentName",
+opponent.name
 );
 
-text(
-"resultCreativity",
-performance.stats.creativity
+setText(
+"finalOpponentScore",
+opponentScore
 );
 
-text(
-"resultPower",
-performance.stats.power
+const values={
+
+Rhythm:
+Math.min(
+100,
+Math.round(
+battle.stats.rhythm/
+Math.max(
+1,
+battle.perfect+
+battle.good
+)*4
+)
+),
+
+Technique:
+Math.min(
+100,
+Math.round(
+battle.stats.technique/
+Math.max(
+1,
+battle.perfect+
+battle.good
+)*6
+)
+),
+
+Creativity:
+Math.min(
+100,
+Math.round(
+battle.stats.creativity/
+Math.max(
+1,
+battle.perfect+
+battle.good
+)*8
+)
+),
+
+Power:
+Math.min(
+100,
+Math.round(
+battle.stats.power/
+Math.max(
+1,
+battle.perfect+
+battle.good
+)*8
+)
+),
+
+Expression:
+Math.min(
+100,
+Math.round(
+battle.stats.expression/
+Math.max(
+1,
+battle.perfect+
+battle.good
+)*8
+)
+)
+
+};
+
+setBar(
+"Rhythm",
+values.Rhythm
 );
 
-text(
-"resultExpression",
-performance.stats.expression
+setBar(
+"Technique",
+values.Technique
 );
 
-text(
-"resultCombo",
-performance.maxCombo
+setBar(
+"Creativity",
+values.Creativity
 );
 
-let message;
-
-if(grade==="S"){
-
-message=
-"Outstanding performance. You dominated the stage.";
-
-}else if(grade==="A"){
-
-message=
-"Excellent performance. Your crew is becoming elite.";
-
-}else if(grade==="B"){
-
-message=
-"Strong performance. Keep training your dancers.";
-
-}else if(grade==="C"){
-
-message=
-"Solid effort. Improve timing and choreography.";
-
-}else{
-
-message=
-"Keep practicing. Your next performance can be better.";
-
-}
-
-text(
-"resultMessage",
-message
+setBar(
+"Power",
+values.Power
 );
 
-}
-
-
-/* =========================
-UPDATE HOME
-========================= */
-
-function updateHome(){
-
-text(
-"coinDisplay",
-game.player.coins
-);
-
-const ranks=[
-["ROOKIE",0],
-["RISING STAR",100],
-["PRO",250],
-["ELITE",500],
-["MASTER",900],
-["LEGEND",1500],
-["WORLD ICON",2500]
-];
-
-let current=ranks[0];
-
-ranks.forEach(
-r=>{
-if(game.player.rankPoints>=r[1]){
-current=r;
-}
-}
-);
-
-text(
-"rankPill",
-current[0]
+setBar(
+"Expression",
+values.Expression
 );
 
 }
 
 
-/* =========================
-RESET
-========================= */
+function setBar(name,value){
 
-function resetGame(){
+const id=
+name.charAt(0).toLowerCase()+
+name.slice(1);
+
+const bar=
+document.getElementById(
+"bar"+name
+);
+
+const score=
+document.getElementById(
+"score"+name
+);
+
+if(bar)
+ bar.style.width=
+value+"%";
+
+if(score)
+ score.textContent=value;
+
+}
+
+
+/* =====================================================
+KEYBOARD
+===================================================== */
+
+document.addEventListener(
+"keydown",
+e=>{
+
+const screen=
+document.getElementById(
+"battle"
+);
 
 if(
-!confirm(
-"Reset all game progress?"
-)
-)return;
+screen.classList.contains("active")
+){
 
-game=
-clone(DEFAULT_GAME);
+const keys={
+a:0,
+b:1,
+x:2,
+y:3
+};
 
-saveGame();
+const key=
+e.key.toLowerCase();
 
-updateHome();
+if(
+keys[key]!==undefined
+){
 
-showScreen("home");
-
-showToast(
-"Game reset"
+battleInput(
+keys[key]
 );
 
 }
 
+}
 
-/* =========================
-INITIALIZE
-========================= */
+});
+
+
+/* =====================================================
+INIT
+===================================================== */
 
 function initialize(){
 
@@ -3826,46 +4342,6 @@ renderTraining();
 updateHome();
 
 }
-
-
-/* =========================
-KEYBOARD SUPPORT
-========================= */
-
-document.addEventListener(
-"keydown",
-e=>{
-
-if(
-document.getElementById(
-"gamePerformance"
-).classList.contains("active")
-){
-
-const map={
-a:0,
-b:1,
-x:2,
-y:3
-};
-
-if(map[e.key.toLowerCase()]!==undefined){
-
-performInput(
-map[e.key.toLowerCase()]
-);
-
-}
-
-}
-
-}
-);
-
-
-/* =========================
-START
-========================= */
 
 initialize();
 
