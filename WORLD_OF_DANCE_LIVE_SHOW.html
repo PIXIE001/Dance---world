@@ -1,0 +1,2303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
+<title>WORLD OF DANCE — LIVE SHOW</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+  margin:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:#02040a;
+  color:white;
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+button{
+  font-family:inherit;
+  color:white;
+}
+
+#game{
+  position:fixed;
+  inset:0;
+}
+
+canvas{
+  width:100%;
+  height:100%;
+  display:block;
+}
+
+#loading{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:
+    radial-gradient(circle at center,#16295d 0%,#060916 42%,#010207 100%);
+}
+
+.loadingBox{
+  text-align:center;
+  width:85%;
+  max-width:400px;
+}
+
+.logo{
+  font-size:30px;
+  font-weight:900;
+  letter-spacing:5px;
+}
+
+.subtitle{
+  margin-top:8px;
+  color:#9ca9c9;
+  font-size:10px;
+  letter-spacing:3px;
+}
+
+.loadingBar{
+  height:5px;
+  background:#17203a;
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:25px;
+}
+
+.loadingBar span{
+  display:block;
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,#3985ff,#9d4dff);
+  animation:load 2s forwards;
+}
+
+@keyframes load{
+  to{width:100%}
+}
+
+/* INTRO */
+
+#intro{
+  position:fixed;
+  inset:0;
+  z-index:50;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:15px;
+  background:#02040add;
+  backdrop-filter:blur(12px);
+}
+
+.panel{
+  width:min(720px,95vw);
+  max-height:92vh;
+  overflow:auto;
+  padding:24px;
+  border-radius:22px;
+  border:1px solid #ffffff18;
+  background:
+    linear-gradient(145deg,#111a35f7,#050812f7);
+  box-shadow:0 30px 100px #000;
+}
+
+.smallLabel{
+  color:#8fa4d1;
+  font-size:8px;
+  letter-spacing:3px;
+  font-weight:bold;
+}
+
+.panel h1{
+  margin:8px 0;
+  font-size:28px;
+}
+
+.panel p{
+  color:#9aa7c2;
+  font-size:11px;
+  line-height:1.7;
+}
+
+.styleGrid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+  margin:18px 0;
+}
+
+.style{
+  min-height:58px;
+  border:1px solid #ffffff15;
+  border-radius:12px;
+  background:#080d1be8;
+  font-size:8px;
+  font-weight:900;
+}
+
+.style.selected{
+  background:linear-gradient(135deg,#2256d5,#733ed2);
+  border-color:#6e94ff;
+  box-shadow:0 0 20px #416dff55;
+}
+
+.primary{
+  width:100%;
+  border:0;
+  border-radius:12px;
+  padding:15px;
+  background:linear-gradient(135deg,#347dff,#914cff);
+  font-size:10px;
+  font-weight:900;
+}
+
+/* TOP UI */
+
+#ui{
+  position:fixed;
+  inset:0;
+  z-index:10;
+  pointer-events:none;
+}
+
+.top{
+  position:absolute;
+  left:0;
+  right:0;
+  top:0;
+  padding:14px 16px;
+  display:flex;
+  justify-content:space-between;
+  background:linear-gradient(#02040be8,transparent);
+}
+
+.gameTitle{
+  font-size:16px;
+  font-weight:900;
+  letter-spacing:1px;
+}
+
+.live{
+  color:#ff536f;
+  font-size:8px;
+  letter-spacing:2px;
+  font-weight:bold;
+}
+
+.scoreArea{
+  text-align:right;
+}
+
+.scoreLabel{
+  color:#8794b4;
+  font-size:7px;
+}
+
+.score{
+  font-size:27px;
+  font-weight:900;
+}
+
+#stageTitle{
+  position:absolute;
+  top:72px;
+  left:50%;
+  transform:translateX(-50%);
+  text-align:center;
+  text-shadow:0 5px 25px #000;
+}
+
+#currentDance{
+  font-size:22px;
+  font-weight:900;
+  letter-spacing:3px;
+}
+
+#nextDance{
+  margin-top:5px;
+  font-size:7px;
+  color:#a6b3d2;
+  letter-spacing:2px;
+}
+
+/* TRANSITION */
+
+#transition{
+  position:absolute;
+  top:108px;
+  left:50%;
+  transform:translateX(-50%);
+  display:none;
+  text-align:center;
+  min-width:100px;
+  padding:9px 16px;
+  border-radius:12px;
+  border:1px solid #ffffff20;
+  background:#060b18dd;
+  backdrop-filter:blur(10px);
+}
+
+.transitionLabel{
+  color:#8998bb;
+  font-size:6px;
+  letter-spacing:2px;
+}
+
+#transitionNumber{
+  font-size:20px;
+  font-weight:900;
+}
+
+/* JUDGE COMMENT */
+
+#judgeComment{
+  position:absolute;
+  left:50%;
+  bottom:120px;
+  transform:translateX(-50%);
+  width:min(430px,80vw);
+  padding:10px 14px;
+  border-radius:12px;
+  background:#050913df;
+  border:1px solid #ffffff16;
+  text-align:center;
+  opacity:0;
+  transition:.3s;
+  box-shadow:0 15px 40px #0008;
+}
+
+#judgeComment.show{
+  opacity:1;
+}
+
+.judgeName{
+  color:#8da5db;
+  font-size:7px;
+  letter-spacing:2px;
+  margin-bottom:4px;
+}
+
+#commentText{
+  font-size:10px;
+}
+
+/* BOTTOM DANCE BUTTONS */
+
+#danceControls{
+  position:absolute;
+  left:50%;
+  bottom:12px;
+  transform:translateX(-50%);
+  width:min(1000px,96vw);
+  display:flex;
+  gap:6px;
+  overflow-x:auto;
+  pointer-events:auto;
+  padding:4px;
+  scrollbar-width:none;
+}
+
+#danceControls::-webkit-scrollbar{
+  display:none;
+}
+
+.danceButton{
+  flex:1;
+  min-width:76px;
+  height:53px;
+  border-radius:11px;
+  border:1px solid #ffffff16;
+  background:#050914ee;
+  font-size:7px;
+  font-weight:900;
+}
+
+.danceButton:active{
+  transform:scale(.94);
+}
+
+.danceButton.pending{
+  border-color:#6c91ff;
+  background:#203b91;
+  animation:pulse .7s infinite alternate;
+}
+
+@keyframes pulse{
+  to{
+    box-shadow:0 0 25px #507cff99;
+  }
+}
+
+/* RESULTS */
+
+.overlay{
+  position:fixed;
+  inset:0;
+  z-index:80;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:15px;
+  background:#02040de8;
+  backdrop-filter:blur(12px);
+}
+
+.resultPanel{
+  width:min(650px,94vw);
+  padding:25px;
+  border-radius:22px;
+  background:linear-gradient(145deg,#121b37,#050812);
+  border:1px solid #ffffff18;
+  text-align:center;
+}
+
+.resultScore{
+  font-size:55px;
+  font-weight:900;
+  margin:10px;
+}
+
+.resultGrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin:15px 0;
+}
+
+.stat{
+  padding:13px;
+  border-radius:10px;
+  background:#ffffff07;
+}
+
+.stat b{
+  display:block;
+  font-size:20px;
+}
+
+.stat small{
+  color:#8b98b5;
+  font-size:6px;
+}
+
+/* CEREMONY */
+
+#ceremony{
+  position:fixed;
+  inset:0;
+  z-index:90;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  background:
+    radial-gradient(circle at center,#18366ddd,#02040cf7 68%);
+}
+
+.ceremonyBox{
+  width:min(700px,94vw);
+}
+
+.trophy{
+  font-size:75px;
+  filter:drop-shadow(0 0 25px #9ab6ff);
+}
+
+.ceremonyLabel{
+  color:#9cacd2;
+  font-size:8px;
+  letter-spacing:4px;
+}
+
+.ceremonyBox h1{
+  font-size:38px;
+  margin:12px 0;
+}
+
+.winner{
+  font-size:46px;
+  font-weight:900;
+  background:linear-gradient(90deg,#ffffff,#89b1ff,#d99cff);
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+.judgesStage{
+  position:absolute;
+  bottom:14%;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:35px;
+  opacity:0;
+  transition:1s;
+}
+
+.judgesStage.walk{
+  opacity:1;
+  bottom:23%;
+}
+
+.judgePerson{
+  width:55px;
+  height:120px;
+  position:relative;
+}
+
+.judgeHead{
+  position:absolute;
+  left:13px;
+  top:0;
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  background:#b87354;
+}
+
+.judgeBody{
+  position:absolute;
+  top:28px;
+  left:9px;
+  width:38px;
+  height:58px;
+  border-radius:9px;
+  background:#263455;
+}
+
+.leg{
+  position:absolute;
+  top:80px;
+  width:12px;
+  height:38px;
+  border-radius:8px;
+  background:#0c101b;
+}
+
+.leg.left{
+  left:12px;
+}
+
+.leg.right{
+  right:12px;
+}
+
+.confetti{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  overflow:hidden;
+}
+
+.confetti i{
+  position:absolute;
+  top:-20px;
+  width:7px;
+  height:12px;
+  background:white;
+  animation:fall 3s linear infinite;
+}
+
+@keyframes fall{
+  to{
+    transform:translateY(110vh) rotate(720deg);
+  }
+}
+
+@media(max-width:700px){
+
+  .styleGrid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .panel h1{
+    font-size:23px;
+  }
+
+  .winner{
+    font-size:34px;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<div id="game"></div>
+
+<!-- LOADING -->
+
+<div id="loading">
+
+  <div class="loadingBox">
+
+    <div class="logo">
+      WORLD OF DANCE
+    </div>
+
+    <div class="subtitle">
+      LIVE COMPETITION ENGINE
+    </div>
+
+    <div class="loadingBar">
+      <span></span>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- INTRO -->
+
+<div id="intro">
+
+  <div class="panel">
+
+    <div class="smallLabel">
+      LIVE DANCE COMPETITION
+    </div>
+
+    <h1>
+      Build your choreography
+    </h1>
+
+    <p>
+      Select the dance styles your team will use during the performance.
+      Once the show begins, selecting another style will NOT stop the
+      current dance. The current style continues while the next style
+      prepares automatically.
+    </p>
+
+    <div id="styleGrid" class="styleGrid"></div>
+
+    <button id="startShow" class="primary">
+      ENTER THE LIVE SHOW
+    </button>
+
+  </div>
+
+</div>
+
+<!-- GAME UI -->
+
+<div id="ui">
+
+  <div class="top">
+
+    <div>
+
+      <div class="live">
+        ● LIVE
+      </div>
+
+      <div class="gameTitle">
+        WORLD OF DANCE
+      </div>
+
+    </div>
+
+    <div class="scoreArea">
+
+      <div class="scoreLabel">
+        PERFORMANCE SCORE
+      </div>
+
+      <div id="score" class="score">
+        0000
+      </div>
+
+    </div>
+
+  </div>
+
+  <div id="stageTitle">
+
+    <div id="currentDance">
+      READY
+    </div>
+
+    <div id="nextDance">
+      CHOOSE YOUR FIRST STYLE
+    </div>
+
+  </div>
+
+  <div id="transition">
+
+    <div class="transitionLabel">
+      NEXT STYLE
+    </div>
+
+    <div id="transitionNumber">
+      3
+    </div>
+
+  </div>
+
+  <div id="judgeComment">
+
+    <div id="judgeName" class="judgeName">
+      JUDGE
+    </div>
+
+    <div id="commentText">
+      Excellent performance.
+    </div>
+
+  </div>
+
+  <div id="danceControls"></div>
+
+</div>
+
+<!-- RESULTS -->
+
+<div id="results" class="overlay">
+
+  <div class="resultPanel">
+
+    <div class="smallLabel">
+      JUDGES' DECISION
+    </div>
+
+    <h1>
+      PERFORMANCE COMPLETE
+    </h1>
+
+    <div id="resultScore" class="resultScore">
+      0.0
+    </div>
+
+    <div class="resultGrid">
+
+      <div class="stat">
+        <b id="technique">
+          0
+        </b>
+        <small>
+          TECHNIQUE
+        </small>
+      </div>
+
+      <div class="stat">
+        <b id="musicality">
+          0
+        </b>
+        <small>
+          MUSICALITY
+        </small>
+      </div>
+
+      <div class="stat">
+        <b id="teamwork">
+          0
+        </b>
+        <small>
+          TEAMWORK
+        </small>
+      </div>
+
+    </div>
+
+    <p id="resultMessage">
+      The judges are preparing their final decision.
+    </p>
+
+    <button id="ceremonyButton" class="primary">
+      CONTINUE TO WINNER CEREMONY
+    </button>
+
+  </div>
+
+</div>
+
+<!-- WINNER CEREMONY -->
+
+<div id="ceremony">
+
+  <div class="ceremonyBox">
+
+    <div class="trophy">
+      🏆
+    </div>
+
+    <div class="ceremonyLabel">
+      JUDGES ON STAGE
+    </div>
+
+    <h1 id="announcement">
+      AND THE WINNER IS...
+    </h1>
+
+    <div id="winner" class="winner">
+      PIXIE DANCE CREW
+    </div>
+
+    <p style="color:#a9b5d0;font-size:10px">
+      Congratulations on an outstanding live performance.
+    </p>
+
+    <button id="restart" class="primary" style="max-width:380px">
+      PLAY ANOTHER COMPETITION
+    </button>
+
+  </div>
+
+  <div id="judgesStage" class="judgesStage">
+
+    <div class="judgePerson">
+      <div class="judgeHead"></div>
+      <div class="judgeBody"></div>
+      <div class="leg left"></div>
+      <div class="leg right"></div>
+    </div>
+
+    <div class="judgePerson">
+      <div class="judgeHead"></div>
+      <div class="judgeBody"></div>
+      <div class="leg left"></div>
+      <div class="leg right"></div>
+    </div>
+
+    <div class="judgePerson">
+      <div class="judgeHead"></div>
+      <div class="judgeBody"></div>
+      <div class="leg left"></div>
+      <div class="leg right"></div>
+    </div>
+
+  </div>
+
+  <div id="confetti" class="confetti"></div>
+
+</div>
+
+
+<!-- THREE.JS -->
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.min.js"></script>
+
+<script>
+
+/* ============================================================
+   WORLD OF DANCE
+   LIVE SHOW ENGINE
+============================================================ */
+
+const dances = [
+
+  "HIP-HOP",
+  "JAZZ",
+  "AFRO",
+  "CONTEMPORARY",
+  "BREAKING",
+  "DANCEHALL",
+  "LOCKING",
+  "FREESTYLE"
+
+];
+
+const state = {
+
+  selected:[],
+
+  current:null,
+
+  next:null,
+
+  transitionTimer:null,
+
+  running:false,
+
+  score:0,
+
+  combo:0,
+
+  bestCombo:0,
+
+  seconds:0
+
+};
+
+
+/* ============================================================
+   INTRO STYLE SELECTION
+============================================================ */
+
+const styleGrid =
+  document.getElementById("styleGrid");
+
+dances.forEach(dance=>{
+
+  const button =
+    document.createElement("button");
+
+  button.className="style";
+
+  button.textContent=dance;
+
+  button.onclick=()=>{
+
+    button.classList.toggle("selected");
+
+    if(button.classList.contains("selected")){
+
+      if(!state.selected.includes(dance)){
+        state.selected.push(dance);
+      }
+
+    }else{
+
+      state.selected =
+        state.selected.filter(
+          x=>x!==dance
+        );
+
+    }
+
+  };
+
+  styleGrid.appendChild(button);
+
+});
+
+
+/* ============================================================
+   THREE.JS
+============================================================ */
+
+const scene =
+  new THREE.Scene();
+
+scene.background =
+  new THREE.Color(0x02040a);
+
+scene.fog =
+  new THREE.Fog(
+    0x02040a,
+    18,
+    55
+  );
+
+
+const camera =
+  new THREE.PerspectiveCamera(
+    48,
+    innerWidth/innerHeight,
+    .1,
+    100
+  );
+
+camera.position.set(
+  0,
+  5,
+  16
+);
+
+
+const renderer =
+  new THREE.WebGLRenderer({
+    antialias:true,
+    powerPreference:"high-performance"
+  });
+
+renderer.setPixelRatio(
+  Math.min(devicePixelRatio,1.5)
+);
+
+renderer.setSize(
+  innerWidth,
+  innerHeight
+);
+
+renderer.shadowMap.enabled=true;
+
+document
+  .getElementById("game")
+  .appendChild(renderer.domElement);
+
+
+/* ============================================================
+   LIGHTING
+============================================================ */
+
+const ambient =
+  new THREE.HemisphereLight(
+    0x9ab7ff,
+    0x05070c,
+    2
+  );
+
+scene.add(ambient);
+
+
+const mainLight =
+  new THREE.SpotLight(
+    0x719aff,
+    150,
+    45,
+    Math.PI/6,
+    .5
+  );
+
+mainLight.position.set(
+  0,
+  14,
+  4
+);
+
+scene.add(mainLight);
+
+
+const leftLight =
+  new THREE.SpotLight(
+    0xff4e9a,
+    100,
+    40,
+    Math.PI/7,
+    .5
+  );
+
+leftLight.position.set(
+  -12,
+  10,
+  3
+);
+
+scene.add(leftLight);
+
+
+const rightLight =
+  new THREE.SpotLight(
+    0x42ddff,
+    100,
+    40,
+    Math.PI/7,
+    .5
+  );
+
+rightLight.position.set(
+  12,
+  10,
+  3
+);
+
+scene.add(rightLight);
+
+
+/* ============================================================
+   STAGE
+============================================================ */
+
+const stageMaterial =
+  new THREE.MeshStandardMaterial({
+    color:0x11182b,
+    roughness:.3,
+    metalness:.5
+  });
+
+const stage =
+  new THREE.Mesh(
+    new THREE.CylinderGeometry(
+      12,
+      12,
+      .35,
+      64
+    ),
+    stageMaterial
+  );
+
+stage.scale.z=.75;
+
+stage.position.y=-.2;
+
+scene.add(stage);
+
+
+/* glowing stage rings */
+
+for(let i=1;i<=4;i++){
+
+  const ring =
+    new THREE.Mesh(
+      new THREE.TorusGeometry(
+        i*1.65,
+        .025,
+        8,
+        80
+      ),
+      new THREE.MeshBasicMaterial({
+        color:0x477dff
+      })
+    );
+
+  ring.rotation.x=
+    Math.PI/2;
+
+  ring.position.y=.02;
+
+  scene.add(ring);
+
+}
+
+
+/* ============================================================
+   BACKDROP
+============================================================ */
+
+const backdrop =
+  new THREE.Mesh(
+    new THREE.BoxGeometry(
+      30,
+      12,
+      .4
+    ),
+    new THREE.MeshStandardMaterial({
+      color:0x070b18
+    })
+  );
+
+backdrop.position.set(
+  0,
+  5,
+  -9
+);
+
+scene.add(backdrop);
+
+
+/* ============================================================
+   AUDIENCE
+============================================================ */
+
+const audience=[];
+
+for(let row=0;row<3;row++){
+
+  for(let i=0;i<25;i++){
+
+    const person =
+      new THREE.Group();
+
+    const body =
+      new THREE.Mesh(
+        new THREE.CapsuleGeometry(
+          .13,
+          .4,
+          4,
+          8
+        ),
+        new THREE.MeshStandardMaterial({
+          color:0x161c2e
+        })
+      );
+
+    const head =
+      new THREE.Mesh(
+        new THREE.SphereGeometry(
+          .15,
+          12,
+          8
+        ),
+        new THREE.MeshStandardMaterial({
+          color:0x9e634b
+        })
+      );
+
+    body.position.y=.25;
+
+    head.position.y=.62;
+
+    person.add(
+      body,
+      head
+    );
+
+    person.position.set(
+      (i-12)*.7,
+      0,
+      -6-row*.8
+    );
+
+    scene.add(person);
+
+    audience.push(person);
+
+  }
+
+}
+
+
+/* ============================================================
+   HUMAN-LIKE PROCEDURAL DANCER
+============================================================ */
+
+function createDancer(color){
+
+  const root =
+    new THREE.Group();
+
+
+  const skin =
+    new THREE.MeshStandardMaterial({
+      color:0xb86e50,
+      roughness:.7
+    });
+
+
+  const clothes =
+    new THREE.MeshStandardMaterial({
+      color:color,
+      roughness:.55,
+      metalness:.15
+    });
+
+
+  const dark =
+    new THREE.MeshStandardMaterial({
+      color:0x0c111d
+    });
+
+
+  /* head */
+
+  const head =
+    new THREE.Mesh(
+      new THREE.SphereGeometry(
+        .36,
+        18,
+        14
+      ),
+      skin
+    );
+
+  head.position.y=2.65;
+
+
+  /* hair */
+
+  const hair =
+    new THREE.Mesh(
+      new THREE.SphereGeometry(
+        .38,
+        16,
+        10,
+        0,
+        Math.PI*2,
+        0,
+        Math.PI*.48
+      ),
+      dark
+    );
+
+  hair.position.y=2.78;
+
+
+  /* torso */
+
+  const torso =
+    new THREE.Mesh(
+      new THREE.CapsuleGeometry(
+        .48,
+        .82,
+        8,
+        16
+      ),
+      clothes
+    );
+
+  torso.position.y=1.85;
+
+
+  function limb(
+    length,
+    radius,
+    material
+  ){
+
+    return new THREE.Mesh(
+      new THREE.CapsuleGeometry(
+        radius,
+        length,
+        6,
+        10
+      ),
+      material
+    );
+
+  }
+
+
+  const leftArm =
+    limb(.9,.12,skin);
+
+  const rightArm =
+    limb(.9,.12,skin);
+
+  const leftLeg =
+    limb(1.05,.14,dark);
+
+  const rightLeg =
+    limb(1.05,.14,dark);
+
+
+  leftArm.position.set(
+    -.62,
+    2.05,
+    0
+  );
+
+  rightArm.position.set(
+    .62,
+    2.05,
+    0
+  );
+
+  leftLeg.position.set(
+    -.27,
+    .92,
+    0
+  );
+
+  rightLeg.position.set(
+    .27,
+    .92,
+    0
+  );
+
+
+  root.add(
+    head,
+    hair,
+    torso,
+    leftArm,
+    rightArm,
+    leftLeg,
+    rightLeg
+  );
+
+
+  root.userData={
+    leftArm,
+    rightArm,
+    leftLeg,
+    rightLeg,
+    torso
+  };
+
+
+  return root;
+
+}
+
+
+/* ============================================================
+   DANCE TEAM
+============================================================ */
+
+const team=[];
+
+const teamColors=[
+  0x347cff,
+  0x25c7ff,
+  0x7854ff,
+  0x477dff,
+  0xa94cff
+];
+
+teamColors.forEach(
+  (color,index)=>{
+
+    const dancer =
+      createDancer(color);
+
+    dancer.position.set(
+      (index-2)*1.55,
+      0,
+      index===2?0:1
+    );
+
+    dancer.scale.setScalar(
+      index===2?1.05:.9
+    );
+
+    scene.add(dancer);
+
+    team.push(dancer);
+
+  }
+);
+
+
+/* ============================================================
+   DANCER ANIMATION
+============================================================ */
+
+function animateTeam(time){
+
+  if(!state.running)return;
+
+  const t=
+    time*.001;
+
+  let speed=1.2;
+
+
+  switch(state.current){
+
+    case "HIP-HOP":
+      speed=1.0;
+      break;
+
+    case "JAZZ":
+      speed=1.3;
+      break;
+
+    case "AFRO":
+      speed=1.5;
+      break;
+
+    case "CONTEMPORARY":
+      speed=.75;
+      break;
+
+    case "BREAKING":
+      speed=1.8;
+      break;
+
+    case "DANCEHALL":
+      speed=1.4;
+      break;
+
+    case "LOCKING":
+      speed=1.7;
+      break;
+
+    case "FREESTYLE":
+      speed=1.25;
+      break;
+
+  }
+
+
+  team.forEach(
+    (dancer,index)=>{
+
+      const phase =
+        t*speed+index*.42;
+
+
+      const arms =
+        dancer.userData;
+
+
+      /*
+        IMPORTANT:
+        The animation never checks
+        state.next.
+
+        Therefore selecting another
+        dance NEVER freezes the
+        current animation.
+      */
+
+
+      dancer.position.y =
+        Math.abs(
+          Math.sin(phase*1.2)
+        )*.1;
+
+
+      dancer.rotation.y =
+        Math.sin(phase*.7)*.12;
+
+
+      arms.leftArm.rotation.z =
+        -.35+
+        Math.sin(phase*1.7)*.45;
+
+
+      arms.rightArm.rotation.z =
+        .35-
+        Math.sin(phase*1.7)*.45;
+
+
+      arms.leftArm.rotation.x =
+        Math.sin(phase*1.1)*.35;
+
+
+      arms.rightArm.rotation.x =
+        -Math.sin(phase*1.1)*.35;
+
+
+      arms.leftLeg.rotation.z =
+        Math.sin(phase*1.4)*.15;
+
+
+      arms.rightLeg.rotation.z =
+        -Math.sin(phase*1.4)*.15;
+
+
+      if(state.current==="BREAKING"){
+
+        dancer.rotation.z =
+          Math.sin(phase*2)*.2;
+
+      }
+
+
+      if(state.current==="JAZZ"){
+
+        dancer.rotation.z =
+          Math.sin(phase*1.5)*.08;
+
+      }
+
+
+      if(state.current==="CONTEMPORARY"){
+
+        dancer.rotation.z =
+          Math.sin(phase*.7)*.18;
+
+      }
+
+
+      if(state.current==="LOCKING"){
+
+        arms.leftArm.rotation.x =
+          Math.sin(phase*4)*.7;
+
+        arms.rightArm.rotation.x =
+          -Math.sin(phase*4)*.7;
+
+      }
+
+    }
+  );
+
+}
+
+
+/* ============================================================
+   CAMERA
+============================================================ */
+
+function animateCamera(time){
+
+  if(!state.running)return;
+
+  const t=
+    time*.001;
+
+  camera.position.x +=
+    (
+      Math.sin(t*.2)*1.5-
+      camera.position.x
+    )*.008;
+
+  camera.position.y +=
+    (
+      5.1+
+      Math.sin(t*.22)*.35-
+      camera.position.y
+    )*.01;
+
+  camera.lookAt(
+    0,
+    1.5,
+    -1.5
+  );
+
+}
+
+
+/* ============================================================
+   RENDER LOOP
+============================================================ */
+
+function render(time){
+
+  requestAnimationFrame(render);
+
+  animateTeam(time);
+
+  animateCamera(time);
+
+  mainLight.position.x =
+    Math.sin(time*.0007)*12;
+
+  leftLight.position.x =
+    -10+
+    Math.sin(time*.001)*4;
+
+  rightLight.position.x =
+    10+
+    Math.cos(time*.001)*4;
+
+  renderer.render(
+    scene,
+    camera
+  );
+
+}
+
+requestAnimationFrame(render);
+
+
+/* ============================================================
+   LIVE DANCE CONTROLS
+============================================================ */
+
+function createDanceControls(){
+
+  const controls =
+    document.getElementById(
+      "danceControls"
+    );
+
+  controls.innerHTML="";
+
+
+  state.selected.forEach(
+    dance=>{
+
+      const button =
+        document.createElement("button");
+
+      button.className=
+        "danceButton";
+
+      button.textContent=
+        dance;
+
+      button.onclick=()=>{
+        selectNextDance(
+          dance,
+          button
+        );
+      };
+
+      controls.appendChild(button);
+
+    }
+  );
+
+}
+
+
+/* ============================================================
+   THIS IS THE IMPORTANT PART
+   CONTINUOUS TRANSITION SYSTEM
+============================================================ */
+
+function selectNextDance(
+  dance,
+  button
+){
+
+  if(!state.running)return;
+
+  if(dance===state.current)return;
+
+  /*
+    If the player selects
+    another dance, it becomes
+    the queued dance.
+
+    CURRENT DANCE CONTINUES.
+  */
+
+  state.next=dance;
+
+
+  document
+    .querySelectorAll(".danceButton")
+    .forEach(
+      b=>b.classList.remove(
+        "pending"
+      )
+    );
+
+
+  button.classList.add(
+    "pending"
+  );
+
+
+  document.getElementById(
+    "nextDance"
+  ).textContent=
+    "NEXT: "+dance;
+
+
+  startTransitionCountdown();
+
+}
+
+
+/* ============================================================
+   THREE SECOND TRANSITION
+============================================================ */
+
+function startTransitionCountdown(){
+
+  if(state.transitionTimer){
+
+    clearInterval(
+      state.transitionTimer
+    );
+
+  }
+
+
+  const transition =
+    document.getElementById(
+      "transition"
+    );
+
+  const number =
+    document.getElementById(
+      "transitionNumber"
+    );
+
+
+  transition.style.display=
+    "block";
+
+
+  let seconds=3;
+
+  number.textContent=
+    seconds;
+
+
+  state.transitionTimer=
+    setInterval(()=>{
+
+      seconds--;
+
+      if(seconds>0){
+
+        number.textContent=
+          seconds;
+
+      }else{
+
+        clearInterval(
+          state.transitionTimer
+        );
+
+        state.transitionTimer=null;
+
+        number.textContent=
+          "GO";
+
+        setTimeout(
+          activateNextDance,
+          250
+        );
+
+      }
+
+    },1000);
+
+}
+
+
+/* ============================================================
+   ACTIVATE NEXT DANCE
+============================================================ */
+
+function activateNextDance(){
+
+  if(!state.next)return;
+
+
+  const newDance=
+    state.next;
+
+
+  /*
+    ONLY NOW does current
+    choreography change.
+  */
+
+  state.current=
+    newDance;
+
+  state.next=null;
+
+
+  document.getElementById(
+    "currentDance"
+  ).textContent=
+    newDance;
+
+
+  document.getElementById(
+    "nextDance"
+  ).textContent=
+    "LIVE • TEAM PERFORMING";
+
+
+  document.getElementById(
+    "transition"
+  ).style.display=
+    "none";
+
+
+  document
+    .querySelectorAll(".danceButton")
+    .forEach(
+      b=>b.classList.remove(
+        "pending"
+      )
+    );
+
+
+  state.combo++;
+
+  state.bestCombo=
+    Math.max(
+      state.bestCombo,
+      state.combo
+    );
+
+
+  state.score +=
+    100+
+    state.combo*15;
+
+
+  document.getElementById(
+    "score"
+  ).textContent=
+    String(
+      state.score
+    ).padStart(4,"0");
+
+
+  showJudgeComment(
+    getJudge(),
+    getJudgeComment(
+      newDance
+    )
+  );
+
+}
+
+
+/* ============================================================
+   JUDGES
+============================================================ */
+
+const judges=[
+  "JUDGE AMINA",
+  "JUDGE DAVID",
+  "JUDGE LUCAS"
+];
+
+
+function getJudge(){
+
+  return judges[
+    Math.floor(
+      Math.random()*
+      judges.length
+    )
+  ];
+
+}
+
+
+function getJudgeComment(
+  dance
+){
+
+  const comments={
+
+    "HIP-HOP":
+      "Excellent groove and stage presence.",
+
+    "JAZZ":
+      "Beautiful lines and excellent musicality.",
+
+    "AFRO":
+      "Strong rhythm. The team is synchronized.",
+
+    "CONTEMPORARY":
+      "Excellent expression and movement quality.",
+
+    "BREAKING":
+      "Powerful energy and impressive control.",
+
+    "DANCEHALL":
+      "Great confidence and rhythm.",
+
+    "LOCKING":
+      "Sharp timing and strong precision.",
+
+    "FREESTYLE":
+      "Creative choreography. Excellent choice."
+
+  };
+
+
+  return comments[dance];
+
+}
+
+
+function showJudgeComment(
+  judge,
+  comment
+){
+
+  const box=
+    document.getElementById(
+      "judgeComment"
+    );
+
+
+  document.getElementById(
+    "judgeName"
+  ).textContent=
+    judge;
+
+
+  document.getElementById(
+    "commentText"
+  ).textContent=
+    comment;
+
+
+  box.classList.add(
+    "show"
+  );
+
+
+  setTimeout(
+    ()=>{
+      box.classList.remove(
+        "show"
+      );
+    },
+    2500
+  );
+
+}
+
+
+/* ============================================================
+   START SHOW
+============================================================ */
+
+document
+  .getElementById(
+    "startShow"
+  )
+  .onclick=()=>{
+
+    if(
+      state.selected.length===0
+    ){
+
+      state.selected=[
+        "HIP-HOP",
+        "JAZZ",
+        "AFRO",
+        "FREESTYLE"
+      ];
+
+    }
+
+
+    state.current=
+      state.selected[0];
+
+    state.running=true;
+
+    document.getElementById(
+      "intro"
+    ).style.display=
+      "none";
+
+
+    document.getElementById(
+      "currentDance"
+    ).textContent=
+      state.current;
+
+
+    document.getElementById(
+      "nextDance"
+    ).textContent=
+      "LIVE • TEAM PERFORMING";
+
+
+    createDanceControls();
+
+
+    showJudgeComment(
+      "JUDGE AMINA",
+      "Welcome to the World of Dance live finals."
+    );
+
+
+    setTimeout(
+      ()=>{
+        showJudgeComment(
+          "JUDGE DAVID",
+          "The stage is yours. Let's dance."
+        );
+      },
+      3000
+    );
+
+  };
+
+
+/* ============================================================
+   PERFORMANCE TIMER
+============================================================ */
+
+const performanceTimer=
+  setInterval(()=>{
+
+    if(!state.running)return;
+
+    state.seconds++;
+
+    state.score++;
+
+    document.getElementById(
+      "score"
+    ).textContent=
+      String(
+        state.score
+      ).padStart(4,"0");
+
+
+    /*
+      Demo performance length.
+      Increase this later for
+      the full game.
+    */
+
+    if(
+      state.seconds>=60
+    ){
+
+      finishPerformance();
+
+    }
+
+  },1000);
+
+
+/* ============================================================
+   FINISH PERFORMANCE
+============================================================ */
+
+function finishPerformance(){
+
+  if(!state.running)return;
+
+  state.running=false;
+
+
+  if(
+    state.transitionTimer
+  ){
+
+    clearInterval(
+      state.transitionTimer
+    );
+
+  }
+
+
+  const technique=
+    Math.min(
+      10,
+      7+
+      state.bestCombo*.25+
+      Math.random()
+    );
+
+
+  const musicality=
+    Math.min(
+      10,
+      7+
+      state.combo*.12+
+      Math.random()
+    );
+
+
+  const teamwork=
+    Math.min(
+      10,
+      7.5+
+      state.bestCombo*.2+
+      Math.random()*.6
+    );
+
+
+  const total=
+    (
+      technique+
+      musicality+
+      teamwork
+    )/3;
+
+
+  document.getElementById(
+    "resultScore"
+  ).textContent=
+    total.toFixed(1);
+
+
+  document.getElementById(
+    "technique"
+  ).textContent=
+    technique.toFixed(1);
+
+
+  document.getElementById(
+    "musicality"
+  ).textContent=
+    musicality.toFixed(1);
+
+
+  document.getElementById(
+    "teamwork"
+  ).textContent=
+    teamwork.toFixed(1);
+
+
+  document.getElementById(
+    "resultMessage"
+  ).textContent=
+    total>=8.5
+      ?
+      "Outstanding synchronization, creativity and stage presence."
+      :
+      "A strong performance with room for even greater consistency.";
+
+
+  document.getElementById(
+    "results"
+  ).style.display=
+    "flex";
+
+
+  showJudgeComment(
+    "JUDGE LUCAS",
+    "The performance is complete. Judges, prepare your final scores."
+  );
+
+}
+
+
+/* ============================================================
+   WINNER CEREMONY
+============================================================ */
+
+document
+  .getElementById(
+    "ceremonyButton"
+  )
+  .onclick=()=>{
+
+    document.getElementById(
+      "results"
+    ).style.display=
+      "none";
+
+
+    document.getElementById(
+      "ceremony"
+    ).style.display=
+      "flex";
+
+
+    setTimeout(
+      ()=>{
+        document
+          .getElementById(
+            "judgesStage"
+          )
+          .classList.add(
+            "walk"
+          );
+      },
+      400
+    );
+
+
+    setTimeout(
+      ()=>{
+        document.getElementById(
+          "announcement"
+        ).textContent=
+          "AND THE WINNER IS...";
+      },
+      1700
+    );
+
+
+    setTimeout(
+      ()=>{
+        document.getElementById(
+          "announcement"
+        ).textContent=
+          "CHAMPIONS";
+
+        document.getElementById(
+          "winner"
+        ).textContent=
+          "PIXIE DANCE CREW";
+
+
+        createConfetti();
+
+      },
+      3800
+    );
+
+  };
+
+
+/* ============================================================
+   CONFETTI
+============================================================ */
+
+function createConfetti(){
+
+  const container=
+    document.getElementById(
+      "confetti"
+    );
+
+  container.innerHTML="";
+
+
+  for(
+    let i=0;
+    i<80;
+    i++
+  ){
+
+    const piece=
+      document.createElement("i");
+
+    piece.style.left=
+      Math.random()*100+
+      "%";
+
+    piece.style.animationDelay=
+      Math.random()*2+
+      "s";
+
+    piece.style.background=
+      [
+        "#ffffff",
+        "#6fa0ff",
+        "#bd73ff",
+        "#55e8ff",
+        "#ffd45c"
+      ][
+        Math.floor(
+          Math.random()*5
+        )
+      ];
+
+
+    container.appendChild(
+      piece
+    );
+
+  }
+
+}
+
+
+/* ============================================================
+   RESTART
+============================================================ */
+
+document
+  .getElementById(
+    "restart"
+  )
+  .onclick=()=>{
+
+    location.reload();
+
+  };
+
+
+/* ============================================================
+   RESIZE
+============================================================ */
+
+window.addEventListener(
+  "resize",
+  ()=>{
+
+    camera.aspect=
+      innerWidth/
+      innerHeight;
+
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(
+      innerWidth,
+      innerHeight
+    );
+
+  }
+);
+
+
+/* ============================================================
+   LOADING
+============================================================ */
+
+setTimeout(
+  ()=>{
+
+    document.getElementById(
+      "loading"
+    ).style.display=
+      "none";
+
+
+    document.getElementById(
+      "intro"
+    ).style.display=
+      "flex";
+
+  },
+  2200
+);
+
+</script>
+
+</body>
+</html>
