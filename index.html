@@ -5494,6 +5494,2673 @@ setTimeout(
   addCrewQuickButton,
   300
 );
+      /* =========================================================
+   BUILD 05 — LIVING WORLD HUB
+   ADDITIVE ONLY
+========================================================= */
+
+(function(){
+
+  if(window.LIVING_WORLD)
+    return;
+
+  window.LIVING_WORLD = {
+    active:false,
+    npcTimer:null,
+    cameraX:0,
+    cameraY:0
+  };
+
+
+  /* =======================================================
+     WORLD DATA
+  ======================================================= */
+
+  const WORLD_LOCATIONS = [
+
+    {
+      id:"arena",
+      name:"BATTLE ARENA",
+      icon:"⚡",
+      x:16,
+      y:30,
+      action:"openCompetition()"
+    },
+
+    {
+      id:"training",
+      name:"TRAINING ZONE",
+      icon:"◈",
+      x:48,
+      y:20,
+      action:"openTrainingWorld()"
+    },
+
+    {
+      id:"studio",
+      name:"DANCE STUDIO",
+      icon:"◆",
+      x:74,
+      y:32,
+      action:"openDanceStudioWorld()"
+    },
+
+    {
+      id:"crew",
+      name:"CREW HQ",
+      icon:"◇",
+      x:25,
+      y:68,
+      action:"openCrew()"
+    },
+
+    {
+      id:"stage",
+      name:"LIVE STAGE",
+      icon:"★",
+      x:69,
+      y:70,
+      action:"openLiveStageWorld()"
+    }
+
+  ];
+
+
+  /* =======================================================
+     OPEN WORLD
+  ======================================================= */
+
+  window.openLivingWorld = function(){
+
+    LIVING_WORLD.active=true;
+
+    const old =
+      document.getElementById(
+        "livingWorld"
+      );
+
+    if(old)
+      old.remove();
+
+
+    const world =
+      document.createElement("div");
+
+    world.id="livingWorld";
+
+
+    world.innerHTML=`
+
+      <div id="lwScene">
+
+        <div id="lwSky"></div>
+
+        <div id="lwCityBack"></div>
+
+        <div id="lwGround">
+
+          <div id="lwRoad"></div>
+
+          <div id="lwGlow"></div>
+
+        </div>
+
+
+        <div id="lwLocations"></div>
+
+        <div id="lwNPCs"></div>
+
+
+        <div id="lwPlayer">
+
+          <div class="lwShadow"></div>
+
+          <div class="lwBody">
+
+            <div class="lwHead"></div>
+
+            <div class="lwTorso"></div>
+
+            <div class="lwLeg lwLegA"></div>
+
+            <div class="lwLeg lwLegB"></div>
+
+          </div>
+
+        </div>
+
+
+        <div id="lwHUD">
+
+          <div class="lwTop">
+
+            <div>
+
+              <small>
+                WORLD DANCE
+              </small>
+
+              <b>
+                CITY HUB
+              </b>
+
+            </div>
+
+
+            <div class="lwStats">
+
+              <span>
+                LVL
+                <strong>
+                  ${
+                    typeof game!=="undefined"
+                      ? game.level || 1
+                      : 1
+                  }
+                </strong>
+              </span>
+
+              <span>
+                COINS
+                <strong>
+                  ${
+                    typeof game!=="undefined"
+                      ? game.coins || 0
+                      : 0
+                  }
+                </strong>
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="lwHint">
+
+            TAP A LOCATION
+
+          </div>
+
+
+          <button
+            id="lwClose"
+            onclick="closeLivingWorld()">
+
+            EXIT WORLD
+
+          </button>
+
+        </div>
+
+      </div>
+
+    `;
+
+
+    document.body.appendChild(world);
+
+    injectLivingWorldStyles();
+
+    renderWorldLocations();
+
+    spawnWorldNPCs();
+
+    startWorldAnimation();
+
+  };
+
+
+  /* =======================================================
+     LOCATIONS
+  ======================================================= */
+
+  function renderWorldLocations(){
+
+    const container =
+      document.getElementById(
+        "lwLocations"
+      );
+
+    if(!container)
+      return;
+
+
+    container.innerHTML="";
+
+
+    WORLD_LOCATIONS.forEach(
+      location => {
+
+        const el =
+          document.createElement("button");
+
+        el.className="lwLocation";
+
+        el.style.left =
+          location.x+"%";
+
+        el.style.top =
+          location.y+"%";
+
+
+        el.innerHTML=`
+
+          <div class="lwLocationIcon">
+
+            ${location.icon}
+
+          </div>
+
+          <div class="lwLocationName">
+
+            ${location.name}
+
+          </div>
+
+          <div class="lwLocationLight"></div>
+
+        `;
+
+
+        el.onclick=function(){
+
+          if(
+            typeof window[
+              location.action
+            ]==="function"
+          ){
+
+            window[
+              location.action
+            ]();
+
+          }else{
+
+            try{
+
+              eval(location.action);
+
+            }catch(e){
+
+              showWorldMessage(
+                location.name+
+                " is being prepared."
+              );
+
+            }
+
+          }
+
+        };
+
+
+        container.appendChild(el);
+
+      }
+    );
+
+  }
+
+
+  /* =======================================================
+     NPC SYSTEM
+  ======================================================= */
+
+  const NPC_NAMES=[
+    "MIA",
+    "JAY",
+    "KAI",
+    "ZEE",
+    "LEX",
+    "RIO",
+    "NIA",
+    "ACE"
+  ];
+
+
+  function spawnWorldNPCs(){
+
+    const container =
+      document.getElementById(
+        "lwNPCs"
+      );
+
+    if(!container)
+      return;
+
+
+    container.innerHTML="";
+
+
+    for(
+      let i=0;
+      i<8;
+      i++
+    ){
+
+      const npc =
+        document.createElement("div");
+
+      npc.className="lwNPC";
+
+
+      const startX =
+        10+
+        Math.random()*80;
+
+      const startY =
+        42+
+        Math.random()*38;
+
+
+      npc.style.left =
+        startX+"%";
+
+      npc.style.top =
+        startY+"%";
+
+
+      npc.style.animationDelay =
+        (-Math.random()*4)+"s";
+
+
+      npc.innerHTML=`
+
+        <div class="npcShadow"></div>
+
+        <div class="npcCharacter">
+
+          <div class="npcHead"></div>
+
+          <div class="npcBody"></div>
+
+          <div class="npcArm npcArmA"></div>
+
+          <div class="npcArm npcArmB"></div>
+
+          <div class="npcLeg npcLegA"></div>
+
+          <div class="npcLeg npcLegB"></div>
+
+        </div>
+
+        <span>
+          ${
+            NPC_NAMES[
+              i%NPC_NAMES.length
+            ]
+          }
+        </span>
+
+      `;
+
+
+      npc.addEventListener(
+        "click",
+        function(){
+
+          const name =
+            npc.querySelector(
+              "span"
+            );
+
+          showWorldMessage(
+            name.textContent+
+            ": Keep dancing!"
+          );
+
+        }
+      );
+
+
+      container.appendChild(npc);
+
+    }
+
+  }
+
+
+  /* =======================================================
+     WORLD MESSAGE
+  ======================================================= */
+
+  function showWorldMessage(message){
+
+    const old =
+      document.getElementById(
+        "lwMessage"
+      );
+
+    if(old)
+      old.remove();
+
+
+    const box =
+      document.createElement("div");
+
+    box.id="lwMessage";
+
+    box.textContent=
+      message;
+
+
+    document
+      .getElementById("lwScene")
+      .appendChild(box);
+
+
+    setTimeout(
+      ()=>{
+        box.remove();
+      },
+      1800
+    );
+
+  }
+
+
+  /* =======================================================
+     ANIMATION
+  ======================================================= */
+
+  function startWorldAnimation(){
+
+    clearInterval(
+      LIVING_WORLD.npcTimer
+    );
+
+
+    LIVING_WORLD.npcTimer =
+      setInterval(
+        ()=>{
+
+          if(
+            !LIVING_WORLD.active
+          )
+            return;
+
+
+          const npcs =
+            document.querySelectorAll(
+              ".lwNPC"
+            );
+
+
+          npcs.forEach(
+            npc => {
+
+              let x =
+                parseFloat(
+                  npc.style.left
+                );
+
+
+              x +=
+                (Math.random()-.5)*1.5;
+
+
+              x =
+                Math.max(
+                  5,
+                  Math.min(
+                    92,
+                    x
+                  )
+                );
+
+
+              npc.style.left =
+                x+"%";
+
+            }
+          );
+
+
+        },
+        1800
+      );
+
+  }
+
+
+  /* =======================================================
+     CLOSE WORLD
+  ======================================================= */
+
+  window.closeLivingWorld=function(){
+
+    LIVING_WORLD.active=false;
+
+    clearInterval(
+      LIVING_WORLD.npcTimer
+    );
+
+
+    const world =
+      document.getElementById(
+        "livingWorld"
+      );
+
+
+    if(world)
+      world.remove();
+
+  };
+
+
+  /* =======================================================
+     OPTIONAL LOCATION FALLBACKS
+  ======================================================= */
+
+  window.openTrainingWorld=function(){
+
+    closeLivingWorld();
+
+    if(
+      typeof openTraining==="function"
+    ){
+
+      openTraining();
+
+    }else{
+
+      showSimpleWorldModal(
+        "TRAINING ZONE",
+        "Training system connected."
+      );
+
+    }
+
+  };
+
+
+  window.openDanceStudioWorld=function(){
+
+    closeLivingWorld();
+
+    if(
+      typeof openStudio==="function"
+    ){
+
+      openStudio();
+
+    }else{
+
+      showSimpleWorldModal(
+        "DANCE STUDIO",
+        "Dance studio connected."
+      );
+
+    }
+
+  };
+
+
+  window.openLiveStageWorld=function(){
+
+    closeLivingWorld();
+
+    if(
+      typeof openPerformance==="function"
+    ){
+
+      openPerformance();
+
+    }else{
+
+      showSimpleWorldModal(
+        "LIVE STAGE",
+        "Performance stage connected."
+      );
+
+    }
+
+  };
+
+
+  function showSimpleWorldModal(
+    title,
+    message
+  ){
+
+    if(
+      typeof modal==="function"
+    ){
+
+      modal(
+        title,
+        `
+          <div style="
+            text-align:center;
+            padding:20px">
+
+            <p style="
+              color:var(--muted)">
+
+              ${message}
+
+            </p>
+
+            <button
+              class="action primary"
+              onclick="closeModal()">
+
+              CONTINUE
+
+            </button>
+
+          </div>
+        `
+      );
+
+    }
+
+  }
+
+
+  /* =======================================================
+     STYLES
+  ======================================================= */
+
+  function injectLivingWorldStyles(){
+
+    if(
+      document.getElementById(
+        "livingWorldStyles"
+      )
+    )
+      return;
+
+
+    const style =
+      document.createElement("style");
+
+    style.id=
+      "livingWorldStyles";
+
+
+    style.textContent=`
+
+      #livingWorld{
+
+        position:fixed;
+
+        inset:0;
+
+        z-index:9999;
+
+        overflow:hidden;
+
+        background:#060817;
+
+        font-family:
+          Inter,
+          system-ui,
+          sans-serif;
+
+        color:white;
+
+      }
+
+
+      #lwScene{
+
+        position:absolute;
+
+        inset:0;
+
+        overflow:hidden;
+
+        perspective:900px;
+
+        background:
+          radial-gradient(
+            circle at 50% 35%,
+            #263b75 0%,
+            #111a3d 35%,
+            #050712 80%
+          );
+
+      }
+
+
+      #lwSky{
+
+        position:absolute;
+
+        inset:0;
+
+        background:
+
+          radial-gradient(
+            circle at 18% 18%,
+            rgba(79,133,255,.25),
+            transparent 18%
+          ),
+
+          radial-gradient(
+            circle at 78% 22%,
+            rgba(183,80,255,.2),
+            transparent 20%
+          );
+
+        animation:
+          lwSkyPulse 6s
+          ease-in-out infinite
+          alternate;
+
+      }
+
+
+      #lwCityBack{
+
+        position:absolute;
+
+        left:-5%;
+
+        right:-5%;
+
+        bottom:35%;
+
+        height:42%;
+
+        opacity:.7;
+
+        background:
+
+          repeating-linear-gradient(
+            90deg,
+            transparent 0 5%,
+            rgba(80,112,190,.12) 5.2% 8%,
+            transparent 8.2% 12%
+          );
+
+        transform:
+          perspective(500px)
+          rotateX(15deg);
+
+      }
+
+
+      #lwGround{
+
+        position:absolute;
+
+        left:-15%;
+
+        right:-15%;
+
+        bottom:-28%;
+
+        height:70%;
+
+        transform:
+          perspective(700px)
+          rotateX(57deg);
+
+        transform-origin:
+          center top;
+
+        background:
+
+          repeating-linear-gradient(
+            90deg,
+            rgba(255,255,255,.025)
+              0 1px,
+            transparent 1px 90px
+          ),
+
+          repeating-linear-gradient(
+            0deg,
+            rgba(255,255,255,.025)
+              0 1px,
+            transparent 1px 90px
+          ),
+
+          linear-gradient(
+            #11182e,
+            #050711
+          );
+
+      }
+
+
+      #lwRoad{
+
+        position:absolute;
+
+        left:35%;
+
+        width:30%;
+
+        top:0;
+
+        bottom:0;
+
+        background:
+          rgba(46,66,120,.15);
+
+        border-left:
+          1px solid
+          rgba(100,150,255,.15);
+
+        border-right:
+          1px solid
+          rgba(100,150,255,.15);
+
+      }
+
+
+      #lwGlow{
+
+        position:absolute;
+
+        left:50%;
+
+        top:5%;
+
+        width:2px;
+
+        height:100%;
+
+        background:
+          rgba(77,165,255,.5);
+
+        box-shadow:
+          0 0 40px
+          20px
+          rgba(70,130,255,.18);
+
+      }
+
+
+      /* PLAYER */
+
+      #lwPlayer{
+
+        position:absolute;
+
+        left:50%;
+
+        bottom:25%;
+
+        width:60px;
+
+        height:110px;
+
+        transform:
+          translateX(-50%);
+
+        z-index:30;
+
+        animation:
+          playerIdle
+          1.8s
+          ease-in-out
+          infinite
+          alternate;
+
+      }
+
+
+      .lwShadow{
+
+        position:absolute;
+
+        left:50%;
+
+        bottom:0;
+
+        width:60px;
+
+        height:13px;
+
+        border-radius:50%;
+
+        background:
+          rgba(0,0,0,.5);
+
+        transform:
+          translateX(-50%);
+
+        filter:blur(4px);
+
+      }
+
+
+      .lwBody{
+
+        position:absolute;
+
+        left:50%;
+
+        bottom:12px;
+
+        width:42px;
+
+        height:78px;
+
+        transform:
+          translateX(-50%);
+
+      }
+
+
+      .lwHead{
+
+        width:25px;
+
+        height:25px;
+
+        margin:auto;
+
+        border-radius:50%;
+
+        background:
+          linear-gradient(
+            135deg,
+            #e8b18d,
+            #8f5a48
+          );
+
+      }
+
+
+      .lwTorso{
+
+        width:34px;
+
+        height:38px;
+
+        margin:4px auto;
+
+        border-radius:
+          10px 10px 8px 8px;
+
+        background:
+          linear-gradient(
+            135deg,
+            #376cff,
+            #8c42ff
+          );
+
+        box-shadow:
+          0 0 20px
+          rgba(80,110,255,.25);
+
+      }
+
+
+      .lwLeg{
+
+        position:absolute;
+
+        bottom:0;
+
+        width:9px;
+
+        height:35px;
+
+        border-radius:7px;
+
+        background:#171b2b;
+
+      }
+
+
+      .lwLegA{
+
+        left:8px;
+
+        transform:
+          rotate(8deg);
+
+      }
+
+
+      .lwLegB{
+
+        right:8px;
+
+        transform:
+          rotate(-8deg);
+
+      }
+
+
+      /* LOCATIONS */
+
+      .lwLocation{
+
+        position:absolute;
+
+        transform:
+          translate(-50%,-50%);
+
+        min-width:115px;
+
+        padding:10px;
+
+        border:1px solid
+          rgba(120,160,255,.25);
+
+        border-radius:15px;
+
+        background:
+          rgba(5,8,22,.72);
+
+        color:white;
+
+        backdrop-filter:
+          blur(10px);
+
+        cursor:pointer;
+
+        z-index:20;
+
+        transition:
+          transform .2s,
+          background .2s;
+
+      }
+
+
+      .lwLocation:hover{
+
+        transform:
+          translate(-50%,-50%)
+          scale(1.08);
+
+        background:
+          rgba(36,59,125,.75);
+
+      }
+
+
+      .lwLocationIcon{
+
+        font-size:24px;
+
+        margin-bottom:3px;
+
+        text-shadow:
+          0 0 16px
+          rgba(90,160,255,.8);
+
+      }
+
+
+      .lwLocationName{
+
+        font-size:8px;
+
+        font-weight:1000;
+
+        letter-spacing:1.2px;
+
+      }
+
+
+      .lwLocationLight{
+
+        height:2px;
+
+        margin-top:7px;
+
+        background:
+          linear-gradient(
+            90deg,
+            transparent,
+            #5da6ff,
+            transparent
+          );
+
+        animation:
+          lwLight
+          2s
+          ease-in-out
+          infinite;
+
+      }
+
+
+      /* NPC */
+
+      .lwNPC{
+
+        position:absolute;
+
+        z-index:15;
+
+        width:42px;
+
+        height:85px;
+
+        transform:
+          translate(-50%,-50%);
+
+        cursor:pointer;
+
+        transition:
+          left 1.7s ease;
+
+      }
+
+
+      .npcCharacter{
+
+        position:absolute;
+
+        bottom:12px;
+
+        left:50%;
+
+        width:35px;
+
+        height:62px;
+
+        transform:
+          translateX(-50%);
+
+        animation:
+          npcDance
+          1.1s
+          ease-in-out
+          infinite
+          alternate;
+
+      }
+
+
+      .npcHead{
+
+        width:18px;
+
+        height:18px;
+
+        margin:auto;
+
+        border-radius:50%;
+
+        background:
+          linear-gradient(
+            135deg,
+            #efbd99,
+            #855642
+          );
+
+      }
+
+
+      .npcBody{
+
+        width:27px;
+
+        height:28px;
+
+        margin:3px auto;
+
+        border-radius:8px;
+
+        background:
+          linear-gradient(
+            135deg,
+            #ff4e85,
+            #673fff
+          );
+
+      }
+
+
+      .npcArm{
+
+        position:absolute;
+
+        top:21px;
+
+        width:7px;
+
+        height:27px;
+
+        border-radius:7px;
+
+        background:#25283b;
+
+      }
+
+
+      .npcArmA{
+
+        left:1px;
+
+        transform:
+          rotate(30deg);
+
+      }
+
+
+      .npcArmB{
+
+        right:1px;
+
+        transform:
+          rotate(-30deg);
+
+      }
+
+
+      .npcLeg{
+
+        position:absolute;
+
+        bottom:0;
+
+        width:7px;
+
+        height:25px;
+
+        border-radius:7px;
+
+        background:#171b2b;
+
+      }
+
+
+      .npcLegA{
+
+        left:7px;
+
+        transform:
+          rotate(9deg);
+
+      }
+
+
+      .npcLegB{
+
+        right:7px;
+
+        transform:
+          rotate(-9deg);
+
+      }
+
+
+      .npcShadow{
+
+        position:absolute;
+
+        bottom:4px;
+
+        left:50%;
+
+        width:34px;
+
+        height:8px;
+
+        border-radius:50%;
+
+        background:
+          rgba(0,0,0,.45);
+
+        transform:
+          translateX(-50%);
+
+        filter:blur(3px);
+
+      }
+
+
+      .lwNPC span{
+
+        position:absolute;
+
+        bottom:-3px;
+
+        left:50%;
+
+        transform:
+          translateX(-50%);
+
+        font-size:6px;
+
+        color:
+          rgba(255,255,255,.5);
+
+      }
+
+
+      /* HUD */
+
+      #lwHUD{
+
+        position:absolute;
+
+        inset:0;
+
+        pointer-events:none;
+
+        z-index:100;
+
+      }
+
+
+      .lwTop{
+
+        position:absolute;
+
+        top:15px;
+
+        left:15px;
+
+        right:15px;
+
+        display:flex;
+
+        justify-content:space-between;
+
+        align-items:center;
+
+      }
+
+
+      .lwTop small{
+
+        display:block;
+
+        font-size:7px;
+
+        letter-spacing:2px;
+
+        color:
+          rgba(255,255,255,.55);
+
+      }
+
+
+      .lwTop b{
+
+        display:block;
+
+        margin-top:3px;
+
+        font-size:14px;
+
+      }
+
+
+      .lwStats{
+
+        display:flex;
+
+        gap:8px;
+
+      }
+
+
+      .lwStats span{
+
+        padding:7px 10px;
+
+        border-radius:10px;
+
+        background:
+          rgba(5,8,22,.7);
+
+        border:1px solid
+          rgba(255,255,255,.1);
+
+        font-size:7px;
+
+      }
+
+
+      .lwStats strong{
+
+        margin-left:4px;
+
+        font-size:10px;
+
+      }
+
+
+      .lwHint{
+
+        position:absolute;
+
+        left:50%;
+
+        top:92px;
+
+        transform:
+          translateX(-50%);
+
+        padding:6px 12px;
+
+        border-radius:20px;
+
+        background:
+          rgba(0,0,0,.35);
+
+        color:
+          rgba(255,255,255,.55);
+
+        font-size:7px;
+
+        letter-spacing:2px;
+
+      }
+
+
+      #lwClose{
+
+        position:absolute;
+
+        right:15px;
+
+        bottom:15px;
+
+        pointer-events:auto;
+
+        padding:10px 15px;
+
+        border:1px solid
+          rgba(255,255,255,.15);
+
+        border-radius:12px;
+
+        background:
+          rgba(5,8,22,.8);
+
+        color:white;
+
+        font-size:8px;
+
+        font-weight:900;
+
+      }
+
+
+      #lwMessage{
+
+        position:absolute;
+
+        left:50%;
+
+        bottom:17%;
+
+        transform:
+          translateX(-50%);
+
+        padding:11px 18px;
+
+        border-radius:20px;
+
+        background:
+          rgba(8,10,25,.9);
+
+        border:
+          1px solid
+          rgba(100,160,255,.25);
+
+        box-shadow:
+          0 10px 40px
+          rgba(0,0,0,.35);
+
+        font-size:9px;
+
+        z-index:200;
+
+      }
+
+
+      @keyframes npcDance{
+
+        0%{
+          transform:
+            translateX(-50%)
+            rotate(-3deg);
+        }
+
+        50%{
+          transform:
+            translateX(-50%)
+            translateY(-4px)
+            rotate(3deg);
+        }
+
+        100%{
+          transform:
+            translateX(-50%)
+            translateY(0)
+            rotate(-2deg);
+        }
+
+      }
+
+
+      @keyframes playerIdle{
+
+        from{
+          transform:
+            translateX(-50%)
+            translateY(0);
+        }
+
+        to{
+          transform:
+            translateX(-50%)
+            translateY(-5px);
+        }
+
+      }
+
+
+      @keyframes lwSkyPulse{
+
+        from{
+          opacity:.7;
+        }
+
+        to{
+          opacity:1;
+        }
+
+      }
+
+
+      @keyframes lwLight{
+
+        0%,100%{
+          opacity:.35;
+        }
+
+        50%{
+          opacity:1;
+        }
+
+      }
+
+
+      @media(max-width:650px){
+
+        .lwLocation{
+
+          min-width:88px;
+
+          padding:7px;
+
+        }
+
+        .lwLocationIcon{
+
+          font-size:18px;
+
+        }
+
+        .lwLocationName{
+
+          font-size:6px;
+
+        }
+
+        .lwStats span{
+
+          padding:5px 7px;
+
+        }
+
+        #lwPlayer{
+
+          bottom:23%;
+
+        }
+
+      }
+
+    `;
+
+
+    document.head.appendChild(style);
+
+  }
+
+
+  /* =======================================================
+     ADD WORLD BUTTON
+  ======================================================= */
+
+  function addWorldButton(){
+
+    if(
+      document.getElementById(
+        "livingWorldButton"
+      )
+    )
+      return;
+
+
+    const quick =
+      document.querySelector(
+        ".quick"
+      );
+
+
+    if(!quick)
+      return;
+
+
+    const button =
+      document.createElement("button");
+
+
+    button.id=
+      "livingWorldButton";
+
+
+    button.textContent=
+      "WORLD";
+
+
+    button.onclick=
+      openLivingWorld;
+
+
+    quick.appendChild(
+      button
+    );
+
+  }
+
+
+  setTimeout(
+    addWorldButton,
+    800
+  );
+
+
+})();
+     /* =========================================================
+   BUILD 06 — CHARACTER & CUSTOMIZATION
+   ADDITIVE ONLY
+========================================================= */
+
+(function(){
+
+  if(window.CHARACTER_SYSTEM)
+    return;
+
+  window.CHARACTER_SYSTEM = {
+
+    hair: "Fade",
+    top: "Street Jacket",
+    bottom: "Cargo Pants",
+    shoes: "Urban Sneakers",
+    outfit: "Default",
+
+    unlocked: {
+      hair: ["Fade"],
+      top: ["Street Jacket"],
+      bottom: ["Cargo Pants"],
+      shoes: ["Urban Sneakers"]
+    }
+
+  };
+
+
+  /* =======================================================
+     CHARACTER OPTIONS
+  ======================================================= */
+
+  const CHARACTER_OPTIONS = {
+
+    hair: [
+      "Fade",
+      "High Top",
+      "Braids",
+      "Curly",
+      "Short Cut"
+    ],
+
+    top: [
+      "Street Jacket",
+      "Performance Tee",
+      "Dance Hoodie",
+      "Battle Jacket",
+      "Neon Vest"
+    ],
+
+    bottom: [
+      "Cargo Pants",
+      "Track Pants",
+      "Street Shorts",
+      "Dance Trousers"
+    ],
+
+    shoes: [
+      "Urban Sneakers",
+      "Battle Shoes",
+      "Dance Runners",
+      "High Tops"
+    ]
+
+  };
+
+
+  /* =======================================================
+     SAVE CHARACTER
+  ======================================================= */
+
+  function saveCharacter(){
+
+    try{
+
+      localStorage.setItem(
+        "WORLD_DANCE_CHARACTER",
+        JSON.stringify(
+          CHARACTER_SYSTEM
+        )
+      );
+
+    }catch(e){}
+
+  }
+
+
+  /* =======================================================
+     LOAD CHARACTER
+  ======================================================= */
+
+  function loadCharacter(){
+
+    try{
+
+      const saved =
+        localStorage.getItem(
+          "WORLD_DANCE_CHARACTER"
+        );
+
+      if(saved){
+
+        const data =
+          JSON.parse(saved);
+
+        Object.assign(
+          CHARACTER_SYSTEM,
+          data
+        );
+
+      }
+
+    }catch(e){}
+
+  }
+
+
+  loadCharacter();
+
+
+  /* =======================================================
+     OPEN CHARACTER STUDIO
+  ======================================================= */
+
+  window.openCharacterStudio =
+  function(){
+
+    renderCharacterStudio();
+
+  };
+
+
+  function renderCharacterStudio(){
+
+    const c =
+      CHARACTER_SYSTEM;
+
+
+    const preview = `
+
+      <div id="characterPreview">
+
+        <div class="cpGlow"></div>
+
+        <div class="cpCharacter">
+
+          <div class="cpHead">
+
+            <div class="cpHair">
+
+              ${c.hair}
+
+            </div>
+
+          </div>
+
+          <div class="cpTorso">
+
+            ${c.top}
+
+          </div>
+
+          <div class="cpLegs">
+
+            ${c.bottom}
+
+          </div>
+
+          <div class="cpShoes">
+
+            ${c.shoes}
+
+          </div>
+
+        </div>
+
+      </div>
+
+    `;
+
+
+    const controls = `
+
+      <div
+        id="characterControls">
+
+        ${createOptionGroup(
+          "HAIR",
+          "hair"
+        )}
+
+        ${createOptionGroup(
+          "TOP",
+          "top"
+        )}
+
+        ${createOptionGroup(
+          "BOTTOM",
+          "bottom"
+        )}
+
+        ${createOptionGroup(
+          "SHOES",
+          "shoes"
+        )}
+
+        <button
+          class="action primary"
+          onclick="
+            saveCharacter();
+            closeModal();
+            toast('CHARACTER SAVED');
+          ">
+
+          SAVE OUTFIT
+
+        </button>
+
+      </div>
+
+    `;
+
+
+    modal(
+
+      "CHARACTER STUDIO",
+
+      `
+
+        <div class="characterStudio">
+
+          ${preview}
+
+          <div>
+
+            <div class="characterName">
+
+              ${
+                typeof game!=="undefined"
+                  ? (
+                      game.dancerName ||
+                      "MY DANCER"
+                    )
+                  : "MY DANCER"
+              }
+
+            </div>
+
+            <div class="characterSubtitle">
+
+              PERFORMANCE CHARACTER
+
+            </div>
+
+          </div>
+
+          ${controls}
+
+        </div>
+
+      `
+
+    );
+
+    injectCharacterStyles();
+
+  }
+
+
+  /* =======================================================
+     OPTION GROUP
+  ======================================================= */
+
+  function createOptionGroup(
+    label,
+    type
+  ){
+
+    const current =
+      CHARACTER_SYSTEM[type];
+
+
+    const options =
+      CHARACTER_OPTIONS[type];
+
+
+    let buttons="";
+
+
+    options.forEach(
+      option => {
+
+        const selected =
+          option===current;
+
+
+        buttons += `
+
+          <button
+            class="
+              characterOption
+              ${selected
+                ? "selected"
+                : ""}
+            "
+            onclick="
+              selectCharacterOption(
+                '${type}',
+                '${option}'
+              )
+            ">
+
+            ${option}
+
+          </button>
+
+        `;
+
+      }
+    );
+
+
+    return `
+
+      <div class="characterGroup">
+
+        <div class="characterGroupTitle">
+
+          ${label}
+
+        </div>
+
+        <div class="characterOptions">
+
+          ${buttons}
+
+        </div>
+
+      </div>
+
+    `;
+
+  }
+
+
+  /* =======================================================
+     SELECT OPTION
+  ======================================================= */
+
+  window.selectCharacterOption =
+  function(
+    type,
+    value
+  ){
+
+    if(
+      !CHARACTER_OPTIONS[type]
+    )
+      return;
+
+
+    CHARACTER_SYSTEM[type]=
+      value;
+
+
+    renderCharacterStudio();
+
+  };
+
+
+  /* =======================================================
+     OUTFIT PRESETS
+  ======================================================= */
+
+  window.applyPerformanceOutfit =
+  function(){
+
+    CHARACTER_SYSTEM.outfit=
+      "Performance";
+
+    CHARACTER_SYSTEM.top=
+      "Performance Tee";
+
+    CHARACTER_SYSTEM.bottom=
+      "Track Pants";
+
+    CHARACTER_SYSTEM.shoes=
+      "Dance Runners";
+
+    saveCharacter();
+
+    toast(
+      "PERFORMANCE OUTFIT EQUIPPED"
+    );
+
+  };
+
+
+  window.applyBattleOutfit =
+  function(){
+
+    CHARACTER_SYSTEM.outfit=
+      "Battle";
+
+    CHARACTER_SYSTEM.top=
+      "Battle Jacket";
+
+    CHARACTER_SYSTEM.bottom=
+      "Street Shorts";
+
+    CHARACTER_SYSTEM.shoes=
+      "Battle Shoes";
+
+    saveCharacter();
+
+    toast(
+      "BATTLE OUTFIT EQUIPPED"
+    );
+
+  };
+
+
+  window.applyStreetOutfit =
+  function(){
+
+    CHARACTER_SYSTEM.outfit=
+      "Street";
+
+    CHARACTER_SYSTEM.top=
+      "Street Jacket";
+
+    CHARACTER_SYSTEM.bottom=
+      "Cargo Pants";
+
+    CHARACTER_SYSTEM.shoes=
+      "Urban Sneakers";
+
+    saveCharacter();
+
+    toast(
+      "STREET OUTFIT EQUIPPED"
+    );
+
+  };
+
+
+  /* =======================================================
+     CHARACTER RATING
+  ======================================================= */
+
+  window.getCharacterRating =
+  function(){
+
+    let rating = 60;
+
+
+    if(
+      typeof game!=="undefined"
+    ){
+
+      rating +=
+        Math.min(
+          15,
+          Number(
+            game.level || 1
+          )*2
+        );
+
+    }
+
+
+    if(
+      CHARACTER_SYSTEM.outfit ===
+      "Battle"
+    ){
+
+      rating += 3;
+
+    }
+
+
+    if(
+      CHARACTER_SYSTEM.outfit ===
+      "Performance"
+    ){
+
+      rating += 2;
+
+    }
+
+
+    return Math.min(
+      99,
+      rating
+    );
+
+  };
+
+
+  /* =======================================================
+     CHARACTER QUICK BUTTON
+  ======================================================= */
+
+  function addCharacterButton(){
+
+    if(
+      document.getElementById(
+        "characterQuickButton"
+      )
+    )
+      return;
+
+
+    const quick =
+      document.querySelector(
+        ".quick"
+      );
+
+
+    if(!quick)
+      return;
+
+
+    const button =
+      document.createElement(
+        "button"
+      );
+
+
+    button.id=
+      "characterQuickButton";
+
+
+    button.textContent=
+      "CHARACTER";
+
+
+    button.onclick=
+      openCharacterStudio;
+
+
+    quick.appendChild(
+      button
+    );
+
+  }
+
+
+  /* =======================================================
+     CHARACTER STYLES
+  ======================================================= */
+
+  function injectCharacterStyles(){
+
+    if(
+      document.getElementById(
+        "characterStyles"
+      )
+    )
+      return;
+
+
+    const style =
+      document.createElement(
+        "style"
+      );
+
+
+    style.id=
+      "characterStyles";
+
+
+    style.textContent=`
+
+      .characterStudio{
+
+        display:grid;
+
+        grid-template-columns:
+          minmax(180px, .8fr)
+          1fr;
+
+        gap:15px;
+
+      }
+
+
+      #characterPreview{
+
+        position:relative;
+
+        min-height:300px;
+
+        display:grid;
+
+        place-items:center;
+
+        overflow:hidden;
+
+        border-radius:22px;
+
+        background:
+
+          radial-gradient(
+            circle at center,
+            rgba(66,105,255,.28),
+            transparent 45%
+          ),
+
+          linear-gradient(
+            145deg,
+            #0d132a,
+            #080b18
+          );
+
+        border:
+          1px solid
+          rgba(255,255,255,.08);
+
+      }
+
+
+      .cpGlow{
+
+        position:absolute;
+
+        width:150px;
+
+        height:150px;
+
+        border-radius:50%;
+
+        background:
+          rgba(75,100,255,.18);
+
+        filter:blur(25px);
+
+        animation:
+          cpPulse
+          2.5s
+          ease-in-out
+          infinite
+          alternate;
+
+      }
+
+
+      .cpCharacter{
+
+        position:relative;
+
+        width:100px;
+
+        height:230px;
+
+        z-index:2;
+
+        animation:
+          cpIdle
+          1.8s
+          ease-in-out
+          infinite
+          alternate;
+
+      }
+
+
+      .cpHead{
+
+        position:absolute;
+
+        top:5px;
+
+        left:31px;
+
+        width:38px;
+
+        height:38px;
+
+        border-radius:50%;
+
+        background:
+          linear-gradient(
+            135deg,
+            #edbd9a,
+            #8e5a47
+          );
+
+        display:flex;
+
+        align-items:flex-start;
+
+        justify-content:center;
+
+      }
+
+
+      .cpHair{
+
+        position:absolute;
+
+        top:-3px;
+
+        width:43px;
+
+        min-height:15px;
+
+        padding:3px;
+
+        border-radius:
+          20px 20px 8px 8px;
+
+        background:#141526;
+
+        font-size:4px;
+
+        text-align:center;
+
+        color:
+          rgba(255,255,255,.5);
+
+      }
+
+
+      .cpTorso{
+
+        position:absolute;
+
+        top:47px;
+
+        left:20px;
+
+        width:60px;
+
+        height:65px;
+
+        border-radius:
+          16px 16px 12px 12px;
+
+        background:
+          linear-gradient(
+            135deg,
+            #356cff,
+            #8541ff
+          );
+
+        display:grid;
+
+        place-items:center;
+
+        text-align:center;
+
+        font-size:5px;
+
+        font-weight:900;
+
+        box-shadow:
+          0 0 25px
+          rgba(70,100,255,.25);
+
+      }
+
+
+      .cpLegs{
+
+        position:absolute;
+
+        top:110px;
+
+        left:26px;
+
+        width:48px;
+
+        height:70px;
+
+        border-radius:10px;
+
+        background:
+          linear-gradient(
+            90deg,
+            #1a1d2e,
+            #292d43
+          );
+
+        display:grid;
+
+        place-items:center;
+
+        font-size:5px;
+
+        text-align:center;
+
+      }
+
+
+      .cpShoes{
+
+        position:absolute;
+
+        bottom:25px;
+
+        left:20px;
+
+        width:60px;
+
+        height:25px;
+
+        display:grid;
+
+        place-items:center;
+
+        font-size:5px;
+
+        color:#aab5ff;
+
+      }
+
+
+      .characterName{
+
+        font-size:16px;
+
+        font-weight:1000;
+
+      }
+
+
+      .characterSubtitle{
+
+        margin-top:3px;
+
+        color:var(--muted);
+
+        font-size:8px;
+
+        letter-spacing:1px;
+
+      }
+
+
+      .characterGroup{
+
+        margin-top:12px;
+
+      }
+
+
+      .characterGroupTitle{
+
+        margin-bottom:6px;
+
+        font-size:8px;
+
+        font-weight:900;
+
+        color:var(--muted);
+
+        letter-spacing:1px;
+
+      }
+
+
+      .characterOptions{
+
+        display:flex;
+
+        flex-wrap:wrap;
+
+        gap:6px;
+
+      }
+
+
+      .characterOption{
+
+        padding:8px 9px;
+
+        border-radius:9px;
+
+        border:
+          1px solid
+          rgba(255,255,255,.08);
+
+        background:
+          rgba(255,255,255,.035);
+
+        color:white;
+
+        font-size:7px;
+
+        cursor:pointer;
+
+      }
+
+
+      .characterOption.selected{
+
+        border-color:
+          rgba(75,140,255,.7);
+
+        background:
+          rgba(55,100,255,.2);
+
+        box-shadow:
+          0 0 15px
+          rgba(60,110,255,.12);
+
+      }
+
+
+      @keyframes cpIdle{
+
+        from{
+
+          transform:
+            translateY(0)
+            rotate(-1deg);
+
+        }
+
+        to{
+
+          transform:
+            translateY(-7px)
+            rotate(1deg);
+
+        }
+
+      }
+
+
+      @keyframes cpPulse{
+
+        from{
+          transform:scale(.9);
+          opacity:.5;
+        }
+
+        to{
+          transform:scale(1.1);
+          opacity:1;
+        }
+
+      }
+
+
+      @media(max-width:650px){
+
+        .characterStudio{
+
+          grid-template-columns:1fr;
+
+        }
+
+
+        #characterPreview{
+
+          min-height:230px;
+
+        }
+
+      }
+
+    `;
+
+
+    document.head.appendChild(
+      style
+    );
+
+  }
+
+
+  setTimeout(
+    addCharacterButton,
+    900
+  );
+
+
+})(); 
 </script>
 
 </body>
