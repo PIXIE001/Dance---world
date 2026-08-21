@@ -3,3961 +3,1395 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport"
-      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#02050b">
+      content="width=device-width,initial-scale=1.0,
+      maximum-scale=1.0,user-scalable=no">
+
 <title>WORLD OF DANCE — Ultimate Competition</title>
 
 <style>
-/* =========================================================
-   WORLD OF DANCE
-   ADVANCED SINGLE-FILE GAME CLIENT
-   ========================================================= */
-
-:root{
-  --bg:#02050b;
-  --bg2:#06101e;
-  --panel:#081523;
-  --panel2:#0c1d31;
-  --line:rgba(255,255,255,.09);
-  --blue:#1597ff;
-  --cyan:#54eaff;
-  --violet:#806cff;
-  --gold:#ffd447;
-  --green:#42e59b;
-  --red:#ff4e68;
-  --text:#fff;
-  --muted:#8291a7;
-  --shadow:0 25px 80px rgba(0,0,0,.5);
-}
-
 *{
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
 }
 
 html,body{
-  width:100%;
-  height:100%;
-  margin:0;
-  overflow:hidden;
-  background:#02050b;
-  color:white;
-  font-family:
-    Inter,Arial,Helvetica,sans-serif;
-}
-
-body{
-  user-select:none;
+    margin:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#07080d;
+    color:#fff;
+    font-family:Arial,Helvetica,sans-serif;
 }
 
 button{
-  font:inherit;
-  cursor:pointer;
+    font:inherit;
 }
-
-button:active{
-  transform:scale(.97);
-}
-
-/* =========================================================
-   BOOT
-   ========================================================= */
-
-#boot{
-  position:fixed;
-  inset:0;
-  z-index:9999;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:
-    radial-gradient(circle at 50% 45%,#0b8cff35,transparent 30%),
-    #02050b;
-  transition:opacity .7s;
-}
-
-.bootLogo{
-  text-align:center;
-  animation:bootPulse 1.4s infinite alternate;
-}
-
-.bootLogo h1{
-  margin:0;
-  font-size:clamp(35px,7vw,80px);
-  font-weight:1000;
-  letter-spacing:-4px;
-}
-
-.bootLogo span{
-  display:block;
-  margin-top:8px;
-  color:var(--cyan);
-  letter-spacing:7px;
-  font-size:9px;
-}
-
-.bootBar{
-  width:220px;
-  height:3px;
-  margin:25px auto 0;
-  background:#152234;
-  overflow:hidden;
-}
-
-.bootBar i{
-  display:block;
-  width:0;
-  height:100%;
-  background:linear-gradient(90deg,var(--blue),var(--cyan));
-  animation:bootLoad 1.8s forwards;
-}
-
-@keyframes bootLoad{
-  to{width:100%}
-}
-
-@keyframes bootPulse{
-  from{transform:scale(.98);opacity:.7}
-  to{transform:scale(1);opacity:1}
-}
-
-/* =========================================================
-   APP
-   ========================================================= */
 
 #app{
-  width:100vw;
-  height:100vh;
-  position:relative;
-  overflow:hidden;
-  background:
-    radial-gradient(circle at 72% 25%,#168dff19,transparent 32%),
-    radial-gradient(circle at 20% 80%,#7d5cff10,transparent 28%),
-    linear-gradient(135deg,#02050a,#071322);
+    width:100%;
+    height:100%;
 }
-
-/* =========================================================
-   TOP BAR
-   ========================================================= */
-
-.topbar{
-  position:absolute;
-  z-index:500;
-  left:0;
-  right:0;
-  top:0;
-  height:72px;
-  display:flex;
-  align-items:center;
-  padding:0 28px;
-  background:
-    linear-gradient(180deg,#02050bee,rgba(2,5,11,.35),transparent);
-}
-
-.logo{
-  font-weight:1000;
-  letter-spacing:3px;
-  font-size:17px;
-}
-
-.logo small{
-  display:block;
-  color:var(--cyan);
-  font-size:7px;
-  letter-spacing:5px;
-  margin-top:4px;
-}
-
-.profile{
-  margin-left:auto;
-  display:flex;
-  align-items:center;
-  gap:17px;
-}
-
-.stat{
-  color:var(--muted);
-  font-size:8px;
-  letter-spacing:1px;
-}
-
-.stat b{
-  color:#fff;
-  margin-left:4px;
-}
-
-.playerAvatar{
-  width:42px;
-  height:42px;
-  border-radius:50%;
-  border:2px solid var(--cyan);
-  background:
-    radial-gradient(circle at 50% 31%,#c48662 0 15%,transparent 16%),
-    radial-gradient(circle at 50% 72%,#087cff 0 33%,transparent 34%),
-    #071321;
-  box-shadow:0 0 20px #54eaff25;
-}
-
-/* =========================================================
-   SCREENS
-   ========================================================= */
 
 .screen{
-  position:absolute;
-  inset:72px 0 76px;
-  display:none;
-  overflow:hidden;
+    width:100%;
+    height:100%;
+    display:none;
 }
 
 .screen.active{
-  display:block;
+    display:flex;
 }
 
-.screenScroll{
-  position:absolute;
-  inset:0;
-  overflow:auto;
-  padding:34px 5% 40px;
+#home{
+    flex-direction:column;
+    padding:22px;
+    background:
+        radial-gradient(circle at 80% 15%,#3c1b67 0,#111426 28%,#07080d 65%);
 }
 
-/* =========================================================
-   NAVIGATION
-   ========================================================= */
-
-.bottomNav{
-  position:absolute;
-  z-index:600;
-  left:0;
-  right:0;
-  bottom:0;
-  height:76px;
-  background:#02060cef;
-  border-top:1px solid var(--line);
-  display:flex;
-  justify-content:center;
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
 }
 
-.navScroll{
-  display:flex;
-  overflow-x:auto;
+.brand{
+    font-weight:900;
+    letter-spacing:2px;
+    font-size:clamp(20px,4vw,32px);
 }
 
-.navItem{
-  min-width:90px;
-  border:0;
-  background:none;
-  color:#68778b;
-  font-size:8px;
-  font-weight:1000;
-  letter-spacing:1px;
-  position:relative;
-}
-
-.navItem.active{
-  color:#fff;
-}
-
-.navItem.active:before{
-  content:"";
-  position:absolute;
-  top:0;
-  left:50%;
-  transform:translateX(-50%);
-  width:30px;
-  height:3px;
-  background:var(--cyan);
-  box-shadow:0 0 15px var(--cyan);
-}
-
-/* =========================================================
-   PAGE HEADERS
-   ========================================================= */
-
-.pageHead{
-  margin-bottom:25px;
-}
-
-.pageHead h1{
-  margin:0;
-  font-size:clamp(28px,4vw,48px);
-  font-weight:1000;
-  letter-spacing:-2px;
-}
-
-.pageHead p{
-  color:var(--muted);
-  font-size:8px;
-  letter-spacing:4px;
-  margin-top:8px;
-}
-
-/* =========================================================
-   BUTTONS
-   ========================================================= */
-
-.btn{
-  border:0;
-  padding:13px 24px;
-  font-size:9px;
-  font-weight:1000;
-  letter-spacing:1px;
-}
-
-.btn.primary{
-  color:#02050b;
-  background:#fff;
-  clip-path:
-    polygon(0 0,94% 0,100% 25%,100% 100%,
-            6% 100%,0 75%);
-}
-
-.btn.blue{
-  color:#fff;
-  background:linear-gradient(90deg,var(--blue),#096ad7);
-  box-shadow:0 8px 25px #1597ff25;
-}
-
-.btn.dark{
-  color:#fff;
-  background:#ffffff09;
-  border:1px solid var(--line);
-}
-
-/* =========================================================
-   HOME
-   ========================================================= */
-
-.home{
-  position:absolute;
-  inset:0;
-  display:grid;
-  grid-template-columns:46% 54%;
-}
-
-.homeContent{
-  position:relative;
-  z-index:20;
-  padding:12vh 0 0 7vw;
-}
-
-.season{
-  color:var(--cyan);
-  font-size:9px;
-  font-weight:1000;
-  letter-spacing:4px;
+.coins{
+    background:#151927;
+    border:1px solid #30364b;
+    padding:10px 16px;
+    border-radius:30px;
+    font-weight:bold;
 }
 
 .hero{
-  margin:18px 0;
-  font-size:clamp(58px,8vw,115px);
-  line-height:.8;
-  letter-spacing:-7px;
-  font-weight:1000;
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
 }
 
-.hero span{
-  display:block;
-  color:transparent;
-  -webkit-text-stroke:1px #fff;
+.hero h1{
+    font-size:clamp(40px,9vw,90px);
+    margin:0;
+    letter-spacing:4px;
+    font-weight:900;
 }
 
-.homeDescription{
-  max-width:440px;
-  color:#8b99ab;
-  font-size:11px;
-  line-height:1.8;
+.hero p{
+    color:#a9afc0;
+    letter-spacing:3px;
+    margin-top:12px;
 }
 
-.homeActions{
-  display:flex;
-  gap:9px;
-  margin-top:25px;
+.menu{
+    width:100%;
+    max-width:800px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
 }
 
-.homeVisual{
-  position:relative;
-  overflow:hidden;
+.btn{
+    min-height:58px;
+    border-radius:14px;
+    border:1px solid #30364b;
+    background:#121622;
+    color:#fff;
+    font-weight:800;
+    letter-spacing:1px;
+    padding:12px;
 }
 
-/* =========================================================
-   STAGE
-   ========================================================= */
-
-.stage{
-  position:absolute;
-  inset:0;
-  overflow:hidden;
-  background:
-    radial-gradient(circle at 50% 45%,#0d7bff19,transparent 35%),
-    linear-gradient(#061528,#02050a);
+.btn:active{
+    transform:scale(.97);
 }
 
-.spot{
-  position:absolute;
-  top:-20%;
-  width:260px;
-  height:100%;
-  background:linear-gradient(#fff2,#1597ff00);
-  clip-path:polygon(45% 0,55% 0,100% 100%,0 100%);
-  transform-origin:top;
-  animation:spotMove 4s ease-in-out infinite alternate;
+.btn.primary{
+    background:#fff;
+    color:#07080d;
 }
 
-.spot.one{left:25%}
-.spot.two{
-  left:62%;
-  opacity:.35;
-  animation-delay:1s;
-  animation-duration:5s;
+.panel{
+    width:100%;
+    height:100%;
+    padding:25px;
+    overflow:auto;
+    background:
+        radial-gradient(circle at 80% 0,#291846 0,#0b0d16 45%,#07080d 100%);
 }
 
-@keyframes spotMove{
-  to{transform:rotate(8deg)}
+.panel-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    margin-bottom:25px;
 }
 
-.stageFloor{
-  position:absolute;
-  left:-15%;
-  bottom:-20%;
-  width:130%;
-  height:65%;
-  transform:perspective(600px) rotateX(60deg);
-  background:
-    linear-gradient(#29dcff20 1px,transparent 1px),
-    linear-gradient(90deg,#29dcff20 1px,transparent 1px);
-  background-size:55px 55px;
-  box-shadow:0 -30px 100px #1597ff10;
+.panel-title{
+    font-size:clamp(26px,5vw,48px);
+    font-weight:900;
 }
 
-.particle{
-  position:absolute;
-  width:3px;
-  height:3px;
-  border-radius:50%;
-  background:#fff;
-  opacity:.6;
-  animation:floatParticle linear infinite;
-}
-
-@keyframes floatParticle{
-  from{
-    transform:translateY(100vh);
-    opacity:0;
-  }
-  20%{opacity:.8}
-  80%{opacity:.5}
-  to{
-    transform:translateY(-20vh);
-    opacity:0;
-  }
-}
-
-/* =========================================================
-   DANCER MODEL
-   ========================================================= */
-
-.dancer{
-  position:absolute;
-  width:220px;
-  height:430px;
-  left:50%;
-  bottom:2%;
-  transform:translateX(-50%);
-  filter:drop-shadow(0 30px 25px #000);
-  animation:dancerIdle 2.2s ease-in-out infinite;
-}
-
-@keyframes dancerIdle{
-  50%{
-    transform:
-      translateX(-50%)
-      translateY(-10px)
-      rotate(1deg);
-  }
-}
-
-.dHead{
-  position:absolute;
-  left:84px;
-  top:5px;
-  width:55px;
-  height:65px;
-  border-radius:48%;
-  background:#bc815e;
-  z-index:10;
-}
-
-.dHair{
-  position:absolute;
-  left:-5px;
-  top:-7px;
-  width:65px;
-  height:50px;
-  border-radius:55% 55% 35% 35%;
-  background:#080b11;
-}
-
-.dNeck{
-  position:absolute;
-  left:107px;
-  top:65px;
-  width:23px;
-  height:30px;
-  background:#a96e50;
-}
-
-.dBody{
-  position:absolute;
-  left:67px;
-  top:82px;
-  width:88px;
-  height:157px;
-  background:
-    linear-gradient(135deg,#1d3c6b,#087cff 55%,#13365f);
-  clip-path:
-    polygon(22% 0,78% 0,100% 88%,
-            50% 100%,0 88%);
-}
-
-.dArm{
-  position:absolute;
-  width:23px;
-  height:130px;
-  border-radius:20px;
-  background:linear-gradient(#a96e50,#d19a70);
-  transform-origin:top;
-  z-index:4;
-}
-
-.dArm.left{
-  left:53px;
-  top:90px;
-  transform:rotate(29deg);
-}
-
-.dArm.right{
-  right:49px;
-  top:90px;
-  transform:rotate(-45deg);
-}
-
-.dLeg{
-  position:absolute;
-  top:225px;
-  width:31px;
-  height:180px;
-  border-radius:20px;
-  background:linear-gradient(#0c1729,#31486f);
-  transform-origin:top;
-}
-
-.dLeg.left{
-  left:83px;
-  transform:rotate(9deg);
-}
-
-.dLeg.right{
-  left:119px;
-  transform:rotate(-12deg);
-}
-
-.dShoe{
-  position:absolute;
-  top:396px;
-  width:60px;
-  height:21px;
-  border-radius:20px 30px 8px 8px;
-  background:#fff;
-}
-
-.dShoe.left{
-  left:55px;
-  transform:rotate(12deg);
-}
-
-.dShoe.right{
-  left:122px;
-  transform:rotate(-14deg);
-}
-
-/* =========================================================
-   HUB CARDS
-   ========================================================= */
-
-.cards{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:12px;
+.card-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
 }
 
 .card{
-  min-height:155px;
-  position:relative;
-  padding:18px;
-  background:
-    linear-gradient(145deg,#10233b,#040b14);
-  border:1px solid var(--line);
-  box-shadow:var(--shadow);
+    background:#111522;
+    border:1px solid #292f42;
+    border-radius:18px;
+    padding:20px;
 }
 
-.card:hover{
-  border-color:#54eaff44;
+.card h3{
+    margin-top:0;
 }
 
-.cardTag{
-  color:var(--cyan);
-  font-size:8px;
-  font-weight:1000;
-  letter-spacing:2px;
+.stat{
+    font-size:30px;
+    font-weight:900;
 }
 
-.card h2{
-  font-size:21px;
-  margin:12px 0 8px;
+.muted{
+    color:#949caf;
 }
 
-.card p{
-  color:var(--muted);
-  font-size:9px;
-  line-height:1.6;
-}
-
-.cardAction{
-  position:absolute;
-  bottom:14px;
-  left:18px;
-  border:0;
-  background:none;
-  color:#fff;
-  font-size:8px;
-  font-weight:1000;
-}
-
-/* =========================================================
-   PLAYER HUB
-   ========================================================= */
-
-.playerPanel{
-  display:grid;
-  grid-template-columns:1.2fr .8fr;
-  gap:12px;
-}
-
-.playerHero{
-  position:relative;
-  min-height:420px;
-  overflow:hidden;
-  background:
-    radial-gradient(circle at 50% 30%,#168cff28,transparent 35%),
-    linear-gradient(145deg,#091d34,#030810);
-  border:1px solid var(--line);
-}
-
-.playerHero .dancer{
-  transform:translateX(-50%) scale(.78);
-  bottom:-5%;
-}
-
-.playerInfo{
-  padding:25px;
-  background:#050d18;
-  border:1px solid var(--line);
-}
-
-.ratingBig{
-  font-size:65px;
-  line-height:1;
-  font-weight:1000;
-}
-
-.ratingBig span{
-  display:block;
-  color:var(--cyan);
-  font-size:8px;
-  letter-spacing:3px;
-}
-
-.attributes{
-  margin-top:25px;
+.rank{
+    display:inline-block;
+    margin-top:8px;
+    padding:7px 12px;
+    border-radius:20px;
+    background:#28203b;
+    color:#d8c5ff;
+    font-weight:bold;
 }
 
 .attribute{
-  margin:12px 0;
+    margin:13px 0;
 }
 
-.attributeTop{
-  display:flex;
-  justify-content:space-between;
-  font-size:8px;
+.attribute-row{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:6px;
 }
 
-.attributeBar{
-  height:5px;
-  margin-top:5px;
-  background:#172638;
+.bar{
+    width:100%;
+    height:8px;
+    background:#242a39;
+    border-radius:10px;
+    overflow:hidden;
 }
 
-.attributeBar i{
-  display:block;
-  height:100%;
-  background:linear-gradient(90deg,var(--blue),var(--cyan));
+.fill{
+    height:100%;
+    background:linear-gradient(90deg,#8b5cf6,#ec4899);
+    border-radius:10px;
 }
 
-/* =========================================================
-   TRAINING
-   ========================================================= */
-
-.trainingLayout{
-  display:grid;
-  grid-template-columns:1.25fr .75fr;
-  gap:12px;
-  height:calc(100% - 80px);
+.action-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:20px;
 }
 
-.trainingStage{
-  position:relative;
-  min-height:420px;
-  overflow:hidden;
-  background:
-    radial-gradient(circle at 50% 45%,#168cff20,transparent 35%),
-    linear-gradient(#071a2f,#02050a);
-  border:1px solid var(--line);
-}
-
-.trainingStage .dancer{
-  bottom:-2%;
-}
-
-.trainingPanel{
-  background:#050d18;
-  border:1px solid var(--line);
-  padding:20px;
-  overflow:auto;
-}
-
-.drill{
-  padding:15px;
-  margin-bottom:10px;
-  background:#ffffff06;
-  border:1px solid transparent;
-  cursor:pointer;
-}
-
-.drill.active{
-  border-color:#54eaff66;
-  background:#1597ff12;
-}
-
-.drill b{
-  display:block;
-  font-size:10px;
-}
-
-.drill span{
-  display:block;
-  margin-top:5px;
-  color:var(--muted);
-  font-size:8px;
-}
-
-/* =========================================================
-   PERFORMANCE SETUP
-   ========================================================= */
-
-.setupGrid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:12px;
-}
-
-.setupBox{
-  padding:18px;
-  background:#050d18ee;
-  border:1px solid var(--line);
-}
-
-.setupBox h3{
-  color:var(--cyan);
-  font-size:8px;
-  letter-spacing:3px;
-  margin:0 0 14px;
-}
-
-.option{
-  padding:12px;
-  margin:7px 0;
-  background:#ffffff06;
-  border:1px solid transparent;
-  font-size:9px;
-  cursor:pointer;
-}
-
-.option.active{
-  background:#1597ff12;
-  border-color:#54eaff66;
-  box-shadow:inset 3px 0 var(--cyan);
-}
-
-.option small{
-  display:block;
-  color:#6f8096;
-  margin-top:5px;
-  font-size:7px;
-}
-
-.full{
-  width:100%;
-  margin-top:10px;
-}
-
-/* =========================================================
-   BATTLE SCREEN
-   ========================================================= */
-
-#battle{
-  inset:0;
-  background:
-    radial-gradient(circle at 50% 20%,#168dff2c,transparent 35%),
-    linear-gradient(#06172b,#02050a);
-}
-
-.battleHud{
-  position:absolute;
-  z-index:100;
-  left:3%;
-  right:3%;
-  top:15px;
-  display:grid;
-  grid-template-columns:1fr 150px 1fr;
-  gap:10px;
-}
-
-.scoreBox{
-  padding:10px;
-  background:#000c;
-  border:1px solid var(--line);
-  backdrop-filter:blur(10px);
-}
-
-.scoreBox.right{
-  text-align:right;
-}
-
-.scoreBox.center{
-  text-align:center;
-}
-
-.scoreBox small{
-  color:#8290a3;
-  font-size:7px;
-}
-
-.scoreBox strong{
-  display:block;
-  font-size:24px;
-  margin-top:3px;
-}
-
-.energy{
-  height:5px;
-  margin-top:5px;
-  background:#172638;
-}
-
-.energy i{
-  display:block;
-  height:100%;
-  background:linear-gradient(90deg,var(--blue),var(--cyan));
-  transition:width .2s;
-}
-
-.arena{
-  position:absolute;
-  inset:0;
-  overflow:hidden;
-}
-
-.audience{
-  position:absolute;
-  left:0;
-  right:0;
-  top:8%;
-  height:45%;
-  opacity:.28;
-  background:
-    radial-gradient(circle,#fff 0 1px,transparent 2px);
-  background-size:38px 34px;
-}
-
-.battleDancer{
-  position:absolute;
-  width:220px;
-  height:430px;
-  bottom:13%;
-  transform:translateX(-50%) scale(.68);
-  z-index:20;
-}
-
-.battleDancer.player{
-  left:34%;
-}
-
-.battleDancer.enemy{
-  left:66%;
-  transform:
-    translateX(-50%)
-    scale(.68)
-    scaleX(-1);
-  filter:
-    hue-rotate(150deg)
-    drop-shadow(0 25px 20px #000);
-}
-
-.battleDancer.perform{
-  animation:performanceMove .32s ease;
-}
-
-@keyframes performanceMove{
-  50%{
-    transform:
-      translateX(-50%)
-      translateY(-35px)
-      rotate(6deg)
-      scale(.71);
-  }
-}
-
-.enemy.perform{
-  animation:enemyMove .32s ease;
-}
-
-@keyframes enemyMove{
-  50%{
-    transform:
-      translateX(-50%)
-      translateY(-32px)
-      rotate(-6deg)
-      scale(.71)
-      scaleX(-1);
-  }
-}
-
-/* =========================================================
-   JUDGEMENT
-   ========================================================= */
-
-.judgement{
-  position:absolute;
-  z-index:200;
-  left:50%;
-  top:42%;
-  transform:translate(-50%,-50%) scale(.5);
-  opacity:0;
-  font-size:52px;
-  font-style:italic;
-  font-weight:1000;
-  pointer-events:none;
-}
-
-.judgement.show{
-  animation:judgement .65s ease forwards;
-}
-
-@keyframes judgement{
-  0%{
+.toast{
+    position:fixed;
+    left:50%;
+    bottom:25px;
+    transform:translateX(-50%);
+    background:#fff;
+    color:#08090e;
+    padding:13px 20px;
+    border-radius:30px;
+    font-weight:bold;
     opacity:0;
-    transform:translate(-50%,-50%) scale(.5);
-  }
-  25%{
+    pointer-events:none;
+    transition:.25s;
+    z-index:100;
+}
+
+.toast.show{
     opacity:1;
-    transform:translate(-50%,-50%) scale(1.15);
-  }
-  100%{
-    opacity:0;
-    transform:translate(-50%,-85%) scale(1);
-  }
 }
 
-.judgement.perfect{color:var(--gold)}
-.judgement.great{color:var(--cyan)}
-.judgement.good{color:var(--green)}
-.judgement.miss{color:var(--red)}
+@media(max-width:700px){
+    .menu{
+        grid-template-columns:repeat(2,1fr);
+    }
 
-/* =========================================================
-   RHYTHM ENGINE
-   ========================================================= */
-
-.rhythmPanel{
-  position:absolute;
-  z-index:150;
-  left:50%;
-  bottom:20px;
-  width:min(720px,72vw);
-  transform:translateX(-50%);
+    .card-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
 }
 
-.noteTrack{
-  position:relative;
-  height:70px;
-  overflow:hidden;
-}
-
-.note{
-  position:absolute;
-  top:10px;
-  width:44px;
-  height:44px;
-  display:grid;
-  place-items:center;
-  border-radius:50%;
-  border:2px solid #fff;
-  background:#061526;
-  color:#fff;
-  font-size:11px;
-  font-weight:1000;
-  box-shadow:
-    0 0 20px #1597ff44;
-}
-
-.hitLine{
-  position:relative;
-  height:4px;
-  background:#ffffff15;
-}
-
-.target{
-  position:absolute;
-  left:50%;
-  transform:translateX(-50%);
-  width:100px;
-  height:4px;
-  background:var(--cyan);
-  box-shadow:0 0 20px var(--cyan);
-}
-
-.rhythmButtons{
-  display:flex;
-  justify-content:center;
-  gap:8px;
-  margin-top:8px;
-}
-
-.rhythmButtons button{
-  width:55px;
-  height:38px;
-  color:white;
-  background:#071526;
-  border:1px solid var(--line);
-  font-weight:1000;
-}
-
-.rhythmButtons button.hit{
-  background:var(--blue);
-  box-shadow:0 0 20px #1597ff55;
-}
-
-/* =========================================================
-   BATTLE FX
-   ========================================================= */
-
-.hitFlash{
-  position:absolute;
-  inset:0;
-  z-index:120;
-  pointer-events:none;
-  background:#54eaff;
-  opacity:0;
-}
-
-.hitFlash.active{
-  animation:flash .18s;
-}
-
-@keyframes flash{
-  0%{opacity:.14}
-  100%{opacity:0}
-}
-
-.battleCombo{
-  position:absolute;
-  z-index:130;
-  left:7%;
-  bottom:110px;
-}
-
-.battleCombo b{
-  display:block;
-  font-size:30px;
-}
-
-.battleCombo span{
-  color:var(--cyan);
-  font-size:7px;
-  letter-spacing:3px;
-}
-
-.battleExit{
-  position:absolute;
-  right:3%;
-  bottom:22px;
-  z-index:200;
-  padding:8px 13px;
-  color:#fff;
-  background:#000b;
-  border:1px solid var(--line);
-  font-size:8px;
-}
-
-/* =========================================================
-   RESULT
-   ========================================================= */
-
-.resultOverlay{
-  position:absolute;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:
-    radial-gradient(circle,#168cff22,transparent 40%),
-    #02050be8;
-}
-
-.resultCard{
-  width:min(720px,90%);
-  padding:35px;
-  text-align:center;
-  background:#030a16f5;
-  border:1px solid var(--line);
-  box-shadow:var(--shadow);
-}
-
-.resultLabel{
-  color:var(--cyan);
-  font-size:8px;
-  letter-spacing:4px;
-}
-
-.resultTitle{
-  margin:8px 0;
-  font-size:60px;
-  font-weight:1000;
-  letter-spacing:-4px;
-}
-
-.finalScore{
-  font-size:43px;
-  font-weight:1000;
-}
-
-.resultStats{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:7px;
-  margin:22px 0;
-}
-
-.resultStats div{
-  padding:12px;
-  background:#ffffff08;
-}
-
-.resultStats b{
-  display:block;
-  font-size:20px;
-}
-
-.resultStats span{
-  color:#708096;
-  font-size:7px;
-}
-
-.reward{
-  color:var(--gold);
-  font-size:9px;
-  margin:15px;
-}
-
-/* =========================================================
-   COSTUMES / SONGS / STYLES
-   ========================================================= */
-
-.listGrid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-}
-
-.listCard{
-  padding:20px;
-  background:#071321;
-  border:1px solid var(--line);
-}
-
-.listCard .tag{
-  color:var(--cyan);
-  font-size:8px;
-  font-weight:1000;
-}
-
-.listCard h2{
-  margin:10px 0;
-}
-
-.listCard p{
-  color:var(--muted);
-  font-size:9px;
-  line-height:1.6;
-}
-
-.listCard button{
-  margin-top:10px;
-}
-
-/* =========================================================
-   TOURNAMENT
-   ========================================================= */
-
-.tournamentHero{
-  padding:25px;
-  background:
-    linear-gradient(135deg,#0c2847,#030914);
-  border:1px solid var(--line);
-  margin-bottom:12px;
-}
-
-.tournamentGrid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:12px;
-}
-
-.tournamentStat{
-  padding:20px;
-  background:#071321;
-  border:1px solid var(--line);
-}
-
-.tournamentStat span{
-  color:var(--cyan);
-  font-size:8px;
-  letter-spacing:2px;
-}
-
-.tournamentStat strong{
-  display:block;
-  margin-top:10px;
-  font-size:22px;
-}
-
-/* =========================================================
-   TOAST
-   ========================================================= */
-
-#toast{
-  position:absolute;
-  z-index:1000;
-  top:82px;
-  left:50%;
-  transform:translate(-50%,-20px);
-  opacity:0;
-  pointer-events:none;
-  padding:10px 18px;
-  background:#030a15f5;
-  border:1px solid var(--cyan);
-  box-shadow:0 10px 40px #000;
-  font-size:8px;
-  letter-spacing:1px;
-  transition:.25s;
-}
-
-#toast.show{
-  opacity:1;
-  transform:translate(-50%,0);
-}
-
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
-
-@media(max-width:900px){
-
-  .cards{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .setupGrid{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .playerPanel,
-  .trainingLayout{
-    grid-template-columns:1fr;
-  }
-
-  .home{
-    display:block;
-  }
-
-  .homeVisual{
-    position:absolute;
-    inset:0;
-    opacity:.35;
-  }
-
-  .homeContent{
-    padding:90px 25px;
-  }
-
-  .listGrid{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .tournamentGrid{
-    grid-template-columns:repeat(2,1fr);
-  }
-}
-
-@media(max-width:600px){
-
-  .topbar{
-    height:58px;
-    padding:0 12px;
-  }
-
-  .screen{
-    inset:58px 0 65px;
-  }
-
-  .bottomNav{
-    height:65px;
-  }
-
-  .navItem{
-    min-width:76px;
-  }
-
-  .profile{
-    gap:8px;
-  }
-
-  .profile .stat{
-    display:none;
-  }
-
-  .hero{
-    font-size:51px;
-    letter-spacing:-4px;
-  }
-
-  .homeContent{
-    padding:75px 20px;
-  }
-
-  .cards,
-  .setupGrid,
-  .listGrid,
-  .tournamentGrid{
-    grid-template-columns:1fr;
-  }
-
-  .battleHud{
-    left:2%;
-    right:2%;
-    grid-template-columns:1fr 80px 1fr;
-  }
-
-  .scoreBox strong{
-    font-size:17px;
-  }
-
-  .battleDancer{
-    transform:translateX(-50%) scale(.52);
-  }
-
-  .battleDancer.player{
-    left:30%;
-  }
-
-  .battleDancer.enemy{
-    left:70%;
-    transform:
-      translateX(-50%)
-      scale(.52)
-      scaleX(-1);
-  }
-
-  .rhythmPanel{
-    width:90vw;
-  }
-
-  .rhythmButtons button{
-    width:48px;
-  }
-
-  .battleCombo{
-    bottom:120px;
-  }
-
-  .resultCard{
-    padding:20px;
-  }
-
-  .resultTitle{
-    font-size:42px;
-  }
-
-  .resultStats{
-    grid-template-columns:repeat(5,1fr);
-  }
-
-  .resultStats div{
-    padding:7px 3px;
-  }
-
-  .resultStats b{
-    font-size:14px;
-  }
+@media(orientation:portrait){
+    #home::before{
+        content:"Rotate your phone to landscape for the best World of Dance experience.";
+        position:fixed;
+        top:0;
+        left:0;
+        right:0;
+        background:#000;
+        color:#fff;
+        padding:10px;
+        text-align:center;
+        z-index:200;
+        font-size:12px;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<!-- =======================================================
-     BOOT
-     ======================================================= -->
-
-<div id="boot">
-  <div class="bootLogo">
-    <h1>WOD</h1>
-    <span>WORLD OF DANCE</span>
-    <div class="bootBar"><i></i></div>
-  </div>
-</div>
-
-
-<!-- =======================================================
-     APPLICATION
-     ======================================================= -->
-
 <div id="app">
 
-<header class="topbar">
+    <!-- HOME -->
+    <section id="home" class="screen active">
 
-  <div class="logo">
-    WORLD OF DANCE
-    <small>ULTIMATE COMPETITION</small>
-  </div>
+        <div class="topbar">
 
-  <div class="profile">
-    <div class="stat">LV <b id="uiLevel">1</b></div>
-    <div class="stat">XP <b id="uiXP">0</b></div>
-    <div class="stat">COINS <b id="uiCoins">1000</b></div>
-    <div class="playerAvatar"></div>
-  </div>
-
-</header>
-
-
-<!-- =======================================================
-     HOME
-     ======================================================= -->
-
-<section id="home" class="screen active">
-
-  <div class="home">
-
-    <div class="homeContent">
-
-      <div class="season">
-        SEASON 01 • WORLD TOUR
-      </div>
-
-      <div class="hero">
-        OWN
-        <span>THE STAGE</span>
-      </div>
-
-      <div class="homeDescription">
-        Build your dancer. Master different disciplines.
-        Train your attributes, customize your performance,
-        battle AI crews and rise through the World of Dance.
-      </div>
-
-      <div class="homeActions">
-        <button class="btn primary" onclick="Game.openPerformance()">
-          PLAY NOW
-        </button>
-
-        <button class="btn dark" onclick="Game.show('training')">
-          TRAIN
-        </button>
-      </div>
-
-    </div>
-
-    <div class="homeVisual">
-      <div class="stage">
-
-        <div class="spot one"></div>
-        <div class="spot two"></div>
-        <div class="stageFloor"></div>
-
-        <div id="homeParticles"></div>
-
-        <div class="dancer">
-
-          <div class="dHead">
-            <div class="dHair"></div>
-          </div>
-
-          <div class="dNeck"></div>
-
-          <div class="dArm left"></div>
-          <div class="dArm right"></div>
-
-          <div class="dBody"></div>
-
-          <div class="dLeg left"></div>
-          <div class="dLeg right"></div>
-
-          <div class="dShoe left"></div>
-          <div class="dShoe right"></div>
-
-        </div>
-
-      </div>
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =======================================================
-     PLAYER
-     ======================================================= -->
-
-<section id="playerHub" class="screen">
-
-  <div class="screenScroll">
-
-    <div class="pageHead">
-      <h1>Player</h1>
-      <p>BUILD YOUR DANCER</p>
-    </div>
-
-    <div class="playerPanel">
-
-      <div class="playerHero">
-
-        <div class="stage">
-          <div class="spot one"></div>
-          <div class="spot two"></div>
-          <div class="stageFloor"></div>
-
-          <div class="dancer">
-
-            <div class="dHead">
-              <div class="dHair"></div>
+            <div class="brand">
+                WORLD OF DANCE
             </div>
 
-            <div class="dNeck"></div>
-
-            <div class="dArm left"></div>
-            <div class="dArm right"></div>
-
-            <div class="dBody"></div>
-
-            <div class="dLeg left"></div>
-            <div class="dLeg right"></div>
-
-            <div class="dShoe left"></div>
-            <div class="dShoe right"></div>
-
-          </div>
-        </div>
-
-      </div>
-
-      <div class="playerInfo">
-
-        <div class="ratingBig">
-          <span>OVERALL RATING</span>
-          <b id="playerRating">70</b>
-        </div>
-
-        <h2>PIXIE</h2>
-
-        <p style="color:var(--muted);font-size:9px">
-          Urban Motion captain and all-round competition dancer.
-        </p>
-
-        <div class="attributes">
-
-          <div class="attribute">
-            <div class="attributeTop">
-              <span>TECHNIQUE</span>
-              <b id="playerTech">70</b>
-            </div>
-            <div class="attributeBar">
-              <i id="playerTechBar"></i>
-            </div>
-          </div>
-
-          <div class="attribute">
-            <div class="attributeTop">
-              <span>RHYTHM</span>
-              <b id="playerRhythm">70</b>
-            </div>
-            <div class="attributeBar">
-              <i id="playerRhythmBar"></i>
-            </div>
-          </div>
-
-          <div class="attribute">
-            <div class="attributeTop">
-              <span>POWER</span>
-              <b id="playerPower">70</b>
-            </div>
-            <div class="attributeBar">
-              <i id="playerPowerBar"></i>
-            </div>
-          </div>
-
-          <div class="attribute">
-            <div class="attributeTop">
-              <span>CONTROL</span>
-              <b id="playerControl">70</b>
-            </div>
-            <div class="attributeBar">
-              <i id="playerControlBar"></i>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =======================================================
-     TRAINING
-     ======================================================= -->
-
-<section id="training" class="screen">
-
-  <div class="screenScroll">
-
-    <div class="pageHead">
-      <h1>Training Centre</h1>
-      <p>DEVELOP YOUR PERFORMANCE</p>
-    </div>
-
-    <div class="trainingLayout">
-
-      <div class="trainingStage">
-
-        <div class="stage">
-          <div class="spot one"></div>
-          <div class="spot two"></div>
-          <div class="stageFloor"></div>
-
-          <div id="trainingDancer" class="dancer">
-
-            <div class="dHead">
-              <div class="dHair"></div>
+            <div class="coins">
+                🪙 <span id="coinDisplay">1000</span>
             </div>
 
-            <div class="dNeck"></div>
-
-            <div class="dArm left"></div>
-            <div class="dArm right"></div>
-
-            <div class="dBody"></div>
-
-            <div class="dLeg left"></div>
-            <div class="dLeg right"></div>
-
-            <div class="dShoe left"></div>
-            <div class="dShoe right"></div>
-
-          </div>
         </div>
 
-      </div>
+        <div class="hero">
 
-      <div class="trainingPanel">
+            <div>
+                <h1>ULTIMATE<br>COMPETITION</h1>
 
-        <h2>SELECT DRILL</h2>
+                <p>
+                    TRAIN • PERFORM • COMPETE • BECOME A WORLD ICON
+                </p>
+            </div>
 
-        <div
-          class="drill active"
-          data-drill="TECHNIQUE"
-          onclick="Training.select(this)"
-        >
-          <b>TECHNIQUE LAB</b>
-          <span>Improve precision and movement quality.</span>
         </div>
 
-        <div
-          class="drill"
-          data-drill="RHYTHM"
-          onclick="Training.select(this)"
-        >
-          <b>RHYTHM SESSION</b>
-          <span>Develop musical timing and note accuracy.</span>
+        <div class="menu">
+
+            <button class="btn primary"
+                    onclick="showScreen('profile')">
+                PLAYER
+            </button>
+
+            <button class="btn"
+                    onclick="showScreen('crew')">
+                MY CREW
+            </button>
+
+            <button class="btn"
+                    onclick="showScreen('training')">
+                TRAINING
+            </button>
+
+            <button class="btn"
+                    onclick="showScreen('performance')">
+                PERFORMANCE
+            </button>
+
+            <button class="btn"
+                    onclick="showScreen('events')">
+                EVENTS
+            </button>
+
+            <button class="btn"
+                    onclick="showScreen('collection')">
+                COLLECTION
+            </button>
+
+            <button class="btn"
+                    onclick="showScreen('settings')">
+                SETTINGS
+            </button>
+
+            <button class="btn"
+                    onclick="showToast('More systems coming in later builds')">
+                MORE
+            </button>
+
         </div>
 
-        <div
-          class="drill"
-          data-drill="POWER"
-          onclick="Training.select(this)"
-        >
-          <b>POWER SESSION</b>
-          <span>Increase explosive movement and battle strength.</span>
+    </section>
+
+
+    <!-- PROFILE -->
+    <section id="profile" class="screen">
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <div class="panel-title">
+                    PLAYER
+                </div>
+
+                <button class="btn"
+                        onclick="showScreen('home')">
+                    BACK
+                </button>
+
+            </div>
+
+            <div class="card-grid">
+
+                <div class="card">
+
+                    <h3>PLAYER</h3>
+
+                    <div id="playerName"
+                         class="stat">
+                        World Dancer
+                    </div>
+
+                    <div id="playerRank"
+                         class="rank">
+                        ROOKIE
+                    </div>
+
+                </div>
+
+                <div class="card">
+
+                    <h3>COINS</h3>
+
+                    <div id="profileCoins"
+                         class="stat">
+                        1000
+                    </div>
+
+                </div>
+
+                <div class="card">
+
+                    <h3>RANK PROGRESS</h3>
+
+                    <div class="stat"
+                         id="rankProgress">
+                        0%
+                    </div>
+
+                </div>
+
+                <div class="card">
+
+                    <h3>SELECTED CREW</h3>
+
+                    <div id="selectedCrew"
+                         class="stat">
+                        Street Pulse
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card"
+                 style="margin-top:15px">
+
+                <h3>DANCER ATTRIBUTES</h3>
+
+                <div id="attributes"></div>
+
+            </div>
+
         </div>
 
-        <div
-          class="drill"
-          data-drill="CONTROL"
-          onclick="Training.select(this)"
-        >
-          <b>CONTROL SESSION</b>
-          <span>Improve balance, isolation and control.</span>
+    </section>
+
+
+    <!-- CREW -->
+    <section id="crew" class="screen">
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <div class="panel-title">
+                    MY CREW
+                </div>
+
+                <button class="btn"
+                        onclick="showScreen('home')">
+                    BACK
+                </button>
+
+            </div>
+
+            <div class="card-grid"
+                 id="crewList"></div>
+
         </div>
 
-        <button
-          class="btn blue full"
-          onclick="Training.run()"
-        >
-          START TRAINING
-        </button>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
+    </section>
 
 
-<!-- =======================================================
-     PERFORMANCE
-     ======================================================= -->
+    <!-- TRAINING -->
+    <section id="training" class="screen">
 
-<section id="performance" class="screen">
+        <div class="panel">
 
-  <div class="screenScroll">
+            <div class="panel-header">
 
-    <div class="pageHead">
-      <h1>Performance Setup</h1>
-      <p>CREATE YOUR PERFORMANCE</p>
-    </div>
+                <div class="panel-title">
+                    TRAINING CENTRE
+                </div>
 
-    <div class="setupGrid">
+                <button class="btn"
+                        onclick="showScreen('home')">
+                    BACK
+                </button>
 
-      <div class="setupBox">
+            </div>
 
-        <h3>DANCER</h3>
+            <div class="card-grid">
 
-        <div class="option active"
-             onclick="Setup.choose(this,'dancer','PIXIE')">
-          PIXIE
-          <small>87 OVR • CAPTAIN</small>
+                <div class="card">
+                    <h3>TECHNIQUE</h3>
+                    <p class="muted">
+                        Improve movement precision.
+                    </p>
+                    <button class="btn primary"
+                            onclick="train('technique')">
+                        TRAIN
+                    </button>
+                </div>
+
+                <div class="card">
+                    <h3>RHYTHM</h3>
+                    <p class="muted">
+                        Improve musical timing.
+                    </p>
+                    <button class="btn primary"
+                            onclick="train('rhythm')">
+                        TRAIN
+                    </button>
+                </div>
+
+                <div class="card">
+                    <h3>POWER</h3>
+                    <p class="muted">
+                        Improve performance energy.
+                    </p>
+                    <button class="btn primary"
+                            onclick="train('power')">
+                        TRAIN
+                    </button>
+                </div>
+
+                <div class="card">
+                    <h3>CONTROL</h3>
+                    <p class="muted">
+                        Improve body control.
+                    </p>
+                    <button class="btn primary"
+                            onclick="train('control')">
+                        TRAIN
+                    </button>
+                </div>
+
+            </div>
+
         </div>
 
-        <div class="option"
-             onclick="Setup.choose(this,'dancer','AMARA')">
-          AMARA
-          <small>82 OVR • AFRO SPECIALIST</small>
+    </section>
+
+
+    <!-- PERFORMANCE -->
+    <section id="performance" class="screen">
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <div class="panel-title">
+                    PERFORMANCE
+                </div>
+
+                <button class="btn"
+                        onclick="showScreen('home')">
+                    BACK
+                </button>
+
+            </div>
+
+            <div class="card">
+
+                <h2>Performance Setup</h2>
+
+                <p class="muted">
+                    Later builds will allow you to select
+                    crew, dancers, dance style, music,
+                    costumes, formation and special moves.
+                </p>
+
+                <button class="btn primary"
+                        onclick="showToast('Performance system is coming next')">
+                    ENTER PERFORMANCE
+                </button>
+
+            </div>
+
         </div>
 
-        <div class="option"
-             onclick="Setup.choose(this,'dancer','KAI')">
-          KAI
-          <small>79 OVR • BREAKING SPECIALIST</small>
+    </section>
+
+
+    <!-- EVENTS -->
+    <section id="events" class="screen">
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <div class="panel-title">
+                    EVENTS
+                </div>
+
+                <button class="btn"
+                        onclick="showScreen('home')">
+                    BACK
+                </button>
+
+            </div>
+
+            <div class="card">
+
+                <h2>Competition Calendar</h2>
+
+                <p class="muted">
+                    Schedule competitions and prepare your
+                    crew before the competition timer expires.
+                </p>
+
+                <button class="btn primary"
+                        onclick="showToast('Competition scheduler comes in Build 05')">
+                    CREATE COMPETITION
+                </button>
+
+            </div>
+
         </div>
 
-      </div>
+    </section>
 
 
-      <div class="setupBox">
+    <!-- COLLECTION -->
+    <section id="collection" class="screen">
 
-        <h3>MUSIC</h3>
+        <div class="panel">
 
-        <div class="option active"
-             onclick="Setup.choose(this,'song','CITY LIGHTS')">
-          CITY LIGHTS
-          <small>118 BPM • URBAN</small>
+            <div class="panel-header">
+
+                <div class="panel-title">
+                    COLLECTION
+                </div>
+
+                <button class="btn"
+                        onclick="showScreen('home')">
+                    BACK
+                </button>
+
+            </div>
+
+            <div class="card-grid">
+
+                <div class="card">
+                    <h3>DANCE STYLES</h3>
+                    <div class="stat">8</div>
+                </div>
+
+                <div class="card">
+                    <h3>COSTUMES</h3>
+                    <div class="stat">0</div>
+                </div>
+
+                <div class="card">
+                    <h3>MUSIC</h3>
+                    <div class="stat">0</div>
+                </div>
+
+                <div class="card">
+                    <h3>DANCERS</h3>
+                    <div class="stat">1</div>
+                </div>
+
+            </div>
+
         </div>
 
-        <div class="option"
-             onclick="Setup.choose(this,'song','RISING')">
-          RISING
-          <small>104 BPM • FUSION</small>
+    </section>
+
+
+    <!-- SETTINGS -->
+    <section id="settings" class="screen">
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <div class="panel-title">
+                    SETTINGS
+                </div>
+
+                <button class="btn"
+                        onclick="showScreen('home')">
+                    BACK
+                </button>
+
+            </div>
+
+            <div class="card">
+
+                <h2>Local Save</h2>
+
+                <p class="muted">
+                    Your progress is stored locally on this device.
+                </p>
+
+                <div class="action-row">
+
+                    <button class="btn primary"
+                            onclick="saveGame();showToast('Game saved')">
+                        SAVE NOW
+                    </button>
+
+                    <button class="btn"
+                            onclick="resetGame()">
+                        RESET SAVE
+                    </button>
+
+                </div>
+
+            </div>
+
         </div>
 
-        <div class="option"
-             onclick="Setup.choose(this,'song','BREAK FREE')">
-          BREAK FREE
-          <small>96 BPM • BATTLE</small>
-        </div>
+    </section>
 
-        <div class="option"
-             onclick="Setup.choose(this,'song','NIGHT DRIVE')">
-          NIGHT DRIVE
-          <small>122 BPM • STREET</small>
-        </div>
+</div>
 
-      </div>
-
-
-      <div class="setupBox">
-
-        <h3>DANCE DISCIPLINE</h3>
-
-        <div class="option active"
-             onclick="Setup.choose(this,'style','HIP HOP')">
-          HIP HOP
-          <small>RHYTHM + POWER</small>
-        </div>
-
-        <div class="option"
-             onclick="Setup.choose(this,'style','AFRO FUSION')">
-          AFRO FUSION
-          <small>GROOVE + FOOTWORK</small>
-        </div>
-
-        <div class="option"
-             onclick="Setup.choose(this,'style','BREAKING')">
-          BREAKING
-          <small>POWER + TRICKS</small>
-        </div>
-
-        <div class="option"
-             onclick="Setup.choose(this,'style','CONTEMPORARY')">
-          CONTEMPORARY
-          <small>CONTROL + EXPRESSION</small>
-        </div>
-
-      </div>
-
-
-      <div class="setupBox">
-
-        <h3>COSTUME</h3>
-
-        <div class="option active"
-             onclick="Setup.choose(this,'costume','URBAN BLUE')">
-          URBAN BLUE
-          <small>EQUIPPED</small>
-        </div>
-
-        <div class="option"
-             onclick="Setup.choose(this,'costume','STREET BLACK')">
-          STREET BLACK
-          <small>UNLOCKED</small>
-        </div>
-
-        <div class="option"
-             onclick="Setup.choose(this,'costume','STAGE WHITE')">
-          STAGE WHITE
-          <small>LEVEL 8</small>
-        </div>
-
-        <button
-          class="btn primary full"
-          onclick="Battle.start()"
-        >
-          ENTER BATTLE
-        </button>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =======================================================
-     SQUAD
-     ======================================================= -->
-
-<section id="squad" class="screen">
-
-  <div class="screenScroll">
-
-    <div class="pageHead">
-      <h1>My Squad</h1>
-      <p>BUILD YOUR WORLD-CLASS CREW</p>
-    </div>
-
-    <div class="cards">
-
-      <div class="card">
-        <div class="cardTag">CAPTAIN</div>
-        <h2>PIXIE</h2>
-        <p>Balanced urban competition specialist.</p>
-        <button class="cardAction"
-                onclick="UI.toast('PIXIE SELECTED')">
-          SELECT →
-        </button>
-      </div>
-
-      <div class="card">
-        <div class="cardTag">AFRO SPECIALIST</div>
-        <h2>AMARA</h2>
-        <p>Strong rhythm, groove and expression.</p>
-        <button class="cardAction"
-                onclick="UI.toast('AMARA SELECTED')">
-          SELECT →
-        </button>
-      </div>
-
-      <div class="card">
-        <div class="cardTag">BREAKING SPECIALIST</div>
-        <h2>KAI</h2>
-        <p>High power and trick performance.</p>
-        <button class="cardAction"
-                onclick="UI.toast('KAI SELECTED')">
-          SELECT →
-        </button>
-      </div>
-
-      <div class="card">
-        <div class="cardTag">RECRUIT</div>
-        <h2>NEW DANCER</h2>
-        <p>Expand your squad and increase your crew rating.</p>
-        <button class="cardAction"
-                onclick="Squad.recruit()">
-          RECRUIT →
-        </button>
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =======================================================
-     COSTUMES
-     ======================================================= -->
-
-<section id="costumes" class="screen">
-
-  <div class="screenScroll">
-
-    <div class="pageHead">
-      <h1>Costume Studio</h1>
-      <p>PERFORMANCE LOOKS</p>
-    </div>
-
-    <div class="listGrid">
-
-      <div class="listCard">
-        <div class="tag">EQUIPPED</div>
-        <h2>URBAN BLUE</h2>
-        <p>Modern competition performance outfit.</p>
-        <button class="btn dark"
-                onclick="Setup.setCostume('URBAN BLUE')">
-          EQUIP
-        </button>
-      </div>
-
-      <div class="listCard">
-        <div class="tag">UNLOCKED</div>
-        <h2>STREET BLACK</h2>
-        <p>Street performance collection.</p>
-        <button class="btn dark"
-                onclick="Setup.setCostume('STREET BLACK')">
-          EQUIP
-        </button>
-      </div>
-
-      <div class="listCard">
-        <div class="tag">LEVEL 8</div>
-        <h2>STAGE WHITE</h2>
-        <p>Premium stage performance collection.</p>
-        <button class="btn dark"
-                onclick="Setup.setCostume('STAGE WHITE')">
-          VIEW
-        </button>
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =======================================================
-     SONGS
-     ======================================================= -->
-
-<section id="songs" class="screen">
-
-  <div class="screenScroll">
-
-    <div class="pageHead">
-      <h1>Music Library</h1>
-      <p>SELECT YOUR PERFORMANCE SOUND</p>
-    </div>
-
-    <div class="listGrid">
-
-      <div class="listCard">
-        <div class="tag">118 BPM</div>
-        <h2>CITY LIGHTS</h2>
-        <p>Fast urban competition rhythm.</p>
-        <button class="btn dark"
-                onclick="Setup.setSong('CITY LIGHTS')">
-          SELECT
-        </button>
-      </div>
-
-      <div class="listCard">
-        <div class="tag">104 BPM</div>
-        <h2>RISING</h2>
-        <p>Fusion performance track.</p>
-        <button class="btn dark"
-                onclick="Setup.setSong('RISING')">
-          SELECT
-        </button>
-      </div>
-
-      <div class="listCard">
-        <div class="tag">96 BPM</div>
-        <h2>BREAK FREE</h2>
-        <p>Battle-focused rhythm.</p>
-        <button class="btn dark"
-                onclick="Setup.setSong('BREAK FREE')">
-          SELECT
-        </button>
-      </div>
-
-      <div class="listCard">
-        <div class="tag">122 BPM</div>
-        <h2>NIGHT DRIVE</h2>
-        <p>Fast street performance track.</p>
-        <button class="btn dark"
-                onclick="Setup.setSong('NIGHT DRIVE')">
-          SELECT
-        </button>
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =======================================================
-     STYLES
-     ======================================================= -->
-
-<section id="styles" class="screen">
-
-  <div class="screenScroll">
-
-    <div class="pageHead">
-      <h1>Dance Disciplines</h1>
-      <p>MASTER THE WORLD OF DANCE</p>
-    </div>
-
-    <div class="cards">
-
-      <div class="card">
-        <div class="cardTag">MASTERED</div>
-        <h2>HIP HOP</h2>
-        <p>Groove, rhythm and power.</p>
-      </div>
-
-      <div class="card">
-        <div class="cardTag">LEVEL 7</div>
-        <h2>AFRO FUSION</h2>
-        <p>Groove and footwork.</p>
-      </div>
-
-      <div class="card">
-        <div class="cardTag">LEVEL 5</div>
-        <h2>BREAKING</h2>
-        <p>Power moves and freezes.</p>
-      </div>
-
-      <div class="card">
-        <div class="cardTag">LEVEL 3</div>
-        <h2>CONTEMPORARY</h2>
-        <p>Control and expression.</p>
-      </div>
-
-      <div class="card">
-        <div class="cardTag">LEVEL 2</div>
-        <h2>POPPING</h2>
-        <p>Isolation and musicality.</p>
-      </div>
-
-      <div class="card">
-        <div class="cardTag">LEVEL 2</div>
-        <h2>DANCEHALL</h2>
-        <p>Groove and bounce.</p>
-      </div>
-
-      <div class="card">
-        <div class="cardTag">LEVEL 1</div>
-        <h2>HOUSE</h2>
-        <p>Footwork and groove.</p>
-      </div>
-
-      <div class="card">
-        <div class="cardTag">LEVEL 1</div>
-        <h2>JAZZ</h2>
-        <p>Lines and performance.</p>
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =======================================================
-     WORLD TOUR
-     ======================================================= -->
-
-<section id="tour" class="screen">
-
-  <div class="screenScroll">
-
-    <div class="pageHead">
-      <h1>World Tour</h1>
-      <p>CLIMB THE COMPETITION LADDER</p>
-    </div>
-
-    <div class="tournamentHero">
-
-      <div style="color:var(--cyan);font-size:8px;letter-spacing:3px">
-        CURRENT ROUND
-      </div>
-
-      <h1 id="tourRound">QUALIFIER</h1>
-
-      <p style="color:var(--muted);font-size:9px">
-        Defeat every opponent and become the World of Dance champion.
-      </p>
-
-      <button class="btn blue"
-              onclick="Battle.start()">
-        START TOURNAMENT
-      </button>
-
-    </div>
-
-    <div class="tournamentGrid">
-
-      <div class="tournamentStat">
-        <span>CREW</span>
-        <strong>URBAN MOTION</strong>
-      </div>
-
-      <div class="tournamentStat">
-        <span>RATING</span>
-        <strong id="tourRating">70 OVR</strong>
-      </div>
-
-      <div class="tournamentStat">
-        <span>OPPONENT</span>
-        <strong id="tourOpponent">NOVA BEATS</strong>
-      </div>
-
-      <div class="tournamentStat">
-        <span>PRIZE</span>
-        <strong id="tourPrize">500</strong>
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =======================================================
-     BATTLE
-     ======================================================= -->
-
-<section id="battle" class="screen">
-
-  <div class="battleHud">
-
-    <div class="scoreBox">
-      <small>URBAN MOTION • PIXIE</small>
-      <strong id="battlePlayerScore">00000</strong>
-      <div class="energy">
-        <i id="battlePlayerEnergy"></i>
-      </div>
-    </div>
-
-    <div class="scoreBox center">
-      <small>ROUND</small>
-      <strong id="battleTime">30</strong>
-    </div>
-
-    <div class="scoreBox right">
-      <small id="battleEnemyName">NOVA BEATS • AI</small>
-      <strong id="battleEnemyScore">00000</strong>
-      <div class="energy">
-        <i id="battleEnemyEnergy"></i>
-      </div>
-    </div>
-
-  </div>
-
-
-  <div class="arena">
-
-    <div class="audience"></div>
-
-    <div class="stage">
-
-      <div class="spot one"></div>
-      <div class="spot two"></div>
-      <div class="stageFloor"></div>
-
-      <div id="battleParticles"></div>
-
-    </div>
-
-
-    <div id="battlePlayer"
-         class="battleDancer player">
-
-      <div class="dHead">
-        <div class="dHair"></div>
-      </div>
-
-      <div class="dNeck"></div>
-
-      <div class="dArm left"></div>
-      <div class="dArm right"></div>
-
-      <div class="dBody"></div>
-
-      <div class="dLeg left"></div>
-      <div class="dLeg right"></div>
-
-      <div class="dShoe left"></div>
-      <div class="dShoe right"></div>
-
-    </div>
-
-
-    <div id="battleEnemy"
-         class="battleDancer enemy">
-
-      <div class="dHead">
-        <div class="dHair"></div>
-      </div>
-
-      <div class="dNeck"></div>
-
-      <div class="dArm left"></div>
-      <div class="dArm right"></div>
-
-      <div class="dBody"></div>
-
-      <div class="dLeg left"></div>
-      <div class="dLeg right"></div>
-
-      <div class="dShoe left"></div>
-      <div class="dShoe right"></div>
-
-    </div>
-
-
-    <div id="judgement"
-         class="judgement">
-      PERFECT
-    </div>
-
-
-    <div id="hitFlash"
-         class="hitFlash">
-    </div>
-
-
-    <div class="battleCombo">
-      <b id="battleCombo">0</b>
-      <span>COMBO</span>
-    </div>
-
-
-    <div class="rhythmPanel">
-
-      <div id="noteTrack"
-           class="noteTrack">
-      </div>
-
-      <div class="hitLine">
-        <div class="target"></div>
-      </div>
-
-      <div class="rhythmButtons">
-
-        <button onclick="Battle.press('A')">A</button>
-        <button onclick="Battle.press('S')">S</button>
-        <button onclick="Battle.press('D')">D</button>
-        <button onclick="Battle.press('F')">F</button>
-
-      </div>
-
-    </div>
-
-
-    <button class="battleExit"
-            onclick="Battle.leave()">
-      EXIT
-    </button>
-
-  </div>
-
-</section>
-
-
-<!-- =======================================================
-     RESULT
-     ======================================================= -->
-
-<section id="result" class="screen">
-
-  <div class="resultOverlay">
-
-    <div class="resultCard">
-
-      <div class="resultLabel">
-        PERFORMANCE COMPLETE
-      </div>
-
-      <div id="resultTitle"
-           class="resultTitle">
-        VICTORY
-      </div>
-
-      <div id="resultScore"
-           class="finalScore">
-        00000
-      </div>
-
-      <div class="resultStats">
-
-        <div>
-          <b id="resultPerfect">0</b>
-          <span>PERFECT</span>
-        </div>
-
-        <div>
-          <b id="resultGreat">0</b>
-          <span>GREAT</span>
-        </div>
-
-        <div>
-          <b id="resultGood">0</b>
-          <span>GOOD</span>
-        </div>
-
-        <div>
-          <b id="resultMiss">0</b>
-          <span>MISS</span>
-        </div>
-
-        <div>
-          <b id="resultCombo">0</b>
-          <span>BEST COMBO</span>
-        </div>
-
-      </div>
-
-      <div id="resultReward"
-           class="reward">
-        +300 XP • +500 COINS
-      </div>
-
-      <button class="btn primary"
-              onclick="Game.show('home')">
-        CONTINUE
-      </button>
-
-      <button class="btn dark"
-              onclick="Game.openPerformance()">
-        PLAY AGAIN
-      </button>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =======================================================
-     NAV
-     ======================================================= -->
-
-<nav class="bottomNav">
-
-  <div class="navScroll">
-
-    <button class="navItem active"
-            data-page="home"
-            onclick="Game.show('home')">
-      HOME
-    </button>
-
-    <button class="navItem"
-            data-page="playerHub"
-            onclick="Game.show('playerHub')">
-      PLAYER
-    </button>
-
-    <button class="navItem"
-            data-page="training"
-            onclick="Game.show('training')">
-      TRAIN
-    </button>
-
-    <button class="navItem"
-            data-page="performance"
-            onclick="Game.show('performance')">
-      PLAY
-    </button>
-
-    <button class="navItem"
-            data-page="squad"
-            onclick="Game.show('squad')">
-      SQUAD
-    </button>
-
-    <button class="navItem"
-            data-page="costumes"
-            onclick="Game.show('costumes')">
-      COSTUMES
-    </button>
-
-    <button class="navItem"
-            data-page="songs"
-            onclick="Game.show('songs')">
-      MUSIC
-    </button>
-
-    <button class="navItem"
-            data-page="styles"
-            onclick="Game.show('styles')">
-      STYLES
-    </button>
-
-    <button class="navItem"
-            data-page="tour"
-            onclick="Game.show('tour')">
-      WORLD TOUR
-    </button>
-
-  </div>
-
-</nav>
-
-
-<div id="toast"></div>
-
+<div id="toast"
+     class="toast">
 </div>
 
 
 <script>
+
 /* =========================================================
-   WORLD OF DANCE GAME ENGINE
+   WORLD OF DANCE
+   BUILD 01 — CORE GAME FOUNDATION
    ========================================================= */
 
-/* ---------------------------------------------------------
-   STORAGE
-   --------------------------------------------------------- */
 
-const SAVE_KEY="WOD_ULTIMATE_GAME_V1";
+/* =========================================================
+   GAME DATA
+   ========================================================= */
 
+const DEFAULT_GAME = {
 
-/* ---------------------------------------------------------
-   GAME STATE
-   --------------------------------------------------------- */
+    player: {
+        name: "World Dancer",
 
-const State={
+        rank: "ROOKIE",
 
-  xp:0,
+        rankPoints: 0,
 
-  coins:1000,
+        coins: 1000,
 
-  technique:70,
-  rhythm:70,
-  power:70,
-  control:70,
+        selectedCrew: "Street Pulse",
 
-  wins:0,
-  losses:0,
+        attributes: {
 
-  crewXP:0,
+            technique: 50,
 
-  dancer:"PIXIE",
-  song:"CITY LIGHTS",
-  style:"HIP HOP",
-  costume:"URBAN BLUE",
+            rhythm: 50,
 
-  round:0,
+            power: 50,
 
-  battle:{
-    active:false,
-    time:30,
+            control: 50,
 
-    score:0,
-    enemyScore:0,
+            speed: 50,
 
-    energy:100,
-    enemyEnergy:100,
+            stamina: 50,
 
-    combo:0,
-    bestCombo:0,
+            creativity: 50,
 
-    perfect:0,
-    great:0,
-    good:0,
-    miss:0,
+            expression: 50
+        }
+    },
 
-    timer:null,
-    noteTimer:null,
-    aiTimer:null
-  }
+    crews: [
+
+        {
+            name: "Street Pulse",
+            style: "Urban",
+            rating: 72
+        },
+
+        {
+            name: "Afro Flame",
+            style: "African",
+            rating: 74
+        },
+
+        {
+            name: "Motion Theory",
+            style: "Fusion",
+            rating: 70
+        },
+
+        {
+            name: "Gravity Breakers",
+            style: "Breaking",
+            rating: 76
+        },
+
+        {
+            name: "Flow Collective",
+            style: "Contemporary",
+            rating: 69
+        }
+    ],
+
+    unlockedStyles: [
+
+        "Hip-Hop",
+        "Popping",
+        "Breaking",
+        "Contemporary",
+        "Afro Fusion",
+        "Dancehall",
+        "House",
+        "Jazz"
+    ],
+
+    settings: {
+
+        orientation: "landscape",
+
+        saveType: "local"
+    }
 
 };
 
 
-/* ---------------------------------------------------------
-   OPPONENT DATABASE
-   --------------------------------------------------------- */
+/* =========================================================
+   GAME STATE
+   ========================================================= */
 
-const Opponents=[
+let game = loadGame();
 
-  {
-    name:"NOVA BEATS",
-    rating:82,
-    difficulty:.88,
-    prize:500
-  },
 
-  {
-    name:"RHYTHM FORCE",
-    rating:85,
-    difficulty:.95,
-    prize:1000
-  },
+/* =========================================================
+   SAVE SYSTEM
+   ========================================================= */
 
-  {
-    name:"STREET KINGS",
-    rating:88,
-    difficulty:1.02,
-    prize:1500
-  },
+const SAVE_KEY =
+    "world_of_dance_ultimate_save_v1";
 
-  {
-    name:"MOTION X",
-    rating:91,
-    difficulty:1.08,
-    prize:2000
-  },
 
-  {
-    name:"WORLD ELITE",
-    rating:95,
-    difficulty:1.16,
-    prize:3000
-  }
+function cloneDefaultGame(){
+
+    return JSON.parse(
+        JSON.stringify(DEFAULT_GAME)
+    );
+}
+
+
+function loadGame(){
+
+    try{
+
+        const saved =
+            localStorage.getItem(SAVE_KEY);
+
+        if(!saved){
+
+            return cloneDefaultGame();
+        }
+
+        const parsed =
+            JSON.parse(saved);
+
+        return mergeGame(
+            cloneDefaultGame(),
+            parsed
+        );
+
+    }catch(error){
+
+        console.error(
+            "Save load error:",
+            error
+        );
+
+        return cloneDefaultGame();
+    }
+}
+
+
+function mergeGame(base,saved){
+
+    if(!saved){
+        return base;
+    }
+
+    return {
+
+        ...base,
+
+        ...saved,
+
+        player: {
+
+            ...base.player,
+
+            ...(saved.player || {}),
+
+            attributes: {
+
+                ...base.player.attributes,
+
+                ...(saved.player?.attributes || {})
+            }
+        },
+
+        settings: {
+
+            ...base.settings,
+
+            ...(saved.settings || {})
+        }
+    };
+}
+
+
+function saveGame(){
+
+    localStorage.setItem(
+
+        SAVE_KEY,
+
+        JSON.stringify(game)
+    );
+
+    updateUI();
+}
+
+
+function resetGame(){
+
+    const confirmReset =
+        confirm(
+            "Reset all World of Dance progress on this device?"
+        );
+
+    if(!confirmReset){
+        return;
+    }
+
+    game =
+        cloneDefaultGame();
+
+    saveGame();
+
+    showToast(
+        "Game reset"
+    );
+}
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+function showScreen(screenId){
+
+    document
+        .querySelectorAll(".screen")
+        .forEach(screen => {
+
+            screen.classList.remove(
+                "active"
+            );
+
+        });
+
+
+    const target =
+        document.getElementById(screenId);
+
+
+    if(target){
+
+        target.classList.add(
+            "active"
+        );
+    }
+
+
+    updateUI();
+}
+
+
+/* =========================================================
+   RANK SYSTEM
+   ========================================================= */
+
+const RANKS = [
+
+    {
+        name: "ROOKIE",
+        points: 0
+    },
+
+    {
+        name: "RISING STAR",
+        points: 100
+    },
+
+    {
+        name: "PRO",
+        points: 250
+    },
+
+    {
+        name: "ELITE",
+        points: 500
+    },
+
+    {
+        name: "MASTER",
+        points: 900
+    },
+
+    {
+        name: "LEGEND",
+        points: 1500
+    },
+
+    {
+        name: "WORLD ICON",
+        points: 2500
+    }
 
 ];
 
 
-/* ---------------------------------------------------------
-   LEVEL
-   --------------------------------------------------------- */
+function calculateRank(){
 
-function getLevel(){
+    const points =
+        game.player.rankPoints;
 
-  return Math.floor(State.xp/500)+1;
+    let current =
+        RANKS[0];
 
-}
+    let next =
+        RANKS[1];
 
 
-/* ---------------------------------------------------------
-   OVERALL
-   --------------------------------------------------------- */
-
-function getRating(){
-
-  return Math.round(
-    (
-      State.technique+
-      State.rhythm+
-      State.power+
-      State.control
-    )/4
-  );
-
-}
-
-
-/* ---------------------------------------------------------
-   SAVE
-   --------------------------------------------------------- */
-
-function saveGame(){
-
-  const save={
-
-    xp:State.xp,
-    coins:State.coins,
-
-    technique:State.technique,
-    rhythm:State.rhythm,
-    power:State.power,
-    control:State.control,
-
-    wins:State.wins,
-    losses:State.losses,
-    crewXP:State.crewXP,
-
-    dancer:State.dancer,
-    song:State.song,
-    style:State.style,
-    costume:State.costume,
-
-    round:State.round
-
-  };
-
-  localStorage.setItem(
-    SAVE_KEY,
-    JSON.stringify(save)
-  );
-
-}
-
-
-/* ---------------------------------------------------------
-   LOAD
-   --------------------------------------------------------- */
-
-function loadGame(){
-
-  try{
-
-    const saved=
-      JSON.parse(
-        localStorage.getItem(SAVE_KEY)
-      );
-
-    if(saved){
-      Object.assign(State,saved);
-    }
-
-  }catch(error){
-
-    console.warn("Save data unavailable");
-
-  }
-
-}
-
-
-/* =========================================================
-   UI ENGINE
-   ========================================================= */
-
-const UI={
-
-  show(id){
-
-    if(State.battle.active && id!=="battle"){
-      Battle.stop();
-    }
-
-    document
-      .querySelectorAll(".screen")
-      .forEach(screen=>{
-        screen.classList.remove("active");
-      });
-
-    const screen=
-      document.getElementById(id);
-
-    if(screen){
-      screen.classList.add("active");
-    }
-
-    document
-      .querySelectorAll(".navItem")
-      .forEach(button=>{
-        button.classList.toggle(
-          "active",
-          button.dataset.page===id
-        );
-      });
-
-  },
-
-
-  toast(message){
-
-    const element=
-      document.getElementById("toast");
-
-    element.textContent=message;
-
-    element.classList.add("show");
-
-    clearTimeout(UI.toastTimer);
-
-    UI.toastTimer=
-      setTimeout(()=>{
-        element.classList.remove("show");
-      },1800);
-
-  },
-
-
-  refresh(){
-
-    document.getElementById("uiLevel")
-      .textContent=getLevel();
-
-    document.getElementById("uiXP")
-      .textContent=
-      State.xp.toLocaleString();
-
-    document.getElementById("uiCoins")
-      .textContent=
-      State.coins.toLocaleString();
-
-
-    document.getElementById("playerRating")
-      .textContent=getRating();
-
-    document.getElementById("playerTech")
-      .textContent=State.technique;
-
-    document.getElementById("playerRhythm")
-      .textContent=State.rhythm;
-
-    document.getElementById("playerPower")
-      .textContent=State.power;
-
-    document.getElementById("playerControl")
-      .textContent=State.control;
-
-
-    document.getElementById("playerTechBar")
-      .style.width=State.technique+"%";
-
-    document.getElementById("playerRhythmBar")
-      .style.width=State.rhythm+"%";
-
-    document.getElementById("playerPowerBar")
-      .style.width=State.power+"%";
-
-    document.getElementById("playerControlBar")
-      .style.width=State.control+"%";
-
-
-    const opponent=
-      Opponents[
-        Math.min(
-          State.round,
-          Opponents.length-1
-        )
-      ];
-
-    const rounds=[
-      "QUALIFIER",
-      "ROUND OF 32",
-      "ROUND OF 16",
-      "QUARTER FINAL",
-      "WORLD FINAL"
-    ];
-
-    document.getElementById("tourRound")
-      .textContent=
-      rounds[
-        Math.min(
-          State.round,
-          rounds.length-1
-        )
-      ];
-
-    document.getElementById("tourRating")
-      .textContent=
-      getRating()+" OVR";
-
-    document.getElementById("tourOpponent")
-      .textContent=opponent.name;
-
-    document.getElementById("tourPrize")
-      .textContent=
-      opponent.prize.toLocaleString();
-
-  }
-
-};
-
-
-/* =========================================================
-   GAME NAVIGATION
-   ========================================================= */
-
-const Game={
-
-  show(id){
-    UI.show(id);
-  },
-
-  openPerformance(){
-    UI.show("performance");
-  }
-
-};
-
-
-/* =========================================================
-   TRAINING ENGINE
-   ========================================================= */
-
-const Training={
-
-  selected:"TECHNIQUE",
-
-
-  select(element){
-
-    document
-      .querySelectorAll(".drill")
-      .forEach(drill=>{
-        drill.classList.remove("active");
-      });
-
-    element.classList.add("active");
-
-    this.selected=
-      element.dataset.drill;
-
-  },
-
-
-  run(){
-
-    const stat=
-      this.selected.toLowerCase();
-
-    if(State[stat]>=99){
-
-      UI.toast(
-        this.selected+
-        " IS ALREADY MAXED"
-      );
-
-      return;
-
-    }
-
-    State[stat]=
-      Math.min(
-        99,
-        State[stat]+2
-      );
-
-    State.xp+=100;
-
-    State.coins+=25;
-
-    saveGame();
-
-    UI.refresh();
-
-    UI.toast(
-      this.selected+
-      " TRAINING COMPLETE • +100 XP"
-    );
-
-    const dancer=
-      document.getElementById(
-        "trainingDancer"
-      );
-
-    dancer.style.animation=
-      "none";
-
-    void dancer.offsetWidth;
-
-    dancer.style.animation=
-      "dancerIdle .4s ease-in-out 4";
-
-  }
-
-};
-
-
-/* =========================================================
-   SETUP ENGINE
-   ========================================================= */
-
-const Setup={
-
-  choose(element,type,value){
-
-    element
-      .parentElement
-      .querySelectorAll(".option")
-      .forEach(option=>{
-        option.classList.remove("active");
-      });
-
-    element.classList.add("active");
-
-    State[type]=value;
-
-    saveGame();
-
-    UI.toast(
-      value+" SELECTED"
-    );
-
-  },
-
-
-  setCostume(name){
-
-    if(
-      name==="STAGE WHITE" &&
-      getLevel()<8
+    for(
+        let i = 0;
+        i < RANKS.length;
+        i++
     ){
 
-      UI.toast(
-        "REACH LEVEL 8 TO UNLOCK"
-      );
+        if(
+            points >=
+            RANKS[i].points
+        ){
 
-      return;
+            current =
+                RANKS[i];
 
-    }
-
-    State.costume=name;
-
-    saveGame();
-
-    UI.toast(
-      name+" EQUIPPED"
-    );
-
-  },
-
-
-  setSong(name){
-
-    State.song=name;
-
-    saveGame();
-
-    UI.toast(
-      name+" SELECTED"
-    );
-
-  }
-
-};
-
-
-/* =========================================================
-   SQUAD ENGINE
-   ========================================================= */
-
-const Squad={
-
-  recruit(){
-
-    if(State.coins<500){
-
-      UI.toast(
-        "NOT ENOUGH COINS"
-      );
-
-      return;
+            next =
+                RANKS[i + 1]
+                || null;
+        }
 
     }
 
-    State.coins-=500;
 
-    State.crewXP+=100;
-
-    State.power=
-      Math.min(
-        99,
-        State.power+1
-      );
-
-    State.rhythm=
-      Math.min(
-        99,
-        State.rhythm+1
-      );
-
-    saveGame();
-
-    UI.refresh();
-
-    UI.toast(
-      "NEW DANCER JOINED YOUR SQUAD"
-    );
-
-  }
-
-};
-
-
-/* =========================================================
-   BATTLE ENGINE
-   ========================================================= */
-
-const Battle={
-
-  keys:["A","S","D","F"],
-
-
-  start(){
-
-    this.reset();
-
-    UI.show("battle");
-
-    State.battle.active=true;
-
-    const opponent=
-      Opponents[
-        Math.min(
-          State.round,
-          Opponents.length-1
-        )
-      ];
-
-    document.getElementById(
-      "battleEnemyName"
-    ).textContent=
-      opponent.name+" • AI";
-
-
-    State.battle.timer=
-      setInterval(
-        ()=>{
-          if(!State.battle.active)return;
-
-          State.battle.time--;
-
-          this.render();
-
-          if(State.battle.time<=0){
-            this.finish();
-          }
-
-        },
-        1000
-      );
-
-
-    State.battle.noteTimer=
-      setInterval(
-        ()=>{
-          this.spawnNote();
-        },
-        this.getBPMDelay()
-      );
-
-
-    State.battle.aiTimer=
-      setInterval(
-        ()=>{
-          this.aiTurn();
-        },
-        680
-      );
-
-
-    this.spawnNote();
-
-    UI.toast(
-      "MATCH STARTED • "+State.song
-    );
-
-  },
-
-
-  getBPMDelay(){
-
-    const speeds={
-
-      "CITY LIGHTS":620,
-      "RISING":700,
-      "BREAK FREE":760,
-      "NIGHT DRIVE":590
-
+    return {
+        current,
+        next
     };
-
-    return speeds[State.song]||650;
-
-  },
+}
 
 
-  reset(){
+/* =========================================================
+   TRAINING
+   ========================================================= */
 
-    this.stop();
+function train(attribute){
 
-    State.battle.time=30;
+    if(
+        !game.player.attributes
+            [attribute]
+    ){
 
-    State.battle.score=0;
-    State.battle.enemyScore=0;
-
-    State.battle.energy=100;
-    State.battle.enemyEnergy=100;
-
-    State.battle.combo=0;
-    State.battle.bestCombo=0;
-
-    State.battle.perfect=0;
-    State.battle.great=0;
-    State.battle.good=0;
-    State.battle.miss=0;
-
-    document.getElementById(
-      "noteTrack"
-    ).innerHTML="";
-
-    this.render();
-
-  },
+        return;
+    }
 
 
-  stop(){
+    game.player.attributes
+        [attribute] = Math.min(
 
-    clearInterval(
-      State.battle.timer
-    );
+            100,
 
-    clearInterval(
-      State.battle.noteTimer
-    );
-
-    clearInterval(
-      State.battle.aiTimer
-    );
-
-    State.battle.timer=null;
-    State.battle.noteTimer=null;
-    State.battle.aiTimer=null;
-
-  },
-
-
-  spawnNote(){
-
-    if(!State.battle.active)return;
-
-    const track=
-      document.getElementById(
-        "noteTrack"
-      );
-
-    const note=
-      document.createElement("div");
-
-    const key=
-      this.keys[
-        Math.floor(
-          Math.random()*
-          this.keys.length
-        )
-      ];
-
-    note.className="note";
-
-    note.textContent=key;
-
-    note.dataset.key=key;
-
-    let x=-55;
-
-    note.style.left=x+"px";
-
-    track.appendChild(note);
-
-
-    const movement=
-      setInterval(
-        ()=>{
-
-          if(!State.battle.active){
-
-            clearInterval(movement);
-
-            note.remove();
-
-            return;
-
-          }
-
-          x+=5;
-
-          note.style.left=x+"px";
-
-          if(
-            x>
-            track.clientWidth/2+130
-          ){
-
-            clearInterval(movement);
-
-            if(note.parentNode){
-              note.remove();
-            }
-
-            this.miss();
-
-          }
-
-        },
-        16
-      );
-
-
-    note._movement=movement;
-
-  },
-
-
-  press(key){
-
-    if(!State.battle.active)return;
-
-    const track=
-      document.getElementById(
-        "noteTrack"
-      );
-
-    const target=
-      track.clientWidth/2;
-
-    const candidates=
-      [
-        ...track.querySelectorAll(
-          ".note"
-        )
-      ].filter(
-        note=>
-          note.dataset.key===key
-      );
-
-
-    let best=null;
-    let distance=9999;
-
-
-    candidates.forEach(note=>{
-
-      const x=
-        parseFloat(
-          note.style.left
-        )+22;
-
-      const d=
-        Math.abs(
-          x-target
+            game.player.attributes
+                [attribute] + 2
         );
 
-      if(d<distance){
 
-        distance=d;
-        best=note;
+    game.player.rankPoints += 5;
 
-      }
+    game.player.coins =
+        Math.max(
+            0,
+            game.player.coins - 5
+        );
+
+
+    saveGame();
+
+    showToast(
+        attribute.toUpperCase()
+        + " improved"
+    );
+}
+
+
+/* =========================================================
+   CREW
+   ========================================================= */
+
+function selectCrew(name){
+
+    game.player.selectedCrew =
+        name;
+
+    saveGame();
+
+    showToast(
+        name + " selected"
+    );
+}
+
+
+function renderCrews(){
+
+    const container =
+        document.getElementById(
+            "crewList"
+        );
+
+
+    if(!container){
+        return;
+    }
+
+
+    container.innerHTML = "";
+
+
+    game.crews.forEach(crew => {
+
+        const selected =
+            crew.name ===
+            game.player.selectedCrew;
+
+
+        const card =
+            document.createElement(
+                "div"
+            );
+
+
+        card.className =
+            "card";
+
+
+        card.innerHTML = `
+
+            <h3>
+                ${escapeHTML(crew.name)}
+            </h3>
+
+            <p class="muted">
+                ${escapeHTML(crew.style)}
+            </p>
+
+            <div class="stat">
+                ${crew.rating}
+            </div>
+
+            <p class="muted">
+                Crew Rating
+            </p>
+
+            <button
+                class="btn ${selected ? "primary" : ""}"
+                onclick="selectCrew('${escapeAttribute(crew.name)}')">
+
+                ${selected ? "SELECTED" : "SELECT CREW"}
+
+            </button>
+
+        `;
+
+
+        container.appendChild(card);
 
     });
-
-
-    if(best && distance<100){
-
-      this.hit(
-        best,
-        distance
-      );
-
-    }else{
-
-      this.miss();
-
-    }
-
-  },
-
-
-  hit(note,distance){
-
-    clearInterval(
-      note._movement
-    );
-
-
-    let result;
-
-
-    if(distance<20){
-
-      result="PERFECT";
-
-      State.battle.perfect++;
-
-      State.battle.score+=
-        300+
-        State.battle.combo*10;
-
-    }else if(distance<52){
-
-      result="GREAT";
-
-      State.battle.great++;
-
-      State.battle.score+=
-        200+
-        State.battle.combo*7;
-
-    }else{
-
-      result="GOOD";
-
-      State.battle.good++;
-
-      State.battle.score+=
-        100+
-        State.battle.combo*3;
-
-    }
-
-
-    State.battle.combo++;
-
-    State.battle.bestCombo=
-      Math.max(
-        State.battle.bestCombo,
-        State.battle.combo
-      );
-
-
-    State.battle.energy=
-      Math.min(
-        100,
-        State.battle.energy+1
-      );
-
-    State.battle.enemyEnergy=
-      Math.max(
-        0,
-        State.battle.enemyEnergy-1
-      );
-
-
-    this.animate(
-      "battlePlayer"
-    );
-
-    this.judgement(
-      result
-    );
-
-    this.flash();
-
-    note.remove();
-
-    this.render();
-
-  },
-
-
-  miss(){
-
-    if(!State.battle.active)return;
-
-    State.battle.miss++;
-
-    State.battle.combo=0;
-
-    State.battle.score=
-      Math.max(
-        0,
-        State.battle.score-50
-      );
-
-    State.battle.energy=
-      Math.max(
-        0,
-        State.battle.energy-4
-      );
-
-    this.judgement("MISS");
-
-    this.render();
-
-  },
-
-
-  aiTurn(){
-
-    if(!State.battle.active)return;
-
-    const opponent=
-      Opponents[
-        Math.min(
-          State.round,
-          Opponents.length-1
-        )
-      ];
-
-
-    const skill=
-      opponent.rating*
-      opponent.difficulty;
-
-
-    const accuracy=
-      .8+
-      Math.random()*.35;
-
-
-    State.battle.enemyScore+=
-      Math.floor(
-        skill*accuracy
-      );
-
-
-    State.battle.enemyEnergy=
-      Math.max(
-        0,
-        State.battle.enemyEnergy-1
-      );
-
-
-    this.animate(
-      "battleEnemy"
-    );
-
-    this.render();
-
-  },
-
-
-  animate(id){
-
-    const dancer=
-      document.getElementById(id);
-
-    dancer.classList.remove(
-      "perform"
-    );
-
-    void dancer.offsetWidth;
-
-    dancer.classList.add(
-      "perform"
-    );
-
-  },
-
-
-  judgement(text){
-
-    const element=
-      document.getElementById(
-        "judgement"
-      );
-
-    element.textContent=text;
-
-    element.className=
-      "judgement "+
-      text.toLowerCase();
-
-    void element.offsetWidth;
-
-    element.classList.add("show");
-
-  },
-
-
-  flash(){
-
-    const flash=
-      document.getElementById(
-        "hitFlash"
-      );
-
-    flash.classList.remove("active");
-
-    void flash.offsetWidth;
-
-    flash.classList.add("active");
-
-  },
-
-
-  render(){
-
-    document.getElementById(
-      "battlePlayerScore"
-    ).textContent=
-      String(
-        Math.floor(
-          State.battle.score
-        )
-      ).padStart(5,"0");
-
-
-    document.getElementById(
-      "battleEnemyScore"
-    ).textContent=
-      String(
-        Math.floor(
-          State.battle.enemyScore
-        )
-      ).padStart(5,"0");
-
-
-    document.getElementById(
-      "battleTime"
-    ).textContent=
-      State.battle.time;
-
-
-    document.getElementById(
-      "battlePlayerEnergy"
-    ).style.width=
-      State.battle.energy+"%";
-
-
-    document.getElementById(
-      "battleEnemyEnergy"
-    ).style.width=
-      State.battle.enemyEnergy+"%";
-
-
-    document.getElementById(
-      "battleCombo"
-    ).textContent=
-      State.battle.combo;
-
-  },
-
-
-  finish(){
-
-    if(!State.battle.active)return;
-
-    State.battle.active=false;
-
-    this.stop();
-
-    document.getElementById(
-      "noteTrack"
-    ).innerHTML="";
-
-
-    const victory=
-      State.battle.score>=
-      State.battle.enemyScore;
-
-
-    const title=
-      document.getElementById(
-        "resultTitle"
-      );
-
-
-    title.textContent=
-      victory?
-      "VICTORY":
-      "DEFEAT";
-
-
-    title.style.color=
-      victory?
-      "var(--gold)":
-      "var(--red)";
-
-
-    document.getElementById(
-      "resultScore"
-    ).textContent=
-      String(
-        Math.floor(
-          State.battle.score
-        )
-      ).padStart(5,"0");
-
-
-    document.getElementById(
-      "resultPerfect"
-    ).textContent=
-      State.battle.perfect;
-
-
-    document.getElementById(
-      "resultGreat"
-    ).textContent=
-      State.battle.great;
-
-
-    document.getElementById(
-      "resultGood"
-    ).textContent=
-      State.battle.good;
-
-
-    document.getElementById(
-      "resultMiss"
-    ).textContent=
-      State.battle.miss;
-
-
-    document.getElementById(
-      "resultCombo"
-    ).textContent=
-      State.battle.bestCombo;
-
-
-    const opponent=
-      Opponents[
-        Math.min(
-          State.round,
-          Opponents.length-1
-        )
-      ];
-
-
-    let reward;
-
-
-    if(victory){
-
-      State.wins++;
-
-      State.round=
-        Math.min(
-          Opponents.length-1,
-          State.round+1
-        );
-
-
-      reward=
-        opponent.prize;
-
-      State.coins+=reward;
-
-      State.xp+=300;
-
-      State.crewXP+=300;
-
-
-      document.getElementById(
-        "resultReward"
-      ).textContent=
-        "+"+
-        reward.toLocaleString()+
-        " COINS • +300 XP";
-
-
-      UI.toast(
-        "VICTORY • +"+
-        reward+
-        " COINS"
-      );
-
-
-    }else{
-
-      State.losses++;
-
-      reward=100;
-
-      State.coins+=reward;
-
-      State.xp+=100;
-
-
-      document.getElementById(
-        "resultReward"
-      ).textContent=
-        "+100 COINS • +100 XP";
-
-
-      UI.toast(
-        "DEFEAT • +100 XP"
-      );
-
-    }
-
-
-    saveGame();
-
-    UI.refresh();
-
-    UI.show("result");
-
-  },
-
-
-  leave(){
-
-    this.stop();
-
-    State.battle.active=false;
-
-    document.getElementById(
-      "noteTrack"
-    ).innerHTML="";
-
-    UI.show("home");
-
-  }
-
-};
-
-
-/* =========================================================
-   KEYBOARD CONTROLS
-   ========================================================= */
-
-document.addEventListener(
-  "keydown",
-  event=>{
-
-    if(!State.battle.active)return;
-
-    const key=
-      event.key.toUpperCase();
-
-    if(
-      Battle.keys.includes(key)
-    ){
-
-      Battle.press(key);
-
-      document
-        .querySelectorAll(
-          ".rhythmButtons button"
-        )
-        .forEach(button=>{
-
-          if(button.textContent===key){
-
-            button.classList.add(
-              "hit"
-            );
-
-            setTimeout(
-              ()=>{
-                button.classList.remove(
-                  "hit"
-                );
-              },
-              100
-            );
-
-          }
-
-        });
-
-    }
-
-  }
-);
-
-
-/* =========================================================
-   TOUCH / POINTER SUPPORT
-   ========================================================= */
-
-document
-  .querySelectorAll(
-    ".rhythmButtons button"
-  )
-  .forEach(button=>{
-
-    button.addEventListener(
-      "pointerdown",
-      ()=>{
-        Battle.press(
-          button.textContent
-        );
-      }
-    );
-
-  });
-
-
-/* =========================================================
-   PARTICLE ENGINE
-   ========================================================= */
-
-function createParticles(
-  containerId,
-  amount=30
-){
-
-  const container=
-    document.getElementById(
-      containerId
-    );
-
-  if(!container)return;
-
-  for(
-    let i=0;
-    i<amount;
-    i++
-  ){
-
-    const particle=
-      document.createElement(
-        "div"
-      );
-
-    particle.className=
-      "particle";
-
-    particle.style.left=
-      Math.random()*100+"%";
-
-    particle.style.animationDuration=
-      5+
-      Math.random()*8+
-      "s";
-
-    particle.style.animationDelay=
-      -Math.random()*8+
-      "s";
-
-    particle.style.opacity=
-      .2+
-      Math.random()*.6;
-
-    container.appendChild(
-      particle
-    );
-
-  }
-
 }
 
 
 /* =========================================================
-   BOOT
+   UI
    ========================================================= */
 
-loadGame();
+function updateUI(){
 
-UI.refresh();
-
-createParticles(
-  "homeParticles",
-  35
-);
-
-createParticles(
-  "battleParticles",
-  45
-);
+    const rank =
+        calculateRank();
 
 
-setTimeout(
-  ()=>{
+    document.getElementById(
+        "coinDisplay"
+    ).textContent =
+        game.player.coins;
 
-    const boot=
-      document.getElementById(
-        "boot"
-      );
 
-    boot.style.opacity="0";
+    document.getElementById(
+        "profileCoins"
+    ).textContent =
+        game.player.coins;
 
-    setTimeout(
-      ()=>{
-        boot.style.display="none";
-      },
-      700
+
+    document.getElementById(
+        "playerName"
+    ).textContent =
+        game.player.name;
+
+
+    document.getElementById(
+        "playerRank"
+    ).textContent =
+        rank.current.name;
+
+
+    document.getElementById(
+        "selectedCrew"
+    ).textContent =
+        game.player.selectedCrew;
+
+
+    let progress = 100;
+
+
+    if(rank.next){
+
+        const distance =
+            rank.next.points -
+            rank.current.points;
+
+
+        const earned =
+            game.player.rankPoints -
+            rank.current.points;
+
+
+        progress =
+            Math.max(
+                0,
+                Math.min(
+                    100,
+                    Math.round(
+                        (earned / distance)
+                        * 100
+                    )
+                )
+            );
+    }
+
+
+    document.getElementById(
+        "rankProgress"
+    ).textContent =
+        progress + "%";
+
+
+    renderAttributes();
+
+    renderCrews();
+}
+
+
+function renderAttributes(){
+
+    const container =
+        document.getElementById(
+            "attributes"
+        );
+
+
+    if(!container){
+        return;
+    }
+
+
+    container.innerHTML = "";
+
+
+    Object.entries(
+        game.player.attributes
+    ).forEach(
+        ([name,value]) => {
+
+            const row =
+                document.createElement(
+                    "div"
+                );
+
+
+            row.className =
+                "attribute";
+
+
+            row.innerHTML = `
+
+                <div class="attribute-row">
+
+                    <span>
+                        ${formatAttribute(name)}
+                    </span>
+
+                    <strong>
+                        ${value}
+                    </strong>
+
+                </div>
+
+                <div class="bar">
+
+                    <div
+                        class="fill"
+                        style="width:${value}%">
+                    </div>
+
+                </div>
+
+            `;
+
+
+            container.appendChild(row);
+        }
+    );
+}
+
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+
+function formatAttribute(name){
+
+    return name
+        .charAt(0)
+        .toUpperCase()
+        + name.slice(1);
+}
+
+
+function escapeHTML(value){
+
+    return String(value)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+}
+
+
+function escapeAttribute(value){
+
+    return String(value)
+        .replaceAll("'","\\'");
+}
+
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+let toastTimer;
+
+
+function showToast(message){
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.textContent =
+        message;
+
+
+    toast.classList.add(
+        "show"
     );
 
-  },
-  1900
-);
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(
+            () => {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            1800
+        );
+}
 
 
 /* =========================================================
-   AUTO-SAVE
+   START
    ========================================================= */
 
-setInterval(
-  ()=>{
-    saveGame();
-  },
-  15000
-);
-
-
-/* =========================================================
-   PREVENT ACCIDENTAL PAGE ZOOM
-   ========================================================= */
-
-document.addEventListener(
-  "gesturestart",
-  event=>{
-    event.preventDefault();
-  }
-);
-
-
-/* =========================================================
-   GAME READY
-   ========================================================= */
-
-console.log(
-  "%cWORLD OF DANCE ENGINE READY",
-  "color:#54eaff;font-size:16px;font-weight:bold"
-);
-
-console.log(
-  "Version: Ultimate Competition V1"
-);
-
-console.log(
-  "Systems: Player / Training / Squad / Music / Styles / Costumes / Battle / AI / Tournament / Save"
-);
+updateUI();
 
 </script>
 
