@@ -4,1111 +4,905 @@
 <meta charset="UTF-8">
 <meta name="viewport"
       content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#05070d">
-<title>WORLD OF DANCE — Build 06</title>
+<meta name="theme-color" content="#050711">
+<title>WORLD OF DANCE — MASTER BUILD</title>
 
 <style>
+:root{
+  --bg:#050711;
+  --panel:#0c1122;
+  --panel2:#111831;
+  --line:rgba(255,255,255,.12);
+  --text:#f5f7ff;
+  --muted:#8e9ab8;
+  --cyan:#48ddff;
+  --blue:#4d70ff;
+  --purple:#8b4dff;
+  --green:#39e0a0;
+  --gold:#ffc44d;
+  --danger:#ff5577;
+}
+
 *{
   box-sizing:border-box;
   -webkit-tap-highlight-color:transparent;
 }
 
 html,body{
-  margin:0;
   width:100%;
   height:100%;
+  margin:0;
   overflow:hidden;
-  background:#05070d;
-  color:#fff;
+  background:var(--bg);
+  color:var(--text);
   font-family:Arial,Helvetica,sans-serif;
-}
-
-button,select{
-  font:inherit;
 }
 
 button{
   border:0;
+  color:white;
+  font:inherit;
+  cursor:pointer;
 }
 
-.hidden{
-  display:none!important;
-}
-
-.app{
-  width:100%;
-  height:100%;
-}
-
-.screen{
-  display:none;
-  width:100%;
-  height:100%;
-}
-
-.screen.active{
-  display:flex;
+#app{
+  position:relative;
+  width:100vw;
+  height:100vh;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 25%,
+      #253866 0,
+      #111936 25%,
+      #070a16 58%,
+      #03040a 100%);
 }
 
 /* =====================================================
- GLOBAL
+   WORLD BACKGROUND
 ===================================================== */
 
-.panel{
-  width:100%;
-  height:100%;
-  overflow:auto;
-  padding:16px;
-  background:
-    radial-gradient(circle at 85% 0%,rgba(122,68,185,.18),transparent 30%),
-    radial-gradient(circle at 0% 100%,rgba(34,91,155,.14),transparent 35%),
-    #070a12;
+.skyGlow{
+  position:absolute;
+  width:70vw;
+  height:70vw;
+  max-width:800px;
+  max-height:800px;
+  left:50%;
+  top:5%;
+  transform:translateX(-50%);
+  border-radius:50%;
+  background:radial-gradient(circle,
+    rgba(80,190,255,.18),
+    rgba(100,70,255,.08) 40%,
+    transparent 70%);
+  filter:blur(12px);
+  pointer-events:none;
 }
 
-.topbar{
+.city{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:28%;
+  height:30%;
+  display:flex;
+  align-items:flex-end;
+  gap:2px;
+  opacity:.6;
+  pointer-events:none;
+}
+
+.building{
+  flex:1;
+  min-width:12px;
+  background:linear-gradient(
+    180deg,
+    #17203a,
+    #070a13
+  );
+  position:relative;
+}
+
+.building:after{
+  content:"";
+  position:absolute;
+  inset:8px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 9px,
+      rgba(90,210,255,.18) 10px 12px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 12px,
+      rgba(255,210,80,.1) 13px 15px
+    );
+}
+
+.stage{
+  position:absolute;
+  left:-10%;
+  right:-10%;
+  bottom:15%;
+  height:34%;
+  transform:perspective(400px) rotateX(58deg);
+  transform-origin:bottom;
+  background:
+    linear-gradient(
+      rgba(75,180,255,.12) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(75,180,255,.12) 1px,
+      transparent 1px
+    );
+  background-size:65px 40px;
+  pointer-events:none;
+}
+
+.stageGlow{
+  position:absolute;
+  left:8%;
+  right:8%;
+  bottom:24%;
+  height:3px;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    var(--cyan),
+    white,
+    var(--cyan),
+    transparent
+  );
+  box-shadow:0 0 30px var(--cyan);
+}
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.header{
+  position:absolute;
+  z-index:30;
+  top:0;
+  left:0;
+  right:0;
+  height:70px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:12px;
-  padding-bottom:15px;
+  padding:9px 16px;
+  background:linear-gradient(
+    180deg,
+    rgba(2,3,9,.92),
+    rgba(2,3,9,.25)
+  );
 }
 
-.logo{
-  font-size:clamp(19px,4vw,29px);
+.brand{
+  font-size:clamp(15px,2.5vw,25px);
   font-weight:1000;
   letter-spacing:2px;
+  white-space:nowrap;
 }
 
-.small{
-  color:#717a90;
-  font-size:9px;
+.brand i{
+  color:var(--cyan);
+  font-style:normal;
+}
+
+.resources{
+  display:flex;
+  gap:6px;
+}
+
+.resource{
+  min-width:68px;
+  padding:5px 9px;
+  text-align:center;
+  background:rgba(9,13,29,.82);
+  border:1px solid var(--line);
+  border-radius:9px;
+}
+
+.resource small{
+  display:block;
+  color:var(--muted);
+  font-size:8px;
+}
+
+.resource strong{
+  display:block;
+  font-size:13px;
+  margin-top:2px;
+}
+
+/* =====================================================
+   WORLD AREA
+===================================================== */
+
+.world{
+  position:absolute;
+  inset:70px 0 105px;
+  overflow:hidden;
+}
+
+.location{
+  position:absolute;
+  top:12px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:10;
+  padding:7px 18px;
+  border-radius:20px;
+  background:rgba(3,5,13,.58);
+  border:1px solid var(--line);
+  font-size:10px;
+  font-weight:800;
   letter-spacing:2px;
-  margin-top:3px;
 }
 
-.title{
-  font-size:clamp(28px,6vw,48px);
+.location span{
+  color:var(--cyan);
+}
+
+/* =====================================================
+   DANCER
+===================================================== */
+
+.dancer{
+  position:absolute;
+  width:150px;
+  height:300px;
+  left:50%;
+  bottom:13%;
+  transform:translateX(-50%);
+  filter:drop-shadow(0 20px 20px rgba(0,0,0,.75));
+  animation:idle 1.8s ease-in-out infinite;
+  z-index:5;
+}
+
+.dancer .head{
+  position:absolute;
+  width:46px;
+  height:46px;
+  left:52px;
+  top:0;
+  border-radius:50%;
+  background:linear-gradient(
+    145deg,
+    #f1c59f,
+    #b86f4d
+  );
+  z-index:5;
+}
+
+.dancer .hair{
+  position:absolute;
+  width:51px;
+  height:30px;
+  left:50px;
+  top:-5px;
+  border-radius:50% 50% 20% 20%;
+  background:#090b12;
+  z-index:6;
+}
+
+.dancer .neck{
+  position:absolute;
+  width:15px;
+  height:20px;
+  left:67px;
+  top:39px;
+  background:#c47e5c;
+}
+
+.dancer .torso{
+  position:absolute;
+  width:63px;
+  height:92px;
+  left:44px;
+  top:53px;
+  border-radius:18px 18px 12px 12px;
+  background:
+    linear-gradient(
+      135deg,
+      var(--cyan),
+      var(--blue) 55%,
+      var(--purple)
+    );
+  box-shadow:
+    inset 0 0 15px rgba(255,255,255,.25),
+    0 0 20px rgba(80,150,255,.22);
+}
+
+.dancer .torso:after{
+  content:"WOD";
+  position:absolute;
+  left:0;
+  right:0;
+  top:35px;
+  text-align:center;
+  font-size:10px;
   font-weight:1000;
   letter-spacing:1px;
 }
 
-.card{
-  background:#10141f;
-  border:1px solid #292f40;
-  border-radius:17px;
-  padding:16px;
+.dancer .arm{
+  position:absolute;
+  width:17px;
+  height:96px;
+  top:57px;
+  border-radius:20px;
+  background:linear-gradient(
+    #d99b76,
+    #a96348
+  );
+  transform-origin:top center;
+}
+
+.dancer .armL{
+  left:30px;
+  transform:rotate(25deg);
+}
+
+.dancer .armR{
+  left:104px;
+  transform:rotate(-25deg);
+}
+
+.dancer .hand{
+  position:absolute;
+  width:19px;
+  height:19px;
+  bottom:-7px;
+  left:-1px;
+  border-radius:50%;
+  background:#bd7858;
+}
+
+.dancer .leg{
+  position:absolute;
+  width:23px;
+  height:108px;
+  top:140px;
+  border-radius:14px;
+  background:linear-gradient(
+    #282d4c,
+    #0d101d
+  );
+  transform-origin:top center;
+}
+
+.dancer .legL{
+  left:50px;
+  transform:rotate(8deg);
+}
+
+.dancer .legR{
+  left:78px;
+  transform:rotate(-8deg);
+}
+
+.dancer .shoe{
+  position:absolute;
+  width:43px;
+  height:16px;
+  bottom:-7px;
+  border-radius:15px;
+  background:#f1f7ff;
+  box-shadow:0 0 10px rgba(255,255,255,.4);
+}
+
+.dancer .legL .shoe{
+  left:-17px;
+}
+
+.dancer .legR .shoe{
+  left:-4px;
+}
+
+.dancer.performance{
+  animation:performanceBody .4s ease-in-out infinite alternate;
+}
+
+.dancer.performance .armL{
+  animation:armOne .38s infinite alternate;
+}
+
+.dancer.performance .armR{
+  animation:armTwo .38s infinite alternate;
+}
+
+.dancer.performance .legL{
+  animation:legOne .38s infinite alternate;
+}
+
+.dancer.performance .legR{
+  animation:legTwo .38s infinite alternate;
+}
+
+@keyframes idle{
+  0%,100%{
+    transform:translateX(-50%) translateY(0);
+  }
+  50%{
+    transform:translateX(-50%) translateY(-5px);
+  }
+}
+
+@keyframes performanceBody{
+  from{
+    transform:translateX(-50%) translateY(0) rotate(-3deg);
+  }
+  to{
+    transform:translateX(-50%) translateY(-16px) rotate(3deg);
+  }
+}
+
+@keyframes armOne{
+  from{transform:rotate(30deg)}
+  to{transform:rotate(-80deg)}
+}
+
+@keyframes armTwo{
+  from{transform:rotate(-30deg)}
+  to{transform:rotate(80deg)}
+}
+
+@keyframes legOne{
+  from{transform:rotate(10deg)}
+  to{transform:rotate(-25deg)}
+}
+
+@keyframes legTwo{
+  from{transform:rotate(-10deg)}
+  to{transform:rotate(25deg)}
+}
+
+/* =====================================================
+   PLAYER CARD
+===================================================== */
+
+.playerCard{
+  position:absolute;
+  left:18px;
+  top:48px;
+  z-index:15;
+  width:205px;
+  padding:12px;
+  border-radius:13px;
+  background:rgba(6,9,21,.72);
+  border:1px solid var(--line);
+  backdrop-filter:blur(7px);
+}
+
+.playerTop{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.avatar{
+  width:43px;
+  height:43px;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
+  background:linear-gradient(
+    135deg,
+    #3478ff,
+    #8d43ff
+  );
+  font-size:20px;
+  font-weight:900;
+}
+
+.playerName{
+  font-size:13px;
+  font-weight:900;
+}
+
+.playerTitle{
+  color:var(--muted);
+  font-size:9px;
+  margin-top:3px;
+}
+
+.xpTrack{
+  height:5px;
+  margin-top:10px;
+  border-radius:10px;
+  overflow:hidden;
+  background:#20253b;
+}
+
+.xpTrack div{
+  height:100%;
+  background:linear-gradient(
+    90deg,
+    var(--cyan),
+    var(--purple)
+  );
+}
+
+/* =====================================================
+   RATING
+===================================================== */
+
+.rating{
+  position:absolute;
+  right:18px;
+  top:48px;
+  width:145px;
+  z-index:15;
+  text-align:right;
+}
+
+.rating small{
+  color:var(--muted);
+  font-size:9px;
+}
+
+.rating strong{
+  display:block;
+  font-size:35px;
+  line-height:38px;
+  text-shadow:0 0 20px rgba(70,220,255,.5);
+}
+
+.ratingBar{
+  height:6px;
+  border-radius:10px;
+  background:#1c2339;
+  overflow:hidden;
+}
+
+.ratingBar div{
+  height:100%;
+  background:linear-gradient(
+    90deg,
+    var(--blue),
+    var(--cyan),
+    var(--green)
+  );
+}
+
+/* =====================================================
+   QUICK ACTIONS
+===================================================== */
+
+.quick{
+  position:absolute;
+  left:18px;
+  bottom:18px;
+  z-index:15;
+  display:flex;
+  gap:8px;
+}
+
+.quick button{
+  padding:9px 12px;
+  border-radius:10px;
+  background:rgba(5,8,18,.8);
+  border:1px solid var(--line);
+  font-size:9px;
+  font-weight:900;
+}
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+.bottomNav{
+  position:absolute;
+  z-index:40;
+  left:0;
+  right:0;
+  bottom:0;
+  height:105px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  padding:10px;
+  background:
+    linear-gradient(
+      0deg,
+      rgba(2,3,8,.99),
+      rgba(5,7,16,.88)
+    );
+  border-top:1px solid var(--line);
+}
+
+.navBtn{
+  flex:1;
+  max-width:135px;
+  height:72px;
+  border-radius:13px;
+  background:linear-gradient(
+    145deg,
+    #151a30,
+    #0a0d19
+  );
+  border:1px solid var(--line);
+  font-size:9px;
+  font-weight:900;
+}
+
+.navBtn .icon{
+  display:block;
+  font-size:19px;
+  margin-bottom:5px;
+}
+
+.navBtn.active{
+  background:linear-gradient(
+    135deg,
+    #2858d8,
+    #6935c9
+  );
+  box-shadow:0 0 20px rgba(70,100,255,.25);
+}
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+.modal{
+  position:absolute;
+  z-index:100;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(0,0,0,.76);
+  backdrop-filter:blur(9px);
+}
+
+.modal.show{
+  display:flex;
+}
+
+.panel{
+  width:min(760px,94vw);
+  max-height:88vh;
+  overflow:auto;
+  padding:22px;
+  border-radius:20px;
+  background:
+    linear-gradient(
+      145deg,
+      #151b34,
+      #080a15
+    );
+  border:1px solid rgba(255,255,255,.15);
+  box-shadow:0 30px 100px rgba(0,0,0,.8);
+}
+
+.panelHeader{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
+}
+
+.panel h2{
+  margin:0;
+  font-size:24px;
+}
+
+.closeX{
+  width:35px;
+  height:35px;
+  border-radius:10px;
+  background:#171d31;
 }
 
 .grid{
   display:grid;
-  gap:11px;
-}
-
-.grid4{
-  grid-template-columns:repeat(4,1fr);
-}
-
-.grid3{
   grid-template-columns:repeat(3,1fr);
+  gap:10px;
 }
 
-.grid2{
-  grid-template-columns:repeat(2,1fr);
-}
-
-.muted{
-  color:#7e879a;
-  line-height:1.5;
-}
-
-.kicker{
-  color:#a877d3;
-  font-size:10px;
-  font-weight:1000;
-  letter-spacing:2px;
-}
-
-.btn{
-  min-height:44px;
-  padding:10px 15px;
-  border-radius:11px;
-  border:1px solid #333a4f;
-  background:#141926;
-  color:#fff;
-  font-weight:1000;
-}
-
-.btn:active{
-  transform:scale(.96);
-}
-
-.btn.primary{
-  color:#080a11;
-  background:#fff;
-  border-color:#fff;
-}
-
-.btn.purple{
-  background:#7549ae;
-  border-color:#9568cb;
-}
-
-.btn.danger{
-  background:#34151c;
-  border-color:#6d303c;
-}
-
-.btn.wide{
-  width:100%;
-}
-
-input,select{
-  width:100%;
-  padding:12px;
-  border-radius:10px;
-  border:1px solid #32394d;
-  background:#090c14;
-  color:#fff;
-  outline:none;
-}
-
-label{
-  display:block;
-  color:#80889b;
-  font-size:10px;
-  font-weight:1000;
-  margin-bottom:7px;
-  letter-spacing:1px;
-}
-
-/* =====================================================
- HOME
-===================================================== */
-
-#home{
-  flex-direction:column;
-  overflow:auto;
-}
-
-.homebar{
-  min-height:58px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:10px 15px;
-  background:rgba(7,9,15,.94);
-  border-bottom:1px solid #202536;
-}
-
-.home-content{
-  width:min(1450px,100%);
-  margin:auto;
-  padding:16px;
-}
-
-.hero{
-  min-height:300px;
-  display:grid;
-  grid-template-columns:1.35fr 1fr;
-  gap:14px;
-  padding:23px;
-  border-radius:22px;
-  border:1px solid #39304d;
-  background:
-    linear-gradient(135deg,rgba(93,56,145,.32),rgba(12,16,27,.95));
-}
-
-.hero h1{
-  font-size:clamp(33px,7vw,64px);
-  line-height:.92;
-  margin:10px 0;
-  font-weight:1000;
-}
-
-.hero p{
-  color:#8d95a8;
-  max-width:600px;
-  line-height:1.55;
-}
-
-.hero-stage{
-  position:relative;
-  min-height:230px;
-  overflow:hidden;
-  border-radius:19px;
-  border:1px solid #353b4e;
-  background:
-    radial-gradient(circle at 50% 45%,#3a3049,#11141e 65%,#090b12);
-}
-
-.hero-stage-floor{
-  position:absolute;
-  width:80%;
-  height:40%;
-  left:10%;
-  bottom:8%;
-  border-radius:50%;
-  border:1px solid #665477;
-  transform:rotateX(62deg);
-  box-shadow:0 0 50px rgba(137,79,183,.25);
-}
-
-.hero-dancer{
-  position:absolute;
-  left:50%;
-  bottom:20%;
-  width:70px;
-  height:145px;
-  transform:translateX(-50%);
-  animation:heroDance 1s infinite ease-in-out;
-}
-
-.hero-head{
-  width:24px;
-  height:24px;
-  border-radius:50%;
-  background:#ccc;
-  position:absolute;
-  left:23px;
-}
-
-.hero-body{
-  width:28px;
-  height:58px;
-  border-radius:15px;
-  background:#8056b6;
-  position:absolute;
-  left:21px;
-  top:29px;
-}
-
-.hero-arm{
-  position:absolute;
-  width:9px;
-  height:52px;
-  border-radius:10px;
-  background:#999;
-  top:35px;
-}
-
-.hero-arm.a{
-  left:10px;
-  transform:rotate(30deg);
-}
-
-.hero-arm.b{
-  right:10px;
-  transform:rotate(-30deg);
-}
-
-.hero-leg{
-  position:absolute;
-  width:10px;
-  height:58px;
-  border-radius:10px;
-  background:#777;
-  top:82px;
-}
-
-.hero-leg.a{
-  left:22px;
-  transform:rotate(10deg);
-}
-
-.hero-leg.b{
-  right:22px;
-  transform:rotate(-10deg);
-}
-
-@keyframes heroDance{
-  0%,100%{
-    transform:translateX(-50%) translateY(0) rotate(0);
-  }
-  35%{
-    transform:translateX(-50%) translateY(-17px) rotate(-8deg);
-  }
-  65%{
-    transform:translateX(-50%) translateY(-6px) rotate(8deg);
-  }
-}
-
-.home-actions{
-  display:flex;
-  gap:9px;
-  flex-wrap:wrap;
-}
-
-.quick{
-  min-height:100px;
+.card{
+  min-height:92px;
   padding:14px;
-  text-align:left;
-  border-radius:15px;
-  border:1px solid #292f41;
-  background:#10141f;
-  color:#fff;
+  border-radius:13px;
+  background:#0b1020;
+  border:1px solid var(--line);
 }
 
-.quick:active{
-  transform:scale(.97);
+.card.clickable{
+  cursor:pointer;
 }
 
-.quick-title{
-  font-size:12px;
-  font-weight:1000;
-  margin-top:18px;
+.card.selected{
+  border-color:var(--cyan);
+  box-shadow:0 0 18px rgba(72,221,255,.16);
+  background:#101b34;
 }
 
-.quick-desc{
-  color:#737c90;
-  font-size:9px;
-  margin-top:5px;
+.card.locked{
+  opacity:.5;
 }
 
-/* =====================================================
- CREWS
-===================================================== */
-
-.crew-card{
-  padding:17px;
-  border-radius:17px;
-  border:1px solid #2a3041;
-  background:#10141f;
+.card h3{
+  margin:0 0 6px;
+  font-size:13px;
 }
 
-.crew-card.selected{
-  border-color:#a16bd5;
-  background:
-    linear-gradient(145deg,#211736,#10141f);
-}
-
-.crew-mark{
-  width:70px;
-  height:70px;
-  border-radius:50%;
-  margin-bottom:13px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border:1px solid #4b5268;
-  background:radial-gradient(circle,#2d3344,#090c13);
-  font-size:20px;
-  font-weight:1000;
-}
-
-/* =====================================================
- DANCERS
-===================================================== */
-
-.dancer-card{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-}
-
-.avatar{
-  width:52px;
-  height:52px;
-  border-radius:50%;
-  background:
-    radial-gradient(circle at 50% 30%,#ddd 0 17%,transparent 18%),
-    linear-gradient(#7653a7 0 52%,#343946 52%);
-  border:1px solid #545b70;
-}
-
-/* =====================================================
- SETUP
-===================================================== */
-
-.setup{
-  max-width:1100px;
-  margin:auto;
-}
-
-.setup-row{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
-}
-
-.locked{
-  color:#d9c2ed;
+.card p{
+  margin:0;
+  color:var(--muted);
   font-size:10px;
-  font-weight:1000;
-  letter-spacing:1px;
+  line-height:1.4;
 }
 
-/* =====================================================
- COSTUMES
-===================================================== */
-
-.costume{
-  padding:15px;
-  border-radius:15px;
-  background:#10141f;
-  border:1px solid #2b3142;
+.primary{
+  background:linear-gradient(
+    135deg,
+    #316cff,
+    #8240e9
+  );
 }
 
-.costume.selected{
-  border-color:#a16bd5;
-}
-
-.costume-preview{
-  height:120px;
-  border-radius:12px;
-  margin-bottom:12px;
-  position:relative;
-  overflow:hidden;
-}
-
-.costume-body{
-  position:absolute;
-  width:45px;
-  height:78px;
-  left:50%;
-  top:23px;
-  transform:translateX(-50%);
-  border-radius:18px;
-}
-
-.costume-head{
-  position:absolute;
-  width:30px;
-  height:30px;
-  left:50%;
-  top:7px;
-  transform:translateX(-50%);
-  border-radius:50%;
-  background:#d4d4d4;
-}
-
-.black{
-  background:linear-gradient(135deg,#171a23,#4b5061);
-}
-
-.blue{
-  background:linear-gradient(135deg,#1b5c9c,#56a0df);
-}
-
-.red{
-  background:linear-gradient(135deg,#6f2032,#ce5b71);
+.green{
+  background:linear-gradient(
+    135deg,
+    #119e75,
+    #26d19f
+  );
 }
 
 .gold{
-  background:linear-gradient(135deg,#795f19,#d9b744);
+  background:linear-gradient(
+    135deg,
+    #a9650e,
+    #e6a52e
+  );
 }
 
-/* =====================================================
- ARENA
-===================================================== */
-
-#battle{
-  background:#020307;
-}
-
-.battle{
+.action{
   width:100%;
-  height:100%;
-  display:flex;
-  flex-direction:column;
-}
-
-.battlebar{
-  height:61px;
-  min-height:61px;
-  display:grid;
-  grid-template-columns:1fr auto 1fr;
-  align-items:center;
-  background:#080b12;
-  border-bottom:1px solid #202535;
-  z-index:50;
-}
-
-.score-side{
-  display:flex;
-  align-items:center;
-  gap:9px;
-  padding:0 13px;
-}
-
-.score-side.right{
-  justify-content:flex-end;
-}
-
-.dot{
-  width:9px;
-  height:9px;
-  border-radius:50%;
-  background:#5a90d6;
-  box-shadow:0 0 12px #5a90d6;
-}
-
-.dot.red{
-  background:#c35b70;
-  box-shadow:0 0 12px #c35b70;
-}
-
-.team{
-  font-size:9px;
-  font-weight:1000;
-  letter-spacing:1px;
-}
-
-.score{
-  font-size:25px;
-  font-weight:1000;
-}
-
-.timer{
-  text-align:center;
-}
-
-.timer small{
-  display:block;
-  color:#727a8e;
-  font-size:7px;
-  letter-spacing:2px;
-}
-
-.timer strong{
-  font-size:21px;
-}
-
-.arena{
-  position:relative;
-  flex:1;
-  overflow:hidden;
-  background:
-    radial-gradient(ellipse at center 45%,#42364d 0,#1b1b28 25%,#090b12 62%,#020307 100%);
-  perspective:1000px;
-}
-
-.arena.shake{
-  animation:arenaShake .25s;
-}
-
-@keyframes arenaShake{
-  25%{transform:translateX(-5px)}
-  50%{transform:translateX(5px)}
-  75%{transform:translateX(-3px)}
-}
-
-.wall{
-  position:absolute;
-  inset:0;
-  background:
-    linear-gradient(90deg,
-      rgba(28,88,150,.15),
-      transparent 30%,
-      transparent 70%,
-      rgba(160,48,73,.14));
-}
-
-.floor{
-  position:absolute;
-  width:75%;
-  height:42%;
-  left:12.5%;
-  bottom:2%;
-  border-radius:50%;
-  transform:rotateX(65deg);
-  border:1px solid #655477;
-  background:
-    radial-gradient(ellipse,#4a3a53,#11131c 67%);
-  box-shadow:0 0 100px rgba(117,68,157,.2);
-}
-
-.gridfloor{
-  position:absolute;
-  width:78%;
-  height:28%;
-  left:11%;
-  bottom:5%;
-  border-radius:50%;
-  transform:rotateX(65deg);
-  opacity:.4;
-  background:
-    repeating-linear-gradient(
-      90deg,
-      transparent 0,
-      transparent 38px,
-      rgba(190,155,216,.13) 39px
-    ),
-    repeating-linear-gradient(
-      0deg,
-      transparent 0,
-      transparent 24px,
-      rgba(190,155,216,.1) 25px
-    );
-}
-
-.beam{
-  position:absolute;
-  width:2px;
-  height:80%;
-  top:-10%;
-  transform-origin:top;
-  opacity:.4;
-}
-
-.beam.one{
-  left:15%;
-  background:#5594df;
-  transform:rotate(-20deg);
-  animation:beamMove 4s infinite alternate;
-}
-
-.beam.two{
-  right:15%;
-  background:#d05e78;
-  transform:rotate(20deg);
-  animation:beamMove2 4s infinite alternate;
-}
-
-@keyframes beamMove{
-  to{transform:rotate(24deg)}
-}
-
-@keyframes beamMove2{
-  to{transform:rotate(-24deg)}
-}
-
-/* =====================================================
- CROWD
-===================================================== */
-
-.crowd{
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:13%;
-  height:28%;
-  display:flex;
-  justify-content:center;
-  align-items:flex-end;
-  gap:4px;
-  opacity:.72;
-}
-
-.fan{
-  width:12px;
-  height:48px;
-  position:relative;
-  animation:fanDance .8s infinite alternate;
-}
-
-.fan:nth-child(2n){
-  animation-delay:.2s;
-}
-
-.fan:nth-child(3n){
-  animation-delay:.4s;
-}
-
-.fan:before{
-  content:"";
-  position:absolute;
-  width:8px;
-  height:8px;
-  left:2px;
-  top:0;
-  border-radius:50%;
-  background:#888;
-}
-
-.fan:after{
-  content:"";
-  position:absolute;
-  width:12px;
-  height:30px;
-  left:0;
-  top:9px;
-  border-radius:8px 8px 3px 3px;
-  background:#414653;
-}
-
-@keyframes fanDance{
-  to{
-    transform:translateY(-8px) rotate(3deg);
-  }
-}
-
-/* =====================================================
- DANCER
-===================================================== */
-
-.stage-dancer{
-  position:absolute;
-  width:115px;
-  height:205px;
-  bottom:18%;
-  z-index:20;
-  transform-origin:center bottom;
-}
-
-.stage-dancer.player{
-  left:18%;
-}
-
-.stage-dancer.enemy{
-  right:18%;
-}
-
-.stage-dancer .head{
-  position:absolute;
-  width:31px;
-  height:31px;
-  left:42px;
-  top:0;
-  border-radius:50%;
-  background:#d6d6d6;
-}
-
-.stage-dancer .torso{
-  position:absolute;
-  width:32px;
-  height:76px;
-  left:41px;
-  top:36px;
-  border-radius:16px;
-  background:#8056b5;
-}
-
-.stage-dancer.enemy .torso{
-  background:#a54e65;
-}
-
-.stage-dancer .arm{
-  position:absolute;
-  width:12px;
-  height:68px;
-  top:43px;
-  border-radius:10px;
-  background:#999;
-}
-
-.stage-dancer .arm.left{
-  left:25px;
-  transform:rotate(25deg);
-}
-
-.stage-dancer .arm.right{
-  right:25px;
-  transform:rotate(-25deg);
-}
-
-.stage-dancer .leg{
-  position:absolute;
-  width:13px;
-  height:73px;
-  top:105px;
-  border-radius:10px;
-  background:#777;
-}
-
-.stage-dancer .leg.left{
-  left:42px;
-  transform:rotate(11deg);
-}
-
-.stage-dancer .leg.right{
-  right:42px;
-  transform:rotate(-11deg);
-}
-
-.stage-dancer.dance{
-  animation:danceMove .52s ease;
-}
-
-.stage-dancer.power{
-  animation:powerMove .75s ease;
-}
-
-@keyframes danceMove{
-  0%{
-    transform:translateY(0) rotate(0) scale(1);
-  }
-  30%{
-    transform:translateY(-20px) rotate(-10deg) scale(1.08);
-  }
-  60%{
-    transform:translateY(-8px) rotate(11deg) scale(1.04);
-  }
-  100%{
-    transform:translateY(0) rotate(0) scale(1);
-  }
-}
-
-@keyframes powerMove{
-  0%{
-    transform:scale(1) rotate(0);
-  }
-  25%{
-    transform:scale(1.15) rotate(-20deg);
-  }
-  55%{
-    transform:scale(1.12) rotate(18deg);
-  }
-  100%{
-    transform:scale(1) rotate(0);
-  }
-}
-
-/* =====================================================
- JUDGES
-===================================================== */
-
-.judges{
-  position:absolute;
-  top:8%;
-  left:50%;
-  transform:translateX(-50%);
-  display:flex;
-  gap:8px;
-  z-index:30;
-}
-
-.judge{
-  width:55px;
-  padding:7px 4px;
-  border-radius:8px;
-  border:1px solid #303648;
-  background:rgba(8,10,16,.78);
-  text-align:center;
-}
-
-.face{
-  width:22px;
-  height:22px;
-  margin:auto;
-  border-radius:50%;
-  background:#999;
-}
-
-.jscore{
-  margin-top:4px;
+  padding:13px;
+  border-radius:11px;
+  margin-top:13px;
+  font-weight:900;
   font-size:11px;
-  font-weight:1000;
 }
 
-.jname{
-  color:#6e7689;
-  font-size:7px;
-}
-
-/* =====================================================
- BATTLE MESSAGE
-===================================================== */
-
-.message{
-  position:absolute;
-  z-index:100;
-  top:27%;
-  left:50%;
-  transform:translate(-50%,20px) scale(.7);
-  opacity:0;
-  text-align:center;
-  pointer-events:none;
-  transition:.16s;
-}
-
-.message.show{
-  opacity:1;
-  transform:translate(-50%,0) scale(1);
-}
-
-.message strong{
-  display:block;
-  font-size:clamp(38px,8vw,82px);
-  font-weight:1000;
-  font-style:italic;
-}
-
-.message span{
-  color:#a7afc1;
-  font-size:10px;
-  letter-spacing:3px;
-  font-weight:1000;
-}
-
-/* =====================================================
- CONTROLS
-===================================================== */
-
-.controls{
-  padding:8px 11px;
-  background:#080a11;
-  border-top:1px solid #202536;
-  z-index:50;
-}
-
-.beatline{
-  width:min(900px,100%);
-  height:5px;
-  margin:auto;
-  background:#242a39;
-  border-radius:10px;
-  overflow:hidden;
-  margin-bottom:8px;
-}
-
-.beatbar{
-  width:0;
-  height:100%;
-  background:#9863c9;
-}
-
-.buttons{
-  width:min(900px,100%);
-  margin:auto;
+.statGrid{
   display:grid;
   grid-template-columns:repeat(4,1fr);
   gap:8px;
+  margin:15px 0;
 }
 
-.move-btn{
-  min-height:54px;
-  border-radius:12px;
-  background:#151a28;
-  color:#fff;
-  border:1px solid #343a4e;
-  font-weight:1000;
-}
-
-.move-btn:active{
-  transform:scale(.94);
-}
-
-.move-btn small{
-  display:block;
-  color:#737c90;
-  font-size:7px;
-  margin-top:3px;
-}
-
-/* =====================================================
- RESULT
-===================================================== */
-
-#result{
-  background:#05070d;
-}
-
-.result-wrap{
-  width:100%;
-  height:100%;
-  overflow:auto;
-  padding:18px;
-  background:
-    radial-gradient(circle at center top,rgba(112,67,157,.25),transparent 42%),
-    #070a12;
-}
-
-.result{
-  width:min(1000px,100%);
-  margin:auto;
-}
-
-.result-title{
+.miniStat{
   text-align:center;
-  color:#8991a4;
-  font-size:11px;
-  letter-spacing:4px;
+  padding:11px 5px;
+  border-radius:10px;
+  background:#0a0f20;
+  border:1px solid var(--line);
 }
 
-.winner{
-  text-align:center;
-  margin:20px 0;
-}
-
-.winner h1{
-  font-size:clamp(40px,8vw,80px);
-  margin:0;
-  font-weight:1000;
-}
-
-.winner strong{
+.miniStat b{
   display:block;
-  color:#b989dc;
-  font-size:clamp(18px,4vw,30px);
-  margin-top:6px;
+  font-size:18px;
 }
 
-.result-versus{
-  display:grid;
-  grid-template-columns:1fr 120px 1fr;
-  gap:10px;
-  align-items:center;
+.miniStat span{
+  color:var(--muted);
+  font-size:8px;
 }
 
-.result-team{
-  padding:20px;
-  border-radius:16px;
-  border:1px solid #2b3142;
-  background:#10141f;
-  text-align:center;
+.skill{
+  margin:12px 0;
 }
 
-.result-team strong{
-  display:block;
-  font-size:22px;
-}
-
-.result-team span{
-  display:block;
-  margin-top:8px;
-  font-size:31px;
-  font-weight:1000;
-}
-
-.result-vs{
-  text-align:center;
-  font-size:30px;
-  font-weight:1000;
-}
-
-.statbar{
-  display:grid;
-  grid-template-columns:95px 1fr 40px;
-  align-items:center;
-  gap:8px;
-  font-size:9px;
-  font-weight:1000;
-  margin:11px 0;
+.skillLine{
+  display:flex;
+  justify-content:space-between;
+  font-size:10px;
+  margin-bottom:5px;
 }
 
 .bar{
   height:7px;
   border-radius:10px;
-  background:#242a38;
+  background:#1c2338;
   overflow:hidden;
 }
 
-.bar i{
-  display:block;
-  width:0;
+.bar div{
   height:100%;
-  background:#9862c8;
+  background:linear-gradient(
+    90deg,
+    var(--blue),
+    var(--cyan)
+  );
 }
 
 /* =====================================================
- TOAST
+   PERFORMANCE OVERLAY
+===================================================== */
+
+.performanceHud{
+  position:absolute;
+  z-index:80;
+  inset:0;
+  display:none;
+  pointer-events:none;
+}
+
+.performanceHud.active{
+  display:block;
+}
+
+.countdown{
+  position:absolute;
+  left:50%;
+  top:45%;
+  transform:translate(-50%,-50%);
+  font-size:85px;
+  font-weight:1000;
+  text-shadow:0 0 35px var(--cyan);
+}
+
+.movePrompt{
+  position:absolute;
+  left:50%;
+  bottom:125px;
+  transform:translateX(-50%);
+  padding:12px 27px;
+  border-radius:30px;
+  background:rgba(0,0,0,.72);
+  border:1px solid rgba(255,255,255,.2);
+  font-size:13px;
+  font-weight:1000;
+  letter-spacing:2px;
+  pointer-events:none;
+}
+
+.performanceTap{
+  position:absolute;
+  left:50%;
+  bottom:190px;
+  transform:translateX(-50%);
+  width:150px;
+  height:60px;
+  border-radius:35px;
+  background:rgba(80,210,255,.1);
+  border:1px solid rgba(80,210,255,.3);
+  pointer-events:auto;
+  font-weight:900;
+}
+
+/* =====================================================
+   TOAST
 ===================================================== */
 
 .toast{
-  position:fixed;
-  z-index:9999;
+  position:absolute;
+  z-index:200;
   left:50%;
-  bottom:20px;
-  transform:translate(-50%,20px);
+  top:78px;
+  transform:translate(-50%,-15px);
   opacity:0;
-  padding:11px 17px;
-  border-radius:30px;
-  background:#fff;
-  color:#080a10;
-  font-weight:1000;
+  padding:10px 17px;
+  border-radius:20px;
+  background:#10172b;
+  border:1px solid var(--line);
+  font-size:11px;
+  font-weight:800;
+  transition:.25s;
   pointer-events:none;
-  transition:.2s;
+  white-space:nowrap;
 }
 
 .toast.show{
@@ -1117,2953 +911,4589 @@ label{
 }
 
 /* =====================================================
- MOBILE
+   MOBILE
 ===================================================== */
-
-@media(max-width:950px){
-
-.grid4{
-  grid-template-columns:repeat(2,1fr);
-}
-
-.grid3{
-  grid-template-columns:repeat(2,1fr);
-}
-
-.hero{
-  grid-template-columns:1fr;
-}
-
-}
 
 @media(max-width:650px){
 
-.panel{
-  padding:12px;
+  .header{
+    height:57px;
+    padding:7px 8px;
+  }
+
+  .world{
+    inset:57px 0 94px;
+  }
+
+  .brand{
+    font-size:12px;
+    letter-spacing:1px;
+  }
+
+  .resource{
+    min-width:49px;
+    padding:4px;
+  }
+
+  .resource small{
+    font-size:6px;
+  }
+
+  .resource strong{
+    font-size:10px;
+  }
+
+  .playerCard{
+    left:7px;
+    top:40px;
+    width:165px;
+    padding:8px;
+  }
+
+  .avatar{
+    width:35px;
+    height:35px;
+  }
+
+  .rating{
+    right:8px;
+    top:40px;
+    width:110px;
+  }
+
+  .rating strong{
+    font-size:28px;
+  }
+
+  .dancer{
+    transform:translateX(-50%) scale(.78);
+    transform-origin:bottom center;
+    bottom:12%;
+  }
+
+  .quick{
+    left:7px;
+    bottom:7px;
+  }
+
+  .quick button{
+    padding:7px;
+    font-size:7px;
+  }
+
+  .bottomNav{
+    height:94px;
+    padding:6px;
+    gap:4px;
+  }
+
+  .navBtn{
+    height:67px;
+    font-size:7px;
+    padding:4px;
+  }
+
+  .navBtn .icon{
+    font-size:16px;
+  }
+
+  .grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .statGrid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .panel{
+    padding:15px;
+  }
 }
-
-.grid4,
-.grid3,
-.grid2{
-  grid-template-columns:1fr;
-}
-
-.setup-row{
-  grid-template-columns:1fr;
-}
-
-.stage-dancer.player{
-  left:8%;
-}
-
-.stage-dancer.enemy{
-  right:8%;
-}
-
-.result-versus{
-  grid-template-columns:1fr;
-}
-
-.result-vs{
-  order:-1;
-}
-
-}
-
-@media(max-height:500px){
-
-.battlebar{
-  height:47px;
-  min-height:47px;
-}
-
-.controls{
-  padding:5px 8px;
-}
-
-.move-btn{
-  min-height:43px;
-}
-
-.stage-dancer{
-  transform:scale(.68);
-  bottom:13%;
-}
-
-.judges{
-  top:4%;
-}
-
-.crowd{
-  bottom:9%;
-}
-
-}
-
-/* =====================================================
- LANDSCAPE PHONE
-===================================================== */
-
-@media(
-  orientation:landscape
-) and (
-  max-height:600px
-){
-
-#home{
-  overflow:auto;
-}
-
-.hero{
-  min-height:245px;
-}
-
-.hero-stage{
-  min-height:180px;
-}
-
-}
-
 </style>
 </head>
 
 <body>
 
-<div class="app">
+<div id="app">
 
-<!-- ===================================================
- HOME
-=================================================== -->
+  <div class="skyGlow"></div>
 
-<section id="home" class="screen active">
+  <div class="city">
+    <div class="building" style="height:48%"></div>
+    <div class="building" style="height:72%"></div>
+    <div class="building" style="height:55%"></div>
+    <div class="building" style="height:88%"></div>
+    <div class="building" style="height:62%"></div>
+    <div class="building" style="height:42%"></div>
+    <div class="building" style="height:76%"></div>
+    <div class="building" style="height:51%"></div>
+    <div class="building" style="height:68%"></div>
+    <div class="building" style="height:45%"></div>
+    <div class="building" style="height:82%"></div>
+    <div class="building" style="height:57%"></div>
+  </div>
 
-<header class="homebar">
+  <div class="stage"></div>
+  <div class="stageGlow"></div>
 
-<div>
-<div class="logo">WORLD OF DANCE</div>
-<div class="small">ULTIMATE DANCE COMPETITION</div>
-</div>
-
-<div style="display:flex;gap:7px">
-
-<div class="btn" style="padding:8px 10px">
-<span id="rank">ROOKIE</span>
-</div>
-
-<div class="btn" style="padding:8px 10px">
-<span id="coins">1000</span>
-</div>
-
-</div>
-
-</header>
-
-<div class="home-content">
-
-<section class="hero">
-
-<div>
-
-<div class="kicker">
-WORLD STAGE
-</div>
-
-<h1>
-DANCE.<br>
-COMPETE.<br>
-DOMINATE.
-</h1>
-
-<p>
-Create your crew, choose your style, prepare your
-performance and battle rival crews in the World of Dance.
-</p>
-
-<div class="home-actions">
-
-<button class="btn primary"
-onclick="openCompetition()">
-ENTER COMPETITION
-</button>
-
-<button class="btn"
-onclick="openScreen('crews')">
-MY CREW
-</button>
-
-</div>
-
-</div>
-
-<div class="hero-stage">
-
-<div class="hero-stage-floor"></div>
-
-<div class="hero-dancer">
-
-<div class="hero-head"></div>
-<div class="hero-body"></div>
-<div class="hero-arm a"></div>
-<div class="hero-arm b"></div>
-<div class="hero-leg a"></div>
-<div class="hero-leg b"></div>
-
-</div>
-
-<div style="
-position:absolute;
-left:50%;
-bottom:7%;
-transform:translateX(-50%);
-color:#747d91;
-font-size:9px;
-font-weight:1000;
-letter-spacing:3px;
-">
-LIVE ARENA
-</div>
-
-</div>
-
-</section>
-
-<div class="grid grid4" style="margin-top:13px">
-
-<button class="quick"
-onclick="openCompetition()">
-
-<div class="kicker">01</div>
-
-<div class="quick-title">
-COMPETITION
-</div>
-
-<div class="quick-desc">
-Schedule and enter battles
-</div>
-
-</button>
-
-<button class="quick"
-onclick="openScreen('crew')">
-
-<div class="kicker">02</div>
-
-<div class="quick-title">
-DANCERS
-</div>
-
-<div class="quick-desc">
-Manage your lineup
-</div>
-
-</button>
-
-<button class="quick"
-onclick="openScreen('training')">
-
-<div class="kicker">03</div>
-
-<div class="quick-title">
-TRAINING
-</div>
-
-<div class="quick-desc">
-Develop attributes
-</div>
-
-</button>
-
-<button class="quick"
-onclick="openScreen('records')">
-
-<div class="kicker">04</div>
-
-<div class="quick-title">
-RECORD
-</div>
-
-<div class="quick-desc">
-View your career
-</div>
-
-</button>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- ===================================================
- COMPETITION
-=================================================== -->
-
-<section id="competition" class="screen">
-
-<div class="panel">
-
-<div class="topbar">
-
-<div>
-<div class="title">COMPETITION</div>
-<div class="small">PREPARE YOUR PERFORMANCE</div>
-</div>
-
-<button class="btn"
-onclick="openScreen('home')">
-BACK
-</button>
-
-</div>
-
-<div class="setup">
-
-<div class="card">
-
-<div class="kicker">
-COMPETITION SCHEDULE
-</div>
-
-<h2 id="competitionName">
-NAIROBI NIGHT BATTLE
-</h2>
-
-<p class="muted">
-Every competition has a preparation period. Once the
-performance starts, your selected setup is locked.
-</p>
-
-<div class="grid grid3">
-
-<div>
-<label>OPPONENT</label>
-<strong id="setupOpponent">
-Selecting...
-</strong>
-</div>
-
-<div>
-<label>PREPARATION</label>
-<strong id="prepTime">
-05:00
-</strong>
-</div>
-
-<div>
-<label>STATUS</label>
-<strong id="prepStatus">
-READY
-</strong>
-</div>
-
-</div>
-
-<div style="margin-top:14px">
-
-<button class="btn primary"
-onclick="startPreparation()">
-START PREPARATION
-</button>
-
-</div>
-
-</div>
-
-<div class="card" style="margin-top:12px">
-
-<div class="kicker">
-PERFORMANCE SETUP
-</div>
-
-<h2>Choose before battle</h2>
-
-<div class="setup-row">
-
-<div>
-
-<label>DANCE STYLE</label>
-
-<select id="styleSelect"></select>
-
-</div>
-
-<div>
-
-<label>MUSIC</label>
-
-<select id="musicSelect"></select>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="card" style="margin-top:12px">
-
-<div class="kicker">
-COSTUME
-</div>
-
-<div class="grid grid4"
-id="costumeGrid">
-</div>
-
-</div>
-
-<div class="card" style="margin-top:12px">
-
-<div class="kicker">
-CHOREOGRAPHY
-</div>
-
-<div class="grid grid2"
-id="moveSetup">
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- ===================================================
- CREW
-=================================================== -->
+  <!-- HEADER -->
 
-<section id="crews" class="screen">
+  <header class="header">
 
-<div class="panel">
+    <div class="brand">
+      WORLD <i>OF</i> DANCE
+    </div>
 
-<div class="topbar">
+    <div class="resources">
 
-<div>
-<div class="title">CREWS</div>
-<div class="small">CHOOSE YOUR REPRESENTATIVE CREW</div>
-</div>
-
-<button class="btn"
-onclick="openScreen('home')">
-BACK
-</button>
-
-</div>
-
-<div class="grid grid3"
-id="crewGrid">
-</div>
-
-</div>
-
-</section>
-
-
-<!-- ===================================================
- DANCERS
-=================================================== -->
-
-<section id="crew" class="screen">
-
-<div class="panel">
-
-<div class="topbar">
-
-<div>
-<div class="title">MY DANCERS</div>
-<div class="small">BUILD YOUR STARTING LINEUP</div>
-</div>
-
-<button class="btn"
-onclick="openScreen('home')">
-BACK
-</button>
-
-</div>
-
-<div class="card-grid"></div>
-
-<div class="grid"
-id="dancerGrid">
-</div>
-
-</div>
-
-</section>
-
-
-<!-- ===================================================
- TRAINING
-=================================================== -->
-
-<section id="training" class="screen">
-
-<div class="panel">
-
-<div class="topbar">
-
-<div>
-<div class="title">TRAINING</div>
-<div class="small">DEVELOP YOUR DANCERS</div>
-</div>
-
-<button class="btn"
-onclick="openScreen('home')">
-BACK
-</button>
-
-</div>
-
-<div class="card">
-
-<label>DANCER</label>
-
-<select id="trainingSelect"
-onchange="renderTraining()">
-</select>
-
-</div>
-
-<div class="grid grid3"
-id="trainingGrid"
-style="margin-top:12px">
-</div>
-
-</div>
-
-</section>
-
-
-<!-- ===================================================
- RECORDS
-=================================================== -->
-
-<section id="records" class="screen">
-
-<div class="panel">
-
-<div class="topbar">
-
-<div>
-<div class="title">CAREER</div>
-<div class="small">WORLD OF DANCE RECORD</div>
-</div>
-
-<button class="btn"
-onclick="openScreen('home')">
-BACK
-</button>
-
-</div>
-
-<div class="grid grid4">
-
-<div class="card">
-<div class="muted">COMPETITIONS</div>
-<div class="title" style="font-size:30px"
-id="recordCompetitions">
-0
-</div>
-</div>
-
-<div class="card">
-<div class="muted">WINS</div>
-<div class="title" style="font-size:30px"
-id="recordWins">
-0
-</div>
-</div>
-
-<div class="card">
-<div class="muted">LOSSES</div>
-<div class="title" style="font-size:30px"
-id="recordLosses">
-0
-</div>
-</div>
-
-<div class="card">
-<div class="muted">RANK XP</div>
-<div class="title" style="font-size:30px"
-id="recordXP">
-0
-</div>
-</div>
+      <div class="resource">
+        <small>LEVEL</small>
+        <strong id="level">1</strong>
+      </div>
 
-</div>
-
-</div>
-
-</section>
-
-
-<!-- ===================================================
- BATTLE
-=================================================== -->
-
-<section id="battle" class="screen">
-
-<div class="battle">
-
-<header class="battlebar">
-
-<div class="score-side">
-
-<div class="dot"></div>
-
-<div>
-<div class="team">STREET PULSE</div>
-<div class="score"
-id="playerScore">
-0
-</div>
-</div>
-
-</div>
-
-<div class="timer">
+      <div class="resource">
+        <small>XP</small>
+        <strong id="xp">0</strong>
+      </div>
 
-<small>ROUND TIME</small>
+      <div class="resource">
+        <small>COINS</small>
+        <strong id="coins">500</strong>
+      </div>
 
-<strong id="battleTimer">
-00:30
-</strong>
+      <div class="resource">
+        <small>ENERGY</small>
+        <strong id="energy">100</strong>
+      </div>
 
-</div>
-
-<div class="score-side right">
-
-<div>
-
-<div class="team"
-id="enemyShort">
-SHADOW
-</div>
-
-<div class="score"
-id="enemyScore">
-0
-</div>
-
-</div>
-
-<div class="dot red"></div>
-
-</div>
+    </div>
 
-</header>
+  </header>
 
-<main class="arena"
-id="arena">
+  <!-- WORLD -->
 
-<div class="wall"></div>
+  <main class="world">
 
-<div class="beam one"></div>
-<div class="beam two"></div>
+    <div class="location">
+      CITY CENTER · <span id="locationName">DANCE DISTRICT</span>
+    </div>
 
-<div class="floor"></div>
-<div class="gridfloor"></div>
-
-<div class="crowd"
-id="crowd">
-</div>
-
-<div class="judges">
-
-<div class="judge">
-<div class="face"></div>
-<div class="jscore"
-id="j1">
---
-</div>
-<div class="jname">JUDGE 1</div>
-</div>
+    <!-- PLAYER CARD -->
 
-<div class="judge">
-<div class="face"></div>
-<div class="jscore"
-id="j2">
---
-</div>
-<div class="jname">JUDGE 2</div>
-</div>
+    <section class="playerCard">
 
-<div class="judge">
-<div class="face"></div>
-<div class="jscore"
-id="j3">
---
-</div>
-<div class="jname">JUDGE 3</div>
-</div>
+      <div class="playerTop">
 
-</div>
+        <div class="avatar">W</div>
 
+        <div>
+          <div class="playerName" id="playerName">
+            RISING DANCER
+          </div>
 
-<div class="stage-dancer player"
-id="playerDancer">
+          <div class="playerTitle" id="playerTitle">
+            Street Performer
+          </div>
+        </div>
 
-<div class="head"></div>
-<div class="torso"></div>
+      </div>
 
-<div class="arm left"></div>
-<div class="arm right"></div>
+      <div class="xpTrack">
+        <div id="xpBar"></div>
+      </div>
 
-<div class="leg left"></div>
-<div class="leg right"></div>
+    </section>
 
-</div>
+    <!-- RATING -->
 
+    <section class="rating">
 
-<div class="stage-dancer enemy"
-id="enemyDancer">
+      <small>OVERALL RATING</small>
 
-<div class="head"></div>
-<div class="torso"></div>
+      <strong id="rating">
+        68
+      </strong>
 
-<div class="arm left"></div>
-<div class="arm right"></div>
+      <div class="ratingBar">
+        <div id="ratingBar"></div>
+      </div>
 
-<div class="leg left"></div>
-<div class="leg right"></div>
+    </section>
 
-</div>
+    <!-- DANCER -->
 
+    <div class="dancer" id="dancer">
 
-<div class="message"
-id="message">
+      <div class="hair"></div>
+      <div class="head"></div>
+      <div class="neck"></div>
+      <div class="torso"></div>
 
-<strong id="messageMain">
-PERFECT
-</strong>
+      <div class="arm armL">
+        <div class="hand"></div>
+      </div>
 
-<span id="messageSub">
-ON BEAT
-</span>
+      <div class="arm armR">
+        <div class="hand"></div>
+      </div>
 
-</div>
+      <div class="leg legL">
+        <div class="shoe"></div>
+      </div>
 
-</main>
+      <div class="leg legR">
+        <div class="shoe"></div>
+      </div>
 
-<footer class="controls">
+    </div>
 
-<div class="beatline">
-<div class="beatbar"
-id="beatbar">
-</div>
-</div>
+    <!-- QUICK ACTIONS -->
 
-<div class="buttons">
-
-<button class="move-btn"
-onclick="inputMove(0)">
-A
-<small>RHYTHM</small>
-</button>
-
-<button class="move-btn"
-onclick="inputMove(1)">
-B
-<small>FLOW</small>
-</button>
-
-<button class="move-btn"
-onclick="inputMove(2)">
-X
-<small>POWER</small>
-</button>
-
-<button class="move-btn"
-onclick="inputMove(3)">
-Y
-<small>SPECIAL</small>
-</button>
+    <div class="quick">
 
-</div>
+      <button onclick="openMissions()">
+        MISSIONS
+      </button>
 
-</footer>
+      <button onclick="openProfile()">
+        PROFILE
+      </button>
 
-</div>
+      <button onclick="resetGame()">
+        RESET SAVE
+      </button>
 
-</section>
+    </div>
 
+  </main>
 
-<!-- ===================================================
- RESULT
-=================================================== -->
+  <!-- NAV -->
 
-<section id="result" class="screen">
+  <nav class="bottomNav">
 
-<div class="result-wrap">
+    <button
+      class="navBtn active"
+      id="navHome"
+      onclick="showHome()">
 
-<div class="result">
+      <span class="icon">HOME</span>
+      WORLD
 
-<div class="result-title">
-FINAL JUDGES' RESULT
-</div>
+    </button>
 
-<div class="winner">
+    <button
+      class="navBtn"
+      onclick="openTraining()">
 
-<h1 id="resultTitle">
-VICTORY
-</h1>
+      <span class="icon">TRAIN</span>
+      TRAINING
 
-<strong id="resultWinner">
-STREET PULSE
-</strong>
+    </button>
 
-</div>
+    <button
+      class="navBtn"
+      onclick="openDance()">
 
-<div class="result-versus">
+      <span class="icon">DANCE</span>
+      STUDIO
 
-<div class="result-team">
+    </button>
 
-<strong>
-STREET PULSE
-</strong>
+    <button
+      class="navBtn primary"
+      onclick="openPerformance()">
 
-<span id="resultPlayerScore">
-0
-</span>
+      <span class="icon">LIVE</span>
+      STAGE
 
-</div>
+    </button>
 
-<div class="result-vs">
-VS
-</div>
+    <button
+      class="navBtn"
+      onclick="openCareer()">
 
-<div class="result-team">
+      <span class="icon">CAREER</span>
+      CAREER
 
-<strong id="resultEnemyName">
-SHADOW SYNDICATE
-</strong>
+    </button>
 
-<span id="resultEnemyScore">
-0
-</span>
+  </nav>
 
-</div>
+  <!-- PERFORMANCE HUD -->
 
-</div>
+  <div
+    class="performanceHud"
+    id="performanceHud">
 
-<div class="card" style="margin-top:13px">
+    <div
+      class="countdown"
+      id="countdown">
+      3
+    </div>
 
-<h3>PERFORMANCE SCORE</h3>
+    <div
+      class="movePrompt"
+      id="movePrompt">
+      GET READY
+    </div>
 
-<div class="statbar">
-<span>RHYTHM</span>
-<div class="bar">
-<i id="barRhythm"></i>
-</div>
-<strong id="scoreRhythm">0</strong>
-</div>
+    <button
+      class="performanceTap"
+      id="performanceTap">
+      HIT MOVE
+    </button>
 
-<div class="statbar">
-<span>TECHNIQUE</span>
-<div class="bar">
-<i id="barTechnique"></i>
-</div>
-<strong id="scoreTechnique">0</strong>
-</div>
+  </div>
 
-<div class="statbar">
-<span>POWER</span>
-<div class="bar">
-<i id="barPower"></i>
-</div>
-<strong id="scorePower">0</strong>
-</div>
+  <!-- MODAL -->
 
-<div class="statbar">
-<span>CREATIVITY</span>
-<div class="bar">
-<i id="barCreativity"></i>
-</div>
-<strong id="scoreCreativity">0</strong>
-</div>
+  <div
+    class="modal"
+    id="modal">
 
-<div class="statbar">
-<span>EXPRESSION</span>
-<div class="bar">
-<i id="barExpression"></i>
-</div>
-<strong id="scoreExpression">0</strong>
-</div>
+    <div class="panel">
 
-</div>
+      <div class="panelHeader">
 
-<div style="
-display:flex;
-gap:8px;
-flex-wrap:wrap;
-margin-top:13px;
-">
-
-<button class="btn primary"
-onclick="openCompetition()">
-REMATCH
-</button>
-
-<button class="btn"
-onclick="openScreen('home')">
-HOME
-</button>
+        <h2 id="panelTitle">
+          WORLD OF DANCE
+        </h2>
 
-</div>
+        <button
+          class="closeX"
+          onclick="closeModal()">
+          ×
+        </button>
 
-</div>
+      </div>
 
-</div>
+      <div id="panelContent"></div>
 
-</section>
+    </div>
 
+  </div>
 
-</div>
+  <div
+    class="toast"
+    id="toast">
+  </div>
 
-<div class="toast"
-id="toast">
-Saved
 </div>
-
 
 <script>
 
 /* =====================================================
- WORLD OF DANCE
- BUILD 06
- PHONE PROTOTYPE
+   WORLD OF DANCE
+   MASTER GAME DATA
 ===================================================== */
 
-const SAVE_KEY="WOD_BUILD_06";
+const DEFAULT_GAME = {
 
-const STYLES=[
-"Hip-Hop",
-"Popping",
-"Breaking",
-"Afro Fusion",
-"Dancehall",
-"House",
-"Contemporary",
-"Jazz",
-"Krump",
-"Waacking",
-"Voguing",
-"Locking",
-"Shuffle",
-"Afrobeat"
-];
+  level:1,
+  xp:0,
+  coins:500,
+  energy:100,
 
-const MUSIC=[
-{
-id:"m1",
-name:"Urban Pulse",
-genre:"Hip-Hop",
-bpm:96
-},
-{
-id:"m2",
-name:"Street Energy",
-genre:"Popping",
-bpm:108
-},
-{
-id:"m3",
-name:"Break The Floor",
-genre:"Breaking",
-bpm:128
-},
-{
-id:"m4",
-name:"African Motion",
-genre:"Afro Fusion",
-bpm:110
-},
-{
-id:"m5",
-name:"Dancehall Heat",
-genre:"Dancehall",
-bpm:102
-},
-{
-id:"m6",
-name:"House Drive",
-genre:"House",
-bpm:124
-}
-];
+  dancerName:"RISING DANCER",
+  title:"Street Performer",
 
-const COSTUMES=[
-{
-id:"black",
-name:"Urban Black",
-className:"black"
-},
-{
-id:"blue",
-name:"Neon Blue",
-className:"blue"
-},
-{
-id:"red",
-name:"Crimson Stage",
-className:"red"
-},
-{
-id:"gold",
-name:"Gold Elite",
-className:"gold"
-}
-];
+  dance:"Hip Hop",
+  costume:"Street",
 
-const MOVES=[
-{
-id:"m1",
-name:"Groove",
-style:"Hip-Hop",
-power:65,
-creativity:70
-},
-{
-id:"m2",
-name:"Running Man",
-style:"Hip-Hop",
-power:72,
-creativity:72
-},
-{
-id:"m3",
-name:"Wave",
-style:"Popping",
-power:61,
-creativity:91
-},
-{
-id:"m4",
-name:"Robot",
-style:"Popping",
-power:65,
-creativity:88
-},
-{
-id:"m5",
-name:"Six Step",
-style:"Breaking",
-power:84,
-creativity:75
-},
-{
-id:"m6",
-name:"Freeze",
-style:"Breaking",
-power:97,
-creativity:82
-},
-{
-id:"m7",
-name:"Afro Bounce",
-style:"Afro Fusion",
-power:82,
-creativity:84
-},
-{
-id:"m8",
-name:"Power Step",
-style:"Afro Fusion",
-power:88,
-creativity:78
-},
-{
-id:"m9",
-name:"Bounce",
-style:"Dancehall",
-power:76,
-creativity:75
-},
-{
-id:"m10",
-name:"House Jack",
-style:"House",
-power:78,
-creativity:82
-},
-{
-id:"m11",
-name:"Floor Roll",
-style:"Contemporary",
-power:69,
-creativity:95
-},
-{
-id:"m12",
-name:"Jazz Turn",
-style:"Jazz",
-power:65,
-creativity:86
-}
-];
+  rating:68,
 
-const CREWS=[
-{
-id:"street",
-name:"Street Pulse",
-short:"SP",
-style:"Hip-Hop",
-rating:82,
-region:"Nairobi"
-},
-{
-id:"shadow",
-name:"Shadow Syndicate",
-short:"SS",
-style:"Popping",
-rating:87,
-region:"London"
-},
-{
-id:"motion",
-name:"Motion Empire",
-short:"ME",
-style:"Afro Fusion",
-rating:90,
-region:"Lagos"
-},
-{
-id:"velocity",
-name:"Velocity Crew",
-short:"VC",
-style:"House",
-rating:88,
-region:"Paris"
-},
-{
-id:"rhythm",
-name:"Rhythm Nation",
-short:"RN",
-style:"Dancehall",
-rating:86,
-region:"Kingston"
-},
-{
-id:"blackout",
-name:"Blackout Unit",
-short:"BU",
-style:"Breaking",
-rating:92,
-region:"New York"
-}
-];
+  skills:{
+    power:10,
+    rhythm:10,
+    technique:10,
+    style:10,
+    stamina:10
+  },
 
-const DEFAULT_GAME={
+  missions:{
+    train:0,
+    perform:0,
+    dances:0
+  },
 
-coins:1000,
+  unlocked:{
+    HipHop:true,
+    Afro:true,
+    Contemporary:true,
+    Popping:false,
+    Locking:false,
+    House:false,
 
-xp:0,
-
-crew:"street",
-
-costume:"black",
-
-style:"Hip-Hop",
-
-music:"m1",
-
-moves:["m1","m2","m7","m8"],
-
-selectedDancers:["d1","d2","d3","d4"],
-
-dancers:[
-
-{
-id:"d1",
-name:"Alex",
-rating:82,
-attributes:{
-rhythm:85,
-technique:82,
-power:78,
-creativity:87,
-expression:86
-}
-},
-
-{
-id:"d2",
-name:"Nova",
-rating:84,
-attributes:{
-rhythm:91,
-technique:86,
-power:72,
-creativity:94,
-expression:90
-}
-},
-
-{
-id:"d3",
-name:"Kairo",
-rating:86,
-attributes:{
-rhythm:82,
-technique:84,
-power:94,
-creativity:81,
-expression:79
-}
-},
-
-{
-id:"d4",
-name:"Zuri",
-rating:83,
-attributes:{
-rhythm:94,
-technique:79,
-power:76,
-creativity:91,
-expression:96
-}
-},
-
-{
-id:"d5",
-name:"Milo",
-rating:78,
-attributes:{
-rhythm:79,
-technique:92,
-power:66,
-creativity:88,
-expression:82
-}
-}
-
-],
-
-record:{
-competitions:0,
-wins:0,
-losses:0
-}
+    Street:true,
+    Neon:false,
+    Champion:false,
+    Classic:false,
+    Fusion:false
+  }
 
 };
 
-function deepCopy(obj){
-return JSON.parse(JSON.stringify(obj));
-}
+let game = loadGame();
 
 function loadGame(){
 
-try{
+  try{
 
-const saved=
-JSON.parse(
-localStorage.getItem(SAVE_KEY)
-);
+    const saved =
+      JSON.parse(
+        localStorage.getItem("WOD_MASTER_SAVE")
+      );
 
-if(!saved)
-return deepCopy(DEFAULT_GAME);
+    if(saved){
 
-return{
-...deepCopy(DEFAULT_GAME),
-...saved,
-record:{
-...DEFAULT_GAME.record,
-...(saved.record||{})
-}
-};
+      return merge(
+        structuredClone(DEFAULT_GAME),
+        saved
+      );
 
-}catch(e){
+    }
 
-return deepCopy(DEFAULT_GAME);
+  }catch(e){
 
-}
+    console.log("Save recovery");
 
+  }
+
+  return structuredClone(DEFAULT_GAME);
 }
 
-let game=loadGame();
+function merge(base,saved){
 
-let opponent=null;
+  Object.keys(saved).forEach(key=>{
 
-let preparationTimer=null;
+    if(
+      saved[key] &&
+      typeof saved[key]==="object" &&
+      !Array.isArray(saved[key]) &&
+      base[key]
+    ){
 
-let battleState=null;
+      Object.assign(
+        base[key],
+        saved[key]
+      );
 
+    }else{
 
-/* =====================================================
- SAVE
-===================================================== */
+      base[key]=saved[key];
+
+    }
+
+  });
+
+  return base;
+}
 
 function save(){
 
-localStorage.setItem(
-SAVE_KEY,
-JSON.stringify(game)
-);
+  localStorage.setItem(
+    "WOD_MASTER_SAVE",
+    JSON.stringify(game)
+  );
 
 }
 
 
 /* =====================================================
- NAVIGATION
+   GENERAL UI
 ===================================================== */
 
-function openScreen(id){
+function updateUI(){
 
-document
-.querySelectorAll(".screen")
-.forEach(
-screen=>screen.classList.remove("active")
-);
+  $("level").textContent=game.level;
+  $("xp").textContent=game.xp;
+  $("coins").textContent=game.coins;
+  $("energy").textContent=game.energy;
 
-const target=
-document.getElementById(id);
+  $("rating").textContent=game.rating;
+  $("ratingBar").style.width=
+    Math.min(100,game.rating)+"%";
 
-if(target)
-target.classList.add("active");
+  const needed=game.level*100;
 
-if(id==="home")
-updateHome();
+  $("xpBar").style.width=
+    Math.min(
+      100,
+      game.xp/needed*100
+    )+"%";
 
-if(id==="competition")
-renderCompetition();
+  $("playerName").textContent=
+    game.dancerName;
 
-if(id==="crews")
-renderCrews();
+  $("playerTitle").textContent=
+    game.title;
 
-if(id==="crew")
-renderDancers();
+  $("locationName").textContent=
+    game.dance.toUpperCase();
 
-if(id==="training")
-renderTraining();
+}
 
-if(id==="records")
-renderRecords();
+function $(id){
+
+  return document.getElementById(id);
+
+}
+
+function closeModal(){
+
+  $("modal").classList.remove("show");
+
+}
+
+function modal(title,html){
+
+  $("panelTitle").textContent=title;
+  $("panelContent").innerHTML=html;
+
+  $("modal").classList.add("show");
+
+}
+
+let toastTimer;
+
+function toast(message){
+
+  const t=$("toast");
+
+  t.textContent=message;
+  t.classList.add("show");
+
+  clearTimeout(toastTimer);
+
+  toastTimer=setTimeout(
+    ()=>t.classList.remove("show"),
+    1800
+  );
 
 }
 
 
 /* =====================================================
- HOME
+   HOME
 ===================================================== */
 
-function rankName(){
+function showHome(){
 
-if(game.xp>=2500)
-return"LEGEND";
+  closeModal();
 
-if(game.xp>=1500)
-return"MASTER";
+  document
+    .querySelectorAll(".navBtn")
+    .forEach(x=>x.classList.remove("active"));
 
-if(game.xp>=900)
-return"ELITE";
+  $("navHome").classList.add("active");
 
-if(game.xp>=500)
-return"PRO";
-
-if(game.xp>=250)
-return"RISING STAR";
-
-return"ROOKIE";
-
-}
-
-function updateHome(){
-
-document.getElementById("coins").textContent=
-game.coins;
-
-document.getElementById("rank").textContent=
-rankName();
+  toast("Welcome back, dancer");
 
 }
 
 
 /* =====================================================
- COMPETITION
+   SKILL SYSTEM
+===================================================== */
+
+function averageSkill(){
+
+  const values=
+    Object.values(game.skills);
+
+  return values.reduce(
+    (a,b)=>a+b,0
+  )/values.length;
+
+}
+
+function recalculateRating(){
+
+  const average=averageSkill();
+
+  game.rating=
+    Math.min(
+      99,
+      Math.round(
+        55+
+        average*.35+
+        game.level*2
+      )
+    );
+
+}
+
+
+/* =====================================================
+   XP SYSTEM
+===================================================== */
+
+function addXP(amount){
+
+  game.xp+=amount;
+
+  let leveled=false;
+
+  while(
+    game.xp >= game.level*100
+  ){
+
+    game.xp-=game.level*100;
+
+    game.level++;
+
+    game.coins+=100;
+
+    leveled=true;
+
+  }
+
+  if(leveled){
+
+    if(game.level===3)
+      game.unlocked.Popping=true;
+
+    if(game.level===5)
+      game.unlocked.Locking=true;
+
+    if(game.level===7)
+      game.unlocked.House=true;
+
+    toast(
+      "LEVEL UP! LEVEL "+
+      game.level
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   TRAINING
+===================================================== */
+
+function openTraining(){
+
+  const s=game.skills;
+
+  modal(
+    "TRAINING ARENA",
+
+    `
+
+      <p style="color:var(--muted);font-size:11px">
+        Train your dancer to improve actual
+        performance ability.
+      </p>
+
+      ${skillHTML("POWER",s.power)}
+      ${skillHTML("RHYTHM",s.rhythm)}
+      ${skillHTML("TECHNIQUE",s.technique)}
+      ${skillHTML("STYLE",s.style)}
+      ${skillHTML("STAMINA",s.stamina)}
+
+      <button
+        class="action green"
+        onclick="startTraining()">
+        START TRAINING · 10 ENERGY
+      </button>
+
+    `
+  );
+
+}
+
+function skillHTML(name,value){
+
+  return `
+
+    <div class="skill">
+
+      <div class="skillLine">
+        <span>${name}</span>
+        <b>${value}</b>
+      </div>
+
+      <div class="bar">
+        <div style="width:${value}%"></div>
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+function startTraining(){
+
+  if(game.energy<10){
+
+    toast("Not enough energy");
+    return;
+
+  }
+
+  game.energy-=10;
+
+  const keys=
+    Object.keys(game.skills);
+
+  const key=
+    keys[
+      Math.floor(
+        Math.random()*keys.length
+      )
+    ];
+
+  game.skills[key]=
+    Math.min(
+      100,
+      game.skills[key]+2
+    );
+
+  game.missions.train++;
+
+  addXP(15);
+
+  recalculateRating();
+
+  save();
+  updateUI();
+
+  toast(
+    "Training complete · +2 "+
+    key.toUpperCase()
+  );
+
+  setTimeout(
+    openTraining,
+    700
+  );
+
+}
+
+
+/* =====================================================
+   DANCE STUDIO
+===================================================== */
+
+const danceList=[
+
+  {
+    id:"HipHop",
+    name:"HIP HOP",
+    type:"Street",
+    level:1
+  },
+
+  {
+    id:"Afro",
+    name:"AFRO",
+    type:"African Fusion",
+    level:1
+  },
+
+  {
+    id:"Contemporary",
+    name:"CONTEMPORARY",
+    type:"Expression",
+    level:1
+  },
+
+  {
+    id:"Popping",
+    name:"POPPING",
+    type:"Precision",
+    level:3
+  },
+
+  {
+    id:"Locking",
+    name:"LOCKING",
+    type:"Funk",
+    level:5
+  },
+
+  {
+    id:"House",
+    name:"HOUSE",
+    type:"Footwork",
+    level:7
+  }
+
+];
+
+function openDance(){
+
+  let html=
+    `<div class="grid">`;
+
+  danceList.forEach(d=>{
+
+    const unlocked=
+      game.unlocked[d.id];
+
+    html+=`
+
+      <div
+        class="
+          card clickable
+          ${game.dance===d.name?"selected":""}
+          ${!unlocked?"locked":""}
+        "
+        onclick="
+          ${unlocked
+            ? `selectDance('${d.name}')`
+            : `toast('Unlock at Level ${d.level}')`}
+        ">
+
+        <h3>${d.name}</h3>
+
+        <p>
+          ${d.type}
+          <br>
+          ${unlocked
+            ? "AVAILABLE"
+            : "LEVEL "+d.level}
+        </p>
+
+      </div>
+
+    `;
+
+  });
+
+  html+=`</div>`;
+
+  modal(
+    "DANCE STUDIO",
+    html
+  );
+
+}
+
+function selectDance(name){
+
+  game.dance=name;
+
+  game.missions.dances++;
+
+  save();
+  updateUI();
+
+  closeModal();
+
+  toast(
+    name+" selected"
+  );
+
+}
+
+
+/* =====================================================
+   COSTUME SYSTEM
+===================================================== */
+
+const costumes=[
+
+  {
+    id:"Street",
+    name:"STREET",
+    cost:0,
+    unlock:1
+  },
+
+  {
+    id:"Neon",
+    name:"NEON",
+    cost:150,
+    unlock:2
+  },
+
+  {
+    id:"Classic",
+    name:"CLASSIC",
+    cost:200,
+    unlock:3
+  },
+
+  {
+    id:"Champion",
+    name:"CHAMPION",
+    cost:300,
+    unlock:5
+  },
+
+  {
+    id:"Fusion",
+    name:"WORLD FUSION",
+    cost:450,
+    unlock:7
+  }
+
+];
+
+function openCostumes(){
+
+  let html=
+    `<div class="grid">`;
+
+  costumes.forEach(c=>{
+
+    const unlocked=
+      game.level>=c.unlock;
+
+    html+=`
+
+      <div
+        class="
+          card clickable
+          ${game.costume===c.id?"selected":""}
+          ${!unlocked?"locked":""}
+        "
+        onclick="
+          ${unlocked
+            ? `buyCostume('${c.id}',${c.cost})`
+            : `toast('Unlock at Level ${c.unlock}')`}
+        ">
+
+        <h3>${c.name}</h3>
+
+        <p>
+          ${c.cost===0
+            ?"FREE"
+            :c.cost+" COINS"}
+          <br>
+          ${unlocked
+            ?"AVAILABLE"
+            :"LEVEL "+c.unlock}
+        </p>
+
+      </div>
+
+    `;
+
+  });
+
+  html+=`</div>`;
+
+  modal(
+    "COSTUME STUDIO",
+    html
+  );
+
+}
+
+function buyCostume(id,cost){
+
+  if(game.costume===id){
+
+    closeModal();
+    return;
+
+  }
+
+  if(game.coins<cost){
+
+    toast("Not enough coins");
+    return;
+
+  }
+
+  game.coins-=cost;
+  game.costume=id;
+
+  save();
+  updateUI();
+
+  closeModal();
+
+  toast(
+    "Costume equipped"
+  );
+
+}
+
+
+/* =====================================================
+   CAREER
+===================================================== */
+
+function openCareer(){
+
+  const total=
+    Object.values(game.skills)
+      .reduce((a,b)=>a+b,0);
+
+  modal(
+    "CAREER",
+
+    `
+
+      <div style="text-align:center">
+
+        <div style="
+          font-size:52px;
+          font-weight:1000">
+
+          LV ${game.level}
+
+        </div>
+
+        <div style="
+          color:var(--muted);
+          font-size:11px">
+
+          ${game.title}
+
+        </div>
+
+      </div>
+
+      <div class="statGrid">
+
+        <div class="miniStat">
+          <b>${game.rating}</b>
+          <span>RATING</span>
+        </div>
+
+        <div class="miniStat">
+          <b>${game.xp}</b>
+          <span>XP</span>
+        </div>
+
+        <div class="miniStat">
+          <b>${total}</b>
+          <span>SKILL</span>
+        </div>
+
+        <div class="miniStat">
+          <b>${game.missions.perform}</b>
+          <span>SHOWS</span>
+        </div>
+
+      </div>
+
+      <h3>SKILLS</h3>
+
+      ${skillHTML(
+        "POWER",
+        game.skills.power
+      )}
+
+      ${skillHTML(
+        "RHYTHM",
+        game.skills.rhythm
+      )}
+
+      ${skillHTML(
+        "TECHNIQUE",
+        game.skills.technique
+      )}
+
+      ${skillHTML(
+        "STYLE",
+        game.skills.style
+      )}
+
+      ${skillHTML(
+        "STAMINA",
+        game.skills.stamina
+      )}
+
+      <button
+        class="action primary"
+        onclick="openCostumes()">
+
+        OPEN COSTUME STUDIO
+
+      </button>
+
+    `
+  );
+
+}
+
+
+/* =====================================================
+   PROFILE
+===================================================== */
+
+function openProfile(){
+
+  modal(
+    "DANCER PROFILE",
+
+    `
+
+      <div style="text-align:center">
+
+        <div class="avatar"
+          style="
+            width:80px;
+            height:80px;
+            margin:auto;
+            font-size:35px">
+
+          W
+
+        </div>
+
+        <h2>${game.dancerName}</h2>
+
+        <p style="color:var(--muted)">
+          ${game.title}
+        </p>
+
+      </div>
+
+      <div class="statGrid">
+
+        <div class="miniStat">
+          <b>${game.level}</b>
+          <span>LEVEL</span>
+        </div>
+
+        <div class="miniStat">
+          <b>${game.rating}</b>
+          <span>RATING</span>
+        </div>
+
+        <div class="miniStat">
+          <b>${game.coins}</b>
+          <span>COINS</span>
+        </div>
+
+        <div class="miniStat">
+          <b>${game.dance}</b>
+          <span>DANCE</span>
+        </div>
+
+      </div>
+
+      <button
+        class="action primary"
+        onclick="renameDancer()">
+
+        CHANGE DANCER NAME
+
+      </button>
+
+    `
+  );
+
+}
+
+function renameDancer(){
+
+  const name=
+    prompt(
+      "Enter your dancer name:",
+      game.dancerName
+    );
+
+  if(
+    name &&
+    name.trim().length>0
+  ){
+
+    game.dancerName=
+      name.trim().slice(0,20);
+
+    save();
+    updateUI();
+
+    openProfile();
+
+  }
+
+}
+
+
+/* =====================================================
+   MISSIONS
+===================================================== */
+
+function openMissions(){
+
+  const m=game.missions;
+
+  const trainingDone=
+    Math.min(1,m.train);
+
+  const performanceDone=
+    Math.min(1,m.perform);
+
+  const danceDone=
+    Math.min(1,m.dances);
+
+  modal(
+    "DAILY MISSIONS",
+
+    `
+
+      <div class="grid">
+
+        <div class="card">
+
+          <h3>TRAINER</h3>
+
+          <p>
+            Complete 1 training session.
+            <br><br>
+            Progress: ${trainingDone}/1
+          </p>
+
+        </div>
+
+        <div class="card">
+
+          <h3>PERFORMER</h3>
+
+          <p>
+            Complete 1 performance.
+            <br><br>
+            Progress: ${performanceDone}/1
+          </p>
+
+        </div>
+
+        <div class="card">
+
+          <h3>EXPLORER</h3>
+
+          <p>
+            Select a dance style.
+            <br><br>
+            Progress: ${danceDone}/1
+          </p>
+
+        </div>
+
+      </div>
+
+      <button
+        class="action gold"
+        onclick="claimMissionReward()">
+
+        CHECK REWARDS
+
+      </button>
+
+    `
+  );
+
+}
+
+function claimMissionReward(){
+
+  const complete=
+    game.missions.train>=1 &&
+    game.missions.perform>=1 &&
+    game.missions.dances>=1;
+
+  if(!complete){
+
+    toast(
+      "Complete all 3 missions first"
+    );
+
+    return;
+
+  }
+
+  game.coins+=250;
+
+  game.missions={
+    train:0,
+    perform:0,
+    dances:0
+  };
+
+  addXP(100);
+
+  save();
+  updateUI();
+
+  closeModal();
+
+  toast(
+    "MISSION COMPLETE · +250 COINS"
+  );
+
+}
+
+
+/* =====================================================
+   PERFORMANCE
+===================================================== */
+
+let performanceActive=false;
+let performanceScore=0;
+let performanceMoves=0;
+let performanceEndTimer=null;
+let countdownTimer=null;
+
+const moves=[
+  "LEFT",
+  "RIGHT",
+  "UP",
+  "DOWN",
+  "CENTER",
+  "POWER"
+];
+
+function openPerformance(){
+
+  const bonus=
+    Math.round(
+      averageSkill()/4
+    );
+
+  modal(
+    "PERFORMANCE STAGE",
+
+    `
+
+      <div style="text-align:center">
+
+        <div style="
+          font-size:13px;
+          font-weight:900">
+
+          ${game.dance}
+
+        </div>
+
+        <div style="
+          color:var(--muted);
+          margin:8px 0">
+
+          Costume: ${game.costume}
+
+        </div>
+
+      </div>
+
+      <div class="statGrid">
+
+        <div class="miniStat">
+          <b>${game.rating}</b>
+          <span>RATING</span>
+        </div>
+
+        <div class="miniStat">
+          <b>+${bonus}</b>
+          <span>SKILL BONUS</span>
+        </div>
+
+        <div class="miniStat">
+          <b>15</b>
+          <span>ENERGY</span>
+        </div>
+
+        <div class="miniStat">
+          <b>LIVE</b>
+          <span>STAGE</span>
+        </div>
+
+      </div>
+
+      <p style="
+        color:var(--muted);
+        font-size:10px;
+        text-align:center">
+
+        Follow the move prompts and tap
+        the stage at the right moments.
+
+      </p>
+
+      <button
+        class="action primary"
+        onclick="startPerformance()">
+
+        ENTER THE STAGE
+
+      </button>
+
+    `
+  );
+
+}
+
+function startPerformance(){
+
+  if(game.energy<15){
+
+    toast(
+      "Not enough energy"
+    );
+
+    return;
+
+  }
+
+  closeModal();
+
+  game.energy-=15;
+
+  performanceActive=true;
+  performanceScore=0;
+  performanceMoves=0;
+
+  $("performanceHud")
+    .classList.add("active");
+
+  $("dancer")
+    .classList.add("performance");
+
+  let count=3;
+
+  $("countdown")
+    .textContent=count;
+
+  countdownTimer=
+    setInterval(()=>{
+
+      count--;
+
+      if(count<=0){
+
+        clearInterval(
+          countdownTimer
+        );
+
+        beginPerformance();
+
+      }else{
+
+        $("countdown")
+          .textContent=count;
+
+      }
+
+    },800);
+
+}
+
+function beginPerformance(){
+
+  $("countdown")
+    .textContent="GO";
+
+  nextMove();
+
+  performanceEndTimer=
+    setTimeout(
+      finishPerformance,
+      15000
+    );
+
+}
+
+function nextMove(){
+
+  if(!performanceActive)
+    return;
+
+  const move=
+    moves[
+      Math.floor(
+        Math.random()*moves.length
+      )
+    ];
+
+  performanceMoves++;
+
+  $("movePrompt")
+    .textContent=
+      move+" · TAP!";
+
+}
+
+$("performanceTap")
+  .addEventListener(
+    "click",
+    hitPerformance
+  );
+
+$("app")
+  .addEventListener(
+    "pointerdown",
+    e=>{
+
+      if(!performanceActive)
+        return;
+
+      if(
+        e.target.closest(".modal") ||
+        e.target.closest(".bottomNav")
+      )
+        return;
+
+      hitPerformance();
+
+    }
+  );
+
+function hitPerformance(){
+
+  if(!performanceActive)
+    return;
+
+  const accuracy=
+    75+
+    Math.floor(
+      Math.random()*26
+    );
+
+  performanceScore+=
+    Math.round(
+      accuracy/10
+    );
+
+  if(performanceScore>100)
+    performanceScore=100;
+
+  $("countdown")
+    .textContent=
+      performanceScore;
+
+  nextMove();
+
+}
+
+function finishPerformance(){
+
+  if(!performanceActive)
+    return;
+
+  performanceActive=false;
+
+  clearTimeout(
+    performanceEndTimer
+  );
+
+  $("performanceHud")
+    .classList.remove("active");
+
+  $("dancer")
+    .classList.remove("performance");
+
+  const skillBonus=
+    Math.round(
+      averageSkill()/4
+    );
+
+  const costumeBonus=
+    game.costume==="Champion"
+      ?5
+      :game.costume==="Fusion"
+        ?7
+        :0;
+
+  const finalScore=
+    Math.min(
+      100,
+      Math.round(
+        45+
+        performanceScore+
+        skillBonus+
+        costumeBonus
+      )
+    );
+
+  game.rating=
+    Math.max(
+      game.rating,
+      finalScore
+    );
+
+  const coins=
+    50+
+    finalScore*2;
+
+  const xp=
+    40+
+    finalScore;
+
+  game.coins+=coins;
+
+  game.missions.perform++;
+
+  addXP(xp);
+
+  recalculateRating();
+
+  save();
+  updateUI();
+
+  modal(
+    "SHOW COMPLETE",
+
+    `
+
+      <div style="
+        text-align:center">
+
+        <div style="
+          font-size:80px;
+          font-weight:1000;
+          text-shadow:
+            0 0 30px var(--cyan)">
+
+          ${finalScore}
+
+        </div>
+
+        <div style="
+          color:var(--muted);
+          font-size:10px">
+
+          FINAL PERFORMANCE SCORE
+
+        </div>
+
+      </div>
+
+      <div class="statGrid">
+
+        <div class="miniStat">
+          <b>+${coins}</b>
+          <span>COINS</span>
+        </div>
+
+        <div class="miniStat">
+          <b>+${xp}</b>
+          <span>XP</span>
+        </div>
+
+        <div class="miniStat">
+          <b>${performanceMoves}</b>
+          <span>MOVES</span>
+        </div>
+
+        <div class="miniStat">
+          <b>${game.level}</b>
+          <span>LEVEL</span>
+        </div>
+
+      </div>
+
+      <button
+        class="action primary"
+        onclick="closeModal()">
+
+        RETURN TO WORLD
+
+      </button>
+
+    `
+  );
+
+}
+
+
+/* =====================================================
+   RESET
+===================================================== */
+
+function resetGame(){
+
+  const yes=
+    confirm(
+      "Reset all World of Dance progress?"
+    );
+
+  if(!yes)
+    return;
+
+  game=
+    structuredClone(
+      DEFAULT_GAME
+    );
+
+  save();
+  updateUI();
+
+  toast(
+    "Game progress reset"
+  );
+
+}
+
+
+/* =====================================================
+   ENERGY REGEN
+===================================================== */
+
+setInterval(()=>{
+
+  if(game.energy<100){
+
+    game.energy=
+      Math.min(
+        100,
+        game.energy+1
+      );
+
+    save();
+    updateUI();
+
+  }
+
+},30000);
+
+
+/* =====================================================
+   INITIALIZATION
+===================================================== */
+
+recalculateRating();
+save();
+updateUI();
+
+setTimeout(
+  ()=>toast(
+    "Welcome to WORLD OF DANCE"
+  ),
+  700
+);
+
+
+/* =====================================================
+   MOBILE CONTROL
+===================================================== */
+
+document.addEventListener(
+  "touchmove",
+  e=>e.preventDefault(),
+  {passive:false}
+);
+
+document.addEventListener(
+  "keydown",
+  e=>{
+
+    if(
+      performanceActive &&
+      e.code==="Space"
+    ){
+
+      e.preventDefault();
+      hitPerformance();
+
+    }
+
+  }
+);
+/* =====================================================
+   BUILD 03 — 1 VS 1 COMPETITION ENGINE
+   ADDITIVE UPGRADE
+===================================================== */
+
+const COMPETITION_DATA = {
+  active:false,
+  round:1,
+  maxRounds:3,
+
+  playerScore:0,
+  opponentScore:0,
+
+  playerCombo:0,
+  bestCombo:0,
+
+  accuracyHits:0,
+  totalMoves:0,
+
+  crowd:50,
+
+  timeLeft:20,
+
+  opponent:null,
+  opponentTimer:null,
+  roundTimer:null,
+
+  wins:0,
+  losses:0
+};
+
+const RIVALS = [
+  {
+    name:"KAI",
+    title:"Street Challenger",
+    rating:62,
+    style:"Hip Hop",
+    difficulty:1
+  },
+  {
+    name:"ZURI",
+    title:"Afro Fusion Star",
+    rating:70,
+    style:"Afro",
+    difficulty:2
+  },
+  {
+    name:"JAX",
+    title:"Battle Specialist",
+    rating:77,
+    style:"Popping",
+    difficulty:3
+  },
+  {
+    name:"NOVA",
+    title:"Elite Performer",
+    rating:85,
+    style:"Contemporary",
+    difficulty:4
+  },
+  {
+    name:"REX",
+    title:"World Champion",
+    rating:92,
+    style:"House",
+    difficulty:5
+  }
+];
+
+
+/* =====================================================
+   COMPETITION BUTTON
 ===================================================== */
 
 function openCompetition(){
 
-chooseOpponent();
+  const availableRivals =
+    RIVALS.filter(
+      r => game.level >= Math.max(1,r.difficulty)
+    );
 
-openScreen("competition");
+  let html = `
+
+    <div style="
+      text-align:center;
+      margin-bottom:18px">
+
+      <div style="
+        font-size:11px;
+        color:var(--muted);
+        letter-spacing:2px">
+
+        WORLD DANCE LEAGUE
+
+      </div>
+
+      <h2 style="margin:7px 0">
+
+        1 VS 1 BATTLE
+
+      </h2>
+
+      <p style="
+        color:var(--muted);
+        font-size:10px">
+
+        Defeat your opponent across three rounds.
+
+      </p>
+
+    </div>
+
+    <div class="grid">
+  `;
+
+  availableRivals.forEach((r,index)=>{
+
+    const locked =
+      game.level <
+      Math.max(1,r.difficulty);
+
+    html += `
+
+      <div
+        class="card clickable ${locked?"locked":""}"
+        onclick="
+          ${locked
+            ? `toast('Rival locked')`
+            : `startCompetition(${index})`}
+        ">
+
+        <div style="
+          width:42px;
+          height:42px;
+          margin-bottom:9px;
+          display:grid;
+          place-items:center;
+          border-radius:12px;
+          background:
+            linear-gradient(
+              135deg,
+              #285fff,
+              #9a42ff
+            );
+          font-weight:1000">
+
+          ${r.name.charAt(0)}
+
+        </div>
+
+        <h3>${r.name}</h3>
+
+        <p>
+          ${r.title}<br>
+          Rating: ${r.rating}<br>
+          Style: ${r.style}
+        </p>
+
+      </div>
+
+    `;
+
+  });
+
+  html += `</div>`;
+
+  modal(
+    "COMPETITION",
+    html
+  );
 
 }
 
-function chooseOpponent(){
 
-const current=
-CREWS.find(
-c=>c.id===game.crew
-);
+/* =====================================================
+   START COMPETITION
+===================================================== */
 
-const possible=
-CREWS.filter(
-c=>c.id!==game.crew
-);
+function startCompetition(index){
 
-opponent=
-possible[
-Math.floor(
-Math.random()*possible.length
-)
+  const rival =
+    RIVALS[index];
+
+  if(!rival){
+
+    toast("Opponent unavailable");
+    return;
+
+  }
+
+  if(game.energy < 20){
+
+    toast("You need 20 energy");
+    return;
+
+  }
+
+  game.energy -= 20;
+
+  COMPETITION_DATA.active=true;
+
+  COMPETITION_DATA.round=1;
+
+  COMPETITION_DATA.playerScore=0;
+  COMPETITION_DATA.opponentScore=0;
+
+  COMPETITION_DATA.playerCombo=0;
+  COMPETITION_DATA.bestCombo=0;
+
+  COMPETITION_DATA.accuracyHits=0;
+  COMPETITION_DATA.totalMoves=0;
+
+  COMPETITION_DATA.crowd=50;
+
+  COMPETITION_DATA.opponent=
+    JSON.parse(
+      JSON.stringify(rival)
+    );
+
+  save();
+  updateUI();
+
+  closeModal();
+
+  showCompetitionIntro();
+
+}
+
+
+/* =====================================================
+   COMPETITION INTRO
+===================================================== */
+
+function showCompetitionIntro(){
+
+  const r =
+    COMPETITION_DATA.opponent;
+
+  modal(
+    "BATTLE READY",
+
+    `
+
+      <div style="
+        text-align:center">
+
+        <div style="
+          display:flex;
+          justify-content:center;
+          align-items:center;
+          gap:20px;
+          margin:20px 0">
+
+          <div>
+
+            <div style="
+              width:70px;
+              height:70px;
+              display:grid;
+              place-items:center;
+              border-radius:18px;
+              background:
+                linear-gradient(
+                  135deg,
+                  #2677ff,
+                  #8140ff
+                );
+              font-size:28px;
+              font-weight:1000">
+
+              W
+
+            </div>
+
+            <b>
+              ${game.dancerName}
+            </b>
+
+            <small style="
+              display:block;
+              color:var(--muted)">
+
+              ${game.rating} RATING
+
+            </small>
+
+          </div>
+
+          <strong style="
+            font-size:24px">
+
+            VS
+
+          </strong>
+
+          <div>
+
+            <div style="
+              width:70px;
+              height:70px;
+              display:grid;
+              place-items:center;
+              border-radius:18px;
+              background:
+                linear-gradient(
+                  135deg,
+                  #ff426f,
+                  #ff8c3a
+                );
+              font-size:28px;
+              font-weight:1000">
+
+              ${r.name.charAt(0)}
+
+            </div>
+
+            <b>
+              ${r.name}
+            </b>
+
+            <small style="
+              display:block;
+              color:var(--muted)">
+
+              ${r.rating} RATING
+
+            </small>
+
+          </div>
+
+        </div>
+
+        <p style="
+          color:var(--muted);
+          font-size:10px">
+
+          ${r.title}<br>
+          ${r.style} specialist
+
+        </p>
+
+        <button
+          class="action primary"
+          onclick="beginCompetitionRound()">
+
+          START ROUND 1
+
+        </button>
+
+      </div>
+
+    `
+  );
+
+}
+
+
+/* =====================================================
+   COMPETITION HUD
+===================================================== */
+
+function createCompetitionHUD(){
+
+  const existing =
+    document.getElementById(
+      "competitionHUD"
+    );
+
+  if(existing)
+    existing.remove();
+
+  const hud =
+    document.createElement("div");
+
+  hud.id="competitionHUD";
+
+  hud.innerHTML = `
+
+    <div style="
+      position:absolute;
+      z-index:90;
+      inset:0;
+      pointer-events:none">
+
+      <!-- SCOREBOARD -->
+
+      <div style="
+        position:absolute;
+        top:82px;
+        left:50%;
+        transform:translateX(-50%);
+        width:min(650px,92vw);
+        padding:10px;
+        border-radius:14px;
+        background:rgba(3,5,12,.86);
+        border:1px solid rgba(255,255,255,.16);
+        backdrop-filter:blur(8px)">
+
+        <div style="
+          display:flex;
+          justify-content:space-between;
+          align-items:center">
+
+          <div style="text-align:left">
+
+            <small style="
+              color:var(--muted);
+              font-size:8px">
+
+              YOU
+
+            </small>
+
+            <div
+              id="battlePlayerScore"
+              style="
+                font-size:27px;
+                font-weight:1000">
+
+              0
+
+            </div>
+
+          </div>
+
+          <div style="
+            text-align:center">
+
+            <div
+              id="battleRound"
+              style="
+                font-size:9px;
+                letter-spacing:2px;
+                color:var(--cyan)">
+
+              ROUND 1
+
+            </div>
+
+            <div
+              id="battleTimer"
+              style="
+                font-size:24px;
+                font-weight:1000">
+
+              20
+
+            </div>
+
+          </div>
+
+          <div style="text-align:right">
+
+            <small style="
+              color:var(--muted);
+              font-size:8px">
+
+              ${COMPETITION_DATA.opponent.name}
+
+            </small>
+
+            <div
+              id="battleOpponentScore"
+              style="
+                font-size:27px;
+                font-weight:1000">
+
+              0
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div style="
+          display:grid;
+          grid-template-columns:1fr 1fr;
+          gap:5px;
+          margin-top:8px">
+
+          <div style="
+            height:5px;
+            background:#1b2137;
+            border-radius:10px;
+            overflow:hidden">
+
+            <div
+              id="playerBattleBar"
+              style="
+                width:0%;
+                height:100%;
+                background:
+                  linear-gradient(
+                    90deg,
+                    #3b6fff,
+                    #49dcff
+                  )">
+            </div>
+
+          </div>
+
+          <div style="
+            height:5px;
+            background:#1b2137;
+            border-radius:10px;
+            overflow:hidden">
+
+            <div
+              id="opponentBattleBar"
+              style="
+                width:0%;
+                height:100%;
+                background:
+                  linear-gradient(
+                    90deg,
+                    #ff426f,
+                    #ff9b4a
+                  )">
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- COMBO -->
+
+      <div
+        id="battleCombo"
+        style="
+          position:absolute;
+          right:20px;
+          top:155px;
+          text-align:right">
+
+        <small style="
+          color:var(--muted);
+          font-size:8px">
+
+          COMBO
+
+        </small>
+
+        <div style="
+          font-size:31px;
+          font-weight:1000">
+
+          x0
+
+        </div>
+
+      </div>
+
+
+      <!-- CROWD -->
+
+      <div style="
+        position:absolute;
+        left:50%;
+        bottom:170px;
+        transform:translateX(-50%);
+        width:min(350px,80vw);
+        text-align:center">
+
+        <small style="
+          font-size:8px;
+          color:var(--muted)">
+
+          CROWD ENERGY
+
+        </small>
+
+        <div style="
+          height:7px;
+          margin-top:5px;
+          border-radius:10px;
+          overflow:hidden;
+          background:#1b2137">
+
+          <div
+            id="crowdBar"
+            style="
+              width:50%;
+              height:100%;
+              background:
+                linear-gradient(
+                  90deg,
+                  #7540ff,
+                  #49dcff,
+                  #38e09f
+                )">
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- MOVE -->
+
+      <div
+        id="battleMove"
+        style="
+          position:absolute;
+          left:50%;
+          bottom:105px;
+          transform:translateX(-50%);
+          padding:13px 28px;
+          border-radius:30px;
+          background:rgba(0,0,0,.75);
+          border:1px solid rgba(255,255,255,.2);
+          font-size:13px;
+          font-weight:1000;
+          letter-spacing:2px">
+
+        GET READY
+
+      </div>
+
+
+      <!-- TAP -->
+
+      <button
+        id="battleTap"
+        style="
+          position:absolute;
+          left:50%;
+          bottom:25px;
+          transform:translateX(-50%);
+          width:170px;
+          height:55px;
+          border-radius:30px;
+          background:
+            linear-gradient(
+              135deg,
+              #306dff,
+              #8040ed
+            );
+          box-shadow:
+            0 0 25px
+            rgba(70,100,255,.35);
+          pointer-events:auto;
+          font-size:11px;
+          font-weight:1000">
+
+        HIT MOVE
+
+      </button>
+
+    </div>
+
+  `;
+
+  document
+    .getElementById("app")
+    .appendChild(hud);
+
+}
+
+
+/* =====================================================
+   START ROUND
+===================================================== */
+
+function beginCompetitionRound(){
+
+  closeModal();
+
+  createCompetitionHUD();
+
+  const dancer =
+    document.getElementById("dancer");
+
+  dancer.classList.add(
+    "performance"
+  );
+
+  COMPETITION_DATA.timeLeft=20;
+
+  COMPETITION_DATA.playerCombo=0;
+
+  updateCompetitionHUD();
+
+  nextBattleMove();
+
+  clearInterval(
+    COMPETITION_DATA.roundTimer
+  );
+
+  clearInterval(
+    COMPETITION_DATA.opponentTimer
+  );
+
+  COMPETITION_DATA.roundTimer=
+    setInterval(()=>{
+
+      COMPETITION_DATA.timeLeft--;
+
+      updateCompetitionHUD();
+
+      if(
+        COMPETITION_DATA.timeLeft<=0
+      ){
+
+        finishCompetitionRound();
+
+      }
+
+    },1000);
+
+  startOpponentAI();
+
+}
+
+
+/* =====================================================
+   BATTLE MOVE SYSTEM
+===================================================== */
+
+const BATTLE_MOVES=[
+  "LEFT",
+  "RIGHT",
+  "UP",
+  "DOWN",
+  "POWER",
+  "STYLE",
+  "FREEZE"
 ];
 
-if(current&&opponent){
+let currentBattleMove="";
 
-document.getElementById(
-"competitionName"
-).textContent=
-current.name+
-" vs "+
-opponent.name;
+function nextBattleMove(){
 
-document.getElementById(
-"setupOpponent"
-).textContent=
-opponent.name;
+  if(!COMPETITION_DATA.active)
+    return;
 
-}
+  currentBattleMove=
+    BATTLE_MOVES[
+      Math.floor(
+        Math.random()*
+        BATTLE_MOVES.length
+      )
+    ];
 
-}
+  const el=
+    document.getElementById(
+      "battleMove"
+    );
 
+  if(el){
 
-/* =====================================================
- COMPETITION RENDER
-===================================================== */
+    el.textContent=
+      currentBattleMove+
+      " · HIT!";
 
-function renderCompetition(){
-
-const styleSelect=
-document.getElementById("styleSelect");
-
-styleSelect.innerHTML="";
-
-STYLES.forEach(style=>{
-
-const o=
-document.createElement("option");
-
-o.value=style;
-o.textContent=style;
-
-styleSelect.appendChild(o);
-
-});
-
-styleSelect.value=game.style;
-
-styleSelect.onchange=()=>{
-
-game.style=
-styleSelect.value;
-
-save();
-
-};
-
-const musicSelect=
-document.getElementById("musicSelect");
-
-musicSelect.innerHTML="";
-
-MUSIC.forEach(m=>{
-
-const o=
-document.createElement("option");
-
-o.value=m.id;
-
-o.textContent=
-m.name+
-" • "+
-m.genre+
-" • "+
-m.bpm+
-"BPM";
-
-musicSelect.appendChild(o);
-
-});
-
-musicSelect.value=game.music;
-
-musicSelect.onchange=()=>{
-
-game.music=
-musicSelect.value;
-
-save();
-
-};
-
-renderCostumes();
-renderMoveSetup();
-
-if(!opponent)
-chooseOpponent();
+  }
 
 }
 
 
 /* =====================================================
- COSTUMES
+   PLAYER MOVE
 ===================================================== */
 
-function renderCostumes(){
+function playerBattleMove(){
 
-const grid=
-document.getElementById("costumeGrid");
+  if(
+    !COMPETITION_DATA.active
+  )
+    return;
 
-grid.innerHTML="";
+  COMPETITION_DATA.totalMoves++;
 
-COSTUMES.forEach(c=>{
+  const baseAccuracy=
+    70+
+    Math.random()*30;
 
-const div=
-document.createElement("div");
+  const accuracy=
+    Math.round(
+      baseAccuracy
+    );
 
-div.className=
-"costume"+
-(
-game.costume===c.id
-?" selected"
-:""
-);
+  if(accuracy>=80){
 
-div.innerHTML=`
+    COMPETITION_DATA.accuracyHits++;
 
-<div class="costume-preview">
+    COMPETITION_DATA.playerCombo++;
 
-<div class="costume-head"></div>
+    if(
+      COMPETITION_DATA.playerCombo >
+      COMPETITION_DATA.bestCombo
+    ){
 
-<div class="costume-body ${c.className}">
-</div>
+      COMPETITION_DATA.bestCombo=
+        COMPETITION_DATA.playerCombo;
 
-</div>
+    }
 
-<strong>
-${c.name}
-</strong>
+    let points=
+      5+
+      Math.floor(
+        accuracy/20
+      )+
+      Math.min(
+        8,
+        COMPETITION_DATA.playerCombo
+      );
 
-<button
-class="btn ${
-game.costume===c.id
-?"primary":""
-} wide"
-style="margin-top:10px"
-onclick="selectCostume('${c.id}')">
+    const skillBonus=
+      Math.floor(
+        averageSkill()/20
+      );
 
-${
-game.costume===c.id
-?"SELECTED":"SELECT"
-}
+    points+=skillBonus;
 
-</button>
+    COMPETITION_DATA.playerScore+=
+      points;
 
-`;
+    COMPETITION_DATA.crowd=
+      Math.min(
+        100,
+        COMPETITION_DATA.crowd+
+        3+
+        Math.min(
+          3,
+          COMPETITION_DATA.playerCombo
+        )
+      );
 
-grid.appendChild(div);
+    toast(
+      "GREAT! "+
+      accuracy+"% · COMBO x"+
+      COMPETITION_DATA.playerCombo
+    );
 
-});
+  }else{
 
-}
+    COMPETITION_DATA.playerCombo=0;
 
-function selectCostume(id){
+    COMPETITION_DATA.crowd=
+      Math.max(
+        0,
+        COMPETITION_DATA.crowd-4
+      );
 
-game.costume=id;
+    toast(
+      "MISSED · COMBO BROKEN"
+    );
 
-save();
+  }
 
-renderCostumes();
+  updateCompetitionHUD();
 
-toast("Costume selected");
+  nextBattleMove();
 
 }
 
 
 /* =====================================================
- MOVE SETUP
+   OPPONENT AI
 ===================================================== */
 
-function renderMoveSetup(){
+function startOpponentAI(){
 
-const grid=
-document.getElementById("moveSetup");
+  const rival=
+    COMPETITION_DATA.opponent;
 
-grid.innerHTML="";
+  const interval=
+    Math.max(
+      700,
+      1450-
+      rival.difficulty*120
+    );
 
-MOVES.forEach(move=>{
+  COMPETITION_DATA.opponentTimer=
+    setInterval(()=>{
 
-const div=
-document.createElement("div");
+      if(
+        !COMPETITION_DATA.active
+      )
+        return;
 
-const selected=
-game.moves.includes(move.id);
+      const variance=
+        Math.random();
 
-div.className="card";
+      const chance=
+        .54+
+        rival.difficulty*.055;
 
-div.innerHTML=`
+      if(variance<chance){
 
-<div class="kicker">
-${move.style}
-</div>
+        const points=
+          4+
+          rival.difficulty+
+          Math.floor(
+            Math.random()*5
+          );
 
-<strong>
-${move.name}
-</strong>
+        COMPETITION_DATA.opponentScore+=
+          points;
 
-<div class="muted">
-Power ${move.power} • Creativity ${move.creativity}
-</div>
+        COMPETITION_DATA.crowd=
+          Math.max(
+            0,
+            COMPETITION_DATA.crowd-1
+          );
 
-<button
-class="btn ${
-selected?"primary":""
-} wide"
-style="margin-top:10px"
-onclick="toggleMove('${move.id}')">
+      }
 
-${
-selected
-?"SELECTED"
-:"ADD MOVE"
-}
+      updateCompetitionHUD();
 
-</button>
-
-`;
-
-grid.appendChild(div);
-
-});
-
-}
-
-function toggleMove(id){
-
-if(game.moves.includes(id)){
-
-game.moves=
-game.moves.filter(
-x=>x!==id
-);
-
-}else{
-
-if(game.moves.length>=8){
-
-toast(
-"Maximum 8 moves"
-);
-
-return;
-
-}
-
-game.moves.push(id);
-
-}
-
-save();
-
-renderMoveSetup();
+    },interval);
 
 }
 
 
 /* =====================================================
- PREPARATION
+   HUD UPDATE
 ===================================================== */
 
-function startPreparation(){
+function updateCompetitionHUD(){
 
-clearInterval(
-preparationTimer
-);
+  const player=
+    document.getElementById(
+      "battlePlayerScore"
+    );
 
-let remaining=300;
+  const opponent=
+    document.getElementById(
+      "battleOpponentScore"
+    );
 
-document.getElementById(
-"prepStatus"
-).textContent=
-"PREPARING";
+  const timer=
+    document.getElementById(
+      "battleTimer"
+    );
 
-preparationTimer=
-setInterval(()=>{
+  const round=
+    document.getElementById(
+      "battleRound"
+    );
 
-remaining--;
+  const combo=
+    document.getElementById(
+      "battleCombo"
+    );
 
-const min=
-Math.floor(remaining/60);
+  const crowd=
+    document.getElementById(
+      "crowdBar"
+    );
 
-const sec=
-remaining%60;
+  const playerBar=
+    document.getElementById(
+      "playerBattleBar"
+    );
 
-document.getElementById(
-"prepTime"
-).textContent=
-String(min).padStart(2,"0")+
-":"+
-String(sec).padStart(2,"0");
+  const opponentBar=
+    document.getElementById(
+      "opponentBattleBar"
+    );
 
-if(remaining<=0){
+  if(player)
+    player.textContent=
+      COMPETITION_DATA.playerScore;
 
-clearInterval(
-preparationTimer
-);
+  if(opponent)
+    opponent.textContent=
+      COMPETITION_DATA.opponentScore;
 
-beginBattle();
+  if(timer)
+    timer.textContent=
+      COMPETITION_DATA.timeLeft;
 
-}
+  if(round)
+    round.textContent=
+      "ROUND "+
+      COMPETITION_DATA.round;
 
-},1000);
+  if(combo)
+    combo.innerHTML=
+      "<small style='color:var(--muted);font-size:8px'>COMBO</small>"+
+      "<div style='font-size:31px;font-weight:1000'>x"+
+      COMPETITION_DATA.playerCombo+
+      "</div>";
 
-toast(
-"Preparation started"
-);
+  if(crowd)
+    crowd.style.width=
+      COMPETITION_DATA.crowd+"%";
+
+  const maxScore=
+    Math.max(
+      1,
+      COMPETITION_DATA.playerScore,
+      COMPETITION_DATA.opponentScore
+    );
+
+  if(playerBar)
+    playerBar.style.width=
+      (
+        COMPETITION_DATA.playerScore/
+        maxScore*100
+      )+"%";
+
+  if(opponentBar)
+    opponentBar.style.width=
+      (
+        COMPETITION_DATA.opponentScore/
+        maxScore*100
+      )+"%";
 
 }
 
 
 /* =====================================================
- CREWS
+   END ROUND
 ===================================================== */
 
-function renderCrews(){
+function finishCompetitionRound(){
 
-const grid=
-document.getElementById("crewGrid");
+  clearInterval(
+    COMPETITION_DATA.roundTimer
+  );
 
-grid.innerHTML="";
+  clearInterval(
+    COMPETITION_DATA.opponentTimer
+  );
 
-CREWS.forEach(crew=>{
+  if(
+    COMPETITION_DATA.playerScore >
+    COMPETITION_DATA.opponentScore
+  ){
 
-const div=
-document.createElement("div");
+    COMPETITION_DATA.roundResult=
+      "WIN";
 
-div.className=
-"crew-card"+
-(
-game.crew===crew.id
-?" selected"
-:""
-);
+  }else if(
+    COMPETITION_DATA.playerScore <
+    COMPETITION_DATA.opponentScore
+  ){
 
-div.innerHTML=`
+    COMPETITION_DATA.roundResult=
+      "LOSS";
 
-<div class="crew-mark">
-${crew.short}
-</div>
+  }else{
 
-<div class="kicker">
-${crew.region}
-</div>
+    COMPETITION_DATA.roundResult=
+      "DRAW";
 
-<h2>
-${crew.name}
-</h2>
+  }
 
-<div class="muted">
-Style: ${crew.style}
-</div>
+  if(
+    COMPETITION_DATA.round >=
+    COMPETITION_DATA.maxRounds
+  ){
 
-<div style="
-font-size:24px;
-font-weight:1000;
-margin-top:9px;
-">
-${crew.rating}
-</div>
+    finishCompetition();
 
-<div class="muted">
-TEAM RATING
-</div>
+    return;
 
-<button
-class="btn ${
-game.crew===crew.id
-?"primary":""
-} wide"
-style="margin-top:13px"
-onclick="selectCrew('${crew.id}')">
+  }
 
-${
-game.crew===crew.id
-?"SELECTED":"SELECT CREW"
-}
-
-</button>
-
-`;
-
-grid.appendChild(div);
-
-});
-
-}
-
-function selectCrew(id){
-
-game.crew=id;
-
-save();
-
-renderCrews();
-
-toast("Crew selected");
+  showRoundResult();
 
 }
 
 
 /* =====================================================
- DANCERS
+   ROUND RESULT
 ===================================================== */
 
-function renderDancers(){
+function showRoundResult(){
 
-const grid=
-document.getElementById("dancerGrid");
+  const result=
+    COMPETITION_DATA.roundResult;
 
-grid.innerHTML="";
+  const message=
+    result==="WIN"
+      ? "ROUND WON"
+      : result==="LOSS"
+        ? "ROUND LOST"
+        : "ROUND DRAW";
 
-game.dancers.forEach(d=>{
+  modal(
+    message,
 
-const selected=
-game.selectedDancers.includes(d.id);
+    `
 
-const div=
-document.createElement("div");
+      <div style="
+        text-align:center">
 
-div.className="card dancer-card";
+        <div style="
+          font-size:46px;
+          font-weight:1000">
 
-div.innerHTML=`
+          ${COMPETITION_DATA.playerScore}
 
-<div style="
-display:flex;
-align-items:center;
-gap:12px;
-">
+          <span style="
+            color:var(--muted);
+            font-size:20px">
 
-<div class="avatar"></div>
+            -
 
-<div>
+          </span>
 
-<strong>
-${d.name}
-</strong>
+          ${COMPETITION_DATA.opponentScore}
 
-<div class="muted">
-Overall ${d.rating}
-</div>
+        </div>
 
-</div>
+        <p style="
+          color:var(--muted);
+          font-size:10px">
 
-</div>
+          ${result==="WIN"
+            ?"Your performance is leading the battle."
+            :result==="LOSS"
+              ?"The opponent is ahead. Change your strategy."
+              :"The battle is perfectly balanced."}
 
-<button
-class="btn ${
-selected?"primary":""
-}"
-onclick="toggleDancer('${d.id}')">
+        </p>
 
-${
-selected
-?"STARTER":"SELECT"
+        <button
+          class="action primary"
+          onclick="continueCompetitionRound()">
+
+          START ROUND
+          ${COMPETITION_DATA.round+1}
+
+        </button>
+
+      </div>
+
+    `
+  );
+
 }
 
-</button>
 
-`;
+/* =====================================================
+   CONTINUE ROUND
+===================================================== */
 
-grid.appendChild(div);
+function continueCompetitionRound(){
 
-});
+  COMPETITION_DATA.round++;
+
+  closeModal();
+
+  beginCompetitionRound();
 
 }
 
-function toggleDancer(id){
 
-if(
-game.selectedDancers.includes(id)
+/* =====================================================
+   FINAL RESULT
+===================================================== */
+
+function finishCompetition(){
+
+  clearInterval(
+    COMPETITION_DATA.roundTimer
+  );
+
+  clearInterval(
+    COMPETITION_DATA.opponentTimer
+  );
+
+  const player=
+    COMPETITION_DATA.playerScore;
+
+  const opponent=
+    COMPETITION_DATA.opponentScore;
+
+  let result;
+
+  if(player>opponent){
+
+    result="WIN";
+
+  }else if(player<opponent){
+
+    result="LOSS";
+
+  }else{
+
+    result="DRAW";
+
+  }
+
+  COMPETITION_DATA.active=false;
+
+  document
+    .getElementById("dancer")
+    .classList.remove(
+      "performance"
+    );
+
+  const hud=
+    document.getElementById(
+      "competitionHUD"
+    );
+
+  if(hud)
+    hud.remove();
+
+  let coins=0;
+  let xp=0;
+
+  if(result==="WIN"){
+
+    coins=
+      300+
+      game.level*25;
+
+    xp=
+      180+
+      player;
+
+    COMPETITION_DATA.wins++;
+
+    game.title=
+      "Competition Winner";
+
+    toast(
+      "BATTLE WON!"
+    );
+
+  }else if(result==="DRAW"){
+
+    coins=100;
+    xp=80;
+
+    toast(
+      "BATTLE DRAW"
+    );
+
+  }else{
+
+    coins=50;
+    xp=50;
+
+    COMPETITION_DATA.losses++;
+
+    toast(
+      "BATTLE LOST"
+    );
+
+  }
+
+  game.coins+=coins;
+
+  addXP(xp);
+
+  if(
+    result==="WIN" &&
+    game.level>=4
+  ){
+
+    game.unlocked.Neon=true;
+
+  }
+
+  if(
+    result==="WIN" &&
+    game.level>=6
+  ){
+
+    game.unlocked.Champion=true;
+
+  }
+
+  if(
+    result==="WIN" &&
+    game.level>=8
+  ){
+
+    game.unlocked.Fusion=true;
+
+  }
+
+  recalculateRating();
+
+  save();
+  updateUI();
+
+  modal(
+    result==="WIN"
+      ? "VICTORY"
+      : result==="DRAW"
+        ? "DRAW"
+        : "BATTLE COMPLETE",
+
+    `
+
+      <div style="
+        text-align:center">
+
+        <div style="
+          font-size:65px;
+          font-weight:1000;
+          text-shadow:
+            0 0 30px
+            ${result==="WIN"
+              ?"var(--cyan)"
+              :"rgba(255,255,255,.2)"}">
+
+          ${result}
+
+        </div>
+
+        <div style="
+          font-size:25px;
+          font-weight:1000;
+          margin:8px">
+
+          ${player}
+          -
+          ${opponent}
+
+        </div>
+
+        <div class="statGrid">
+
+          <div class="miniStat">
+            <b>+${coins}</b>
+            <span>COINS</span>
+          </div>
+
+          <div class="miniStat">
+            <b>+${xp}</b>
+            <span>XP</span>
+          </div>
+
+          <div class="miniStat">
+            <b>x${COMPETITION_DATA.bestCombo}</b>
+            <span>BEST COMBO</span>
+          </div>
+
+          <div class="miniStat">
+            <b>${game.level}</b>
+            <span>LEVEL</span>
+          </div>
+
+        </div>
+
+        <p style="
+          color:var(--muted);
+          font-size:10px">
+
+          Accuracy:
+          ${
+            COMPETITION_DATA.totalMoves
+              ? Math.round(
+                  COMPETITION_DATA.accuracyHits/
+                  COMPETITION_DATA.totalMoves*
+                  100
+                )
+              : 0
+          }%
+
+        </p>
+
+        <button
+          class="action primary"
+          onclick="closeModal()">
+
+          RETURN TO WORLD
+
+        </button>
+
+      </div>
+
+    `
+  );
+
+}
+
+
+/* =====================================================
+   ADD COMPETITION BUTTON TO WORLD
+===================================================== */
+
+function addCompetitionButton(){
+
+  if(
+    document.getElementById(
+      "competitionQuickButton"
+    )
+  )
+    return;
+
+  const quick=
+    document.querySelector(
+      ".quick"
+    );
+
+  if(!quick)
+    return;
+
+  const button=
+    document.createElement(
+      "button"
+    );
+
+  button.id=
+    "competitionQuickButton";
+
+  button.textContent=
+    "BATTLE";
+
+  button.onclick=
+    openCompetition;
+
+  quick.appendChild(button);
+
+}
+
+
+/* =====================================================
+   START BUILD 03
+===================================================== */
+
+addCompetitionButton();
+      /* =========================================================
+   BUILD 04 — CREW MODE
+   ADDITIVE MODULE — DOES NOT REPLACE EXISTING SYSTEMS
+========================================================= */
+
+if (!window.CREW_MODE) {
+
+  window.CREW_MODE = {
+
+    name: "Urban Legends",
+
+    reputation: 0,
+    crewXP: 0,
+    level: 1,
+
+    members: [
+      {
+        id: 1,
+        name: "PIX",
+        role: "Leader",
+        style: "Hip Hop",
+        rating: 78,
+        energy: 100,
+        morale: 90,
+        unlocked: true
+      }
+    ],
+
+    selected: null,
+
+    roster: [
+      {
+        name: "MAYA",
+        role: "Freestyle",
+        style: "Afro",
+        rating: 64,
+        price: 500
+      },
+      {
+        name: "KAI",
+        role: "Battler",
+        style: "Hip Hop",
+        rating: 70,
+        price: 800
+      },
+      {
+        name: "ZURI",
+        role: "Performer",
+        style: "Contemporary",
+        rating: 74,
+        price: 1200
+      },
+      {
+        name: "JAX",
+        role: "Popping",
+        style: "Popping",
+        rating: 79,
+        price: 1800
+      },
+      {
+        name: "NOVA",
+        role: "Elite",
+        style: "House",
+        rating: 86,
+        price: 3000
+      }
+    ]
+
+  };
+
+}
+
+
+/* =========================================================
+   CREW STORAGE
+========================================================= */
+
+function saveCrew(){
+
+  try {
+
+    localStorage.setItem(
+      "WORLD_DANCE_CREW",
+      JSON.stringify(CREW_MODE)
+    );
+
+  } catch(e){}
+
+}
+
+
+function loadCrew(){
+
+  try {
+
+    const saved =
+      localStorage.getItem(
+        "WORLD_DANCE_CREW"
+      );
+
+    if(saved){
+
+      const data =
+        JSON.parse(saved);
+
+      Object.assign(
+        CREW_MODE,
+        data
+      );
+
+    }
+
+  } catch(e){}
+
+}
+
+loadCrew();
+
+
+/* =========================================================
+   CREW LEVEL
+========================================================= */
+
+function calculateCrewLevel(){
+
+  const required =
+    500 +
+    (CREW_MODE.level * 500);
+
+  while(
+    CREW_MODE.crewXP >= required
+  ){
+
+    CREW_MODE.crewXP -= required;
+
+    CREW_MODE.level++;
+
+    CREW_MODE.reputation += 50;
+
+    if(typeof toast === "function"){
+
+      toast(
+        "CREW LEVEL UP!"
+      );
+
+    }
+
+  }
+
+}
+
+
+/* =========================================================
+   CREW RATING
+========================================================= */
+
+function getCrewRating(){
+
+  if(!CREW_MODE.members.length)
+    return 0;
+
+  let total = 0;
+
+  CREW_MODE.members.forEach(
+    member => {
+      total += member.rating;
+    }
+  );
+
+  return Math.round(
+    total /
+    CREW_MODE.members.length
+  );
+
+}
+
+
+/* =========================================================
+   CREW POWER
+========================================================= */
+
+function getCrewPower(){
+
+  if(!CREW_MODE.members.length)
+    return 0;
+
+  let power = 0;
+
+  CREW_MODE.members.forEach(
+    member => {
+
+      power +=
+        member.rating *
+        (member.morale / 100) *
+        (member.energy / 100);
+
+    }
+  );
+
+  return Math.round(power);
+
+}
+
+
+/* =========================================================
+   CREW MAIN SCREEN
+========================================================= */
+
+function openCrew(){
+
+  const members =
+    CREW_MODE.members;
+
+  let membersHTML = "";
+
+  members.forEach(
+    member => {
+
+      membersHTML += `
+
+        <div
+          class="card clickable"
+          onclick="openCrewMember(${member.id})">
+
+          <div style="
+            display:flex;
+            align-items:center;
+            gap:12px">
+
+            <div style="
+              width:48px;
+              height:48px;
+              border-radius:14px;
+              display:grid;
+              place-items:center;
+              background:
+              linear-gradient(
+                135deg,
+                #315cff,
+                #8d43ff
+              );
+              font-size:18px;
+              font-weight:1000">
+
+              ${member.name.charAt(0)}
+
+            </div>
+
+            <div style="
+              flex:1">
+
+              <b>
+                ${member.name}
+              </b>
+
+              <div style="
+                font-size:9px;
+                color:var(--muted)">
+
+                ${member.role}
+                ·
+                ${member.style}
+
+              </div>
+
+            </div>
+
+            <strong>
+              ${member.rating}
+            </strong>
+
+          </div>
+
+          <div style="
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:8px;
+            margin-top:10px">
+
+            <div>
+
+              <small>
+                ENERGY
+              </small>
+
+              <div style="
+                height:4px;
+                background:#20263b;
+                border-radius:5px">
+
+                <div style="
+                  width:${member.energy}%;
+                  height:100%;
+                  background:#42d9ff">
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div>
+
+              <small>
+                MORALE
+              </small>
+
+              <div style="
+                height:4px;
+                background:#20263b;
+                border-radius:5px">
+
+                <div style="
+                  width:${member.morale}%;
+                  height:100%;
+                  background:#8d62ff">
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      `;
+
+    }
+  );
+
+
+  modal(
+
+    "MY CREW",
+
+    `
+
+      <div>
+
+        <div style="
+          display:grid;
+          grid-template-columns:
+          repeat(3,1fr);
+          gap:7px;
+          margin-bottom:15px">
+
+          <div class="miniStat">
+
+            <b>
+              ${CREW_MODE.level}
+            </b>
+
+            <span>
+              LEVEL
+            </span>
+
+          </div>
+
+          <div class="miniStat">
+
+            <b>
+              ${getCrewRating()}
+            </b>
+
+            <span>
+              RATING
+            </span>
+
+          </div>
+
+          <div class="miniStat">
+
+            <b>
+              ${CREW_MODE.reputation}
+            </b>
+
+            <span>
+              REP
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div style="
+          padding:14px;
+          border-radius:16px;
+          background:
+          linear-gradient(
+            135deg,
+            rgba(43,89,255,.18),
+            rgba(135,60,255,.12)
+          );
+          border:1px solid
+          rgba(255,255,255,.08);
+          margin-bottom:12px">
+
+          <small>
+            CREW NAME
+          </small>
+
+          <h2 style="
+            margin:5px 0">
+
+            ${CREW_MODE.name}
+
+          </h2>
+
+          <div style="
+            font-size:10px;
+            color:var(--muted)">
+
+            Crew Power:
+            ${getCrewPower()}
+
+          </div>
+
+        </div>
+
+
+        ${membersHTML}
+
+
+        <div style="
+          display:grid;
+          grid-template-columns:1fr 1fr;
+          gap:8px;
+          margin-top:10px">
+
+          <button
+            class="action primary"
+            onclick="openRecruitment()">
+
+            RECRUIT
+
+          </button>
+
+          <button
+            class="action"
+            onclick="openCrewBattle()">
+
+            CREW BATTLE
+
+          </button>
+
+        </div>
+
+      </div>
+
+    `
+  );
+
+}
+
+
+/* =========================================================
+   RECRUITMENT
+========================================================= */
+
+function openRecruitment(){
+
+  let html = `
+
+    <div style="
+      font-size:10px;
+      color:var(--muted);
+      margin-bottom:12px">
+
+      Recruit dancers using your
+      available crew funds.
+
+    </div>
+
+  `;
+
+
+  CREW_MODE.roster.forEach(
+    (candidate,index) => {
+
+      const already =
+        CREW_MODE.members.some(
+          m =>
+          m.name === candidate.name
+        );
+
+      const affordable =
+        typeof game !== "undefined" &&
+        game.coins >= candidate.price;
+
+
+      html += `
+
+        <div class="card"
+          style="
+          display:flex;
+          align-items:center;
+          gap:10px;
+          margin-bottom:8px">
+
+          <div style="
+            width:42px;
+            height:42px;
+            display:grid;
+            place-items:center;
+            border-radius:12px;
+            background:
+            linear-gradient(
+              135deg,
+              #ff477e,
+              #8744ff
+            );
+            font-weight:1000">
+
+            ${candidate.name.charAt(0)}
+
+          </div>
+
+          <div style="flex:1">
+
+            <b>
+              ${candidate.name}
+            </b>
+
+            <div style="
+              color:var(--muted);
+              font-size:9px">
+
+              ${candidate.role}
+              ·
+              ${candidate.style}
+
+            </div>
+
+            <div style="
+              font-size:9px">
+
+              Rating:
+              ${candidate.rating}
+
+            </div>
+
+          </div>
+
+          <button
+            class="action"
+            ${already || !affordable
+              ? "disabled"
+              : ""}
+            onclick="
+              recruitCrewMember(${index})
+            ">
+
+            ${
+              already
+                ? "OWNED"
+                : candidate.price +
+                  " COINS"
+            }
+
+          </button>
+
+        </div>
+
+      `;
+
+    }
+  );
+
+
+  modal(
+    "RECRUIT DANCERS",
+    html
+  );
+
+}
+
+
+/* =========================================================
+   RECRUIT
+========================================================= */
+
+function recruitCrewMember(index){
+
+  const candidate =
+    CREW_MODE.roster[index];
+
+  if(!candidate)
+    return;
+
+  if(
+    CREW_MODE.members.some(
+      m =>
+      m.name === candidate.name
+    )
+  ){
+
+    toast("Already recruited");
+    return;
+
+  }
+
+
+  if(
+    typeof game === "undefined" ||
+    game.coins < candidate.price
+  ){
+
+    toast("Not enough coins");
+    return;
+
+  }
+
+
+  game.coins -=
+    candidate.price;
+
+
+  CREW_MODE.members.push({
+
+    id:
+      Date.now(),
+
+    name:
+      candidate.name,
+
+    role:
+      candidate.role,
+
+    style:
+      candidate.style,
+
+    rating:
+      candidate.rating,
+
+    energy:
+      100,
+
+    morale:
+      85,
+
+    unlocked:
+      true
+
+  });
+
+
+  CREW_MODE.reputation += 10;
+
+  saveCrew();
+
+  if(typeof save === "function")
+    save();
+
+  if(typeof updateUI === "function")
+    updateUI();
+
+  toast(
+    candidate.name+
+    " joined your crew!"
+  );
+
+  openRecruitment();
+
+}
+
+
+/* =========================================================
+   CREW MEMBER PROFILE
+========================================================= */
+
+function openCrewMember(id){
+
+  const member =
+    CREW_MODE.members.find(
+      m => m.id === id
+    );
+
+  if(!member)
+    return;
+
+  modal(
+
+    member.name,
+
+    `
+
+      <div style="text-align:center">
+
+        <div style="
+          width:90px;
+          height:90px;
+          margin:auto;
+          display:grid;
+          place-items:center;
+          border-radius:25px;
+          background:
+          linear-gradient(
+            135deg,
+            #2d68ff,
+            #9a42ff
+          );
+          font-size:38px;
+          font-weight:1000">
+
+          ${member.name.charAt(0)}
+
+        </div>
+
+        <h2>
+          ${member.name}
+        </h2>
+
+        <p style="
+          color:var(--muted);
+          font-size:10px">
+
+          ${member.role}
+          ·
+          ${member.style}
+
+        </p>
+
+
+        <div class="statGrid">
+
+          <div class="miniStat">
+
+            <b>
+              ${member.rating}
+            </b>
+
+            <span>
+              RATING
+            </span>
+
+          </div>
+
+          <div class="miniStat">
+
+            <b>
+              ${member.energy}
+            </b>
+
+            <span>
+              ENERGY
+            </span>
+
+          </div>
+
+          <div class="miniStat">
+
+            <b>
+              ${member.morale}
+            </b>
+
+            <span>
+              MORALE
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div style="
+          display:grid;
+          grid-template-columns:1fr 1fr;
+          gap:8px;
+          margin-top:12px">
+
+          <button
+            class="action primary"
+            onclick="
+              trainCrewMember(${member.id})
+            ">
+
+            TRAIN
+
+          </button>
+
+          <button
+            class="action"
+            onclick="
+              restCrewMember(${member.id})
+            ">
+
+            REST
+
+          </button>
+
+        </div>
+
+      </div>
+
+    `
+  );
+
+}
+
+
+/* =========================================================
+   TRAIN CREW MEMBER
+========================================================= */
+
+function trainCrewMember(id){
+
+  const member =
+    CREW_MODE.members.find(
+      m => m.id === id
+    );
+
+  if(!member)
+    return;
+
+
+  if(member.energy < 20){
+
+    toast(
+      member.name+
+      " needs rest"
+    );
+
+    return;
+
+  }
+
+
+  member.energy -= 20;
+
+  member.rating =
+    Math.min(
+      99,
+      member.rating+
+      1+
+      Math.floor(
+        Math.random()*2
+      )
+    );
+
+  member.morale =
+    Math.min(
+      100,
+      member.morale+2
+    );
+
+
+  CREW_MODE.crewXP += 100;
+
+  calculateCrewLevel();
+
+  saveCrew();
+
+  if(typeof save === "function")
+    save();
+
+  toast(
+    member.name+
+    " improved!"
+  );
+
+  openCrewMember(id);
+
+}
+
+
+/* =========================================================
+   REST MEMBER
+========================================================= */
+
+function restCrewMember(id){
+
+  const member =
+    CREW_MODE.members.find(
+      m => m.id === id
+    );
+
+  if(!member)
+    return;
+
+
+  member.energy =
+    Math.min(
+      100,
+      member.energy+35
+    );
+
+  member.morale =
+    Math.min(
+      100,
+      member.morale+8
+    );
+
+
+  saveCrew();
+
+  toast(
+    member.name+
+    " is recovering"
+  );
+
+  openCrewMember(id);
+
+}
+
+
+/* =========================================================
+   CREW BATTLE
+========================================================= */
+
+function openCrewBattle(){
+
+  if(
+    CREW_MODE.members.length < 2
+  ){
+
+    modal(
+
+      "CREW BATTLE",
+
+      `
+
+        <div style="text-align:center">
+
+          <h2>
+            CREW NOT READY
+          </h2>
+
+          <p style="
+            color:var(--muted);
+            font-size:10px">
+
+            Recruit at least one
+            additional dancer before
+            entering a crew battle.
+
+          </p>
+
+          <button
+            class="action primary"
+            onclick="openRecruitment()">
+
+            RECRUIT DANCER
+
+          </button>
+
+        </div>
+
+      `
+    );
+
+    return;
+
+  }
+
+
+  const enemyNames = [
+
+    "NEON FORCE",
+    "STREET KINGS",
+    "MOTION X",
+    "DANCE REBELS",
+    "VOLTAGE"
+
+  ];
+
+
+  const enemy =
+    enemyNames[
+      Math.floor(
+        Math.random()*
+        enemyNames.length
+      )
+    ];
+
+
+  const enemyRating =
+    Math.min(
+      95,
+      Math.max(
+        55,
+        getCrewRating()+
+        Math.floor(
+          Math.random()*15
+        )-7
+      )
+    );
+
+
+  modal(
+
+    "CREW BATTLE",
+
+    `
+
+      <div style="text-align:center">
+
+        <div style="
+          display:flex;
+          justify-content:center;
+          align-items:center;
+          gap:18px">
+
+          <div>
+
+            <div style="
+              font-size:28px;
+              font-weight:1000">
+
+              ${CREW_MODE.name}
+
+            </div>
+
+            <small>
+              ${getCrewRating()} RATING
+            </small>
+
+          </div>
+
+          <strong>
+            VS
+          </strong>
+
+          <div>
+
+            <div style="
+              font-size:28px;
+              font-weight:1000">
+
+              ${enemy}
+
+            </div>
+
+            <small>
+              ${enemyRating} RATING
+            </small>
+
+          </div>
+
+        </div>
+
+
+        <p style="
+          color:var(--muted);
+          font-size:10px;
+          margin:15px">
+
+          Your crew will perform as a unit.
+          Crew rating, energy and morale
+          influence the result.
+
+        </p>
+
+
+        <button
+          class="action primary"
+          onclick="
+            runCrewBattle(
+              '${enemy.replace(/'/g,"")} ',
+              ${enemyRating}
+            )
+          ">
+
+          ENTER BATTLE
+
+        </button>
+
+      </div>
+
+    `
+  );
+
+}
+
+
+/* =========================================================
+   RUN CREW BATTLE
+========================================================= */
+
+function runCrewBattle(
+  enemyName,
+  enemyRating
 ){
 
-game.selectedDancers=
-game.selectedDancers.filter(
-x=>x!==id
-);
+  closeModal();
 
-}else{
 
-if(
-game.selectedDancers.length>=4
-){
+  let crewPower =
+    getCrewPower();
 
-toast(
-"Maximum 4 starters"
-);
 
-return;
+  const moraleBonus =
+    CREW_MODE.members.reduce(
+      (sum,m) =>
+        sum+
+        m.morale/100,
+      0
+    )*5;
 
-}
 
-game.selectedDancers.push(id);
+  crewPower +=
+    Math.round(
+      moraleBonus
+    );
 
-}
 
-save();
+  const enemyPower =
+    enemyRating *
+    CREW_MODE.members.length;
 
-renderDancers();
 
-}
+  const playerRoll =
+    crewPower+
+    Math.floor(
+      Math.random()*80
+    );
 
 
-/* =====================================================
- TRAINING
-===================================================== */
+  const enemyRoll =
+    enemyPower+
+    Math.floor(
+      Math.random()*80
+    );
 
-function renderTraining(){
 
-const select=
-document.getElementById(
-"trainingSelect"
-);
+  let result;
 
-if(!select)return;
+  if(playerRoll>enemyRoll)
+    result="WIN";
+  else if(playerRoll<enemyRoll)
+    result="LOSS";
+  else
+    result="DRAW";
 
-select.innerHTML="";
 
-game.dancers.forEach(d=>{
+  let xp=0;
+  let coins=0;
 
-const option=
-document.createElement("option");
 
-option.value=d.id;
+  if(result==="WIN"){
 
-option.textContent=
-d.name+
-" • "+
-d.rating;
+    xp=300;
+    coins=700;
 
-select.appendChild(option);
+    CREW_MODE.reputation+=50;
 
-});
+  }
 
-renderTrainingStats();
+  else if(result==="DRAW"){
 
-}
+    xp=150;
+    coins=250;
 
-function renderTrainingStats(){
+    CREW_MODE.reputation+=15;
 
-const select=
-document.getElementById(
-"trainingSelect"
-);
+  }
 
-const dancer=
-game.dancers.find(
-d=>d.id===select.value
-);
+  else{
 
-if(!dancer)return;
+    xp=80;
+    coins=100;
 
-const grid=
-document.getElementById(
-"trainingGrid"
-);
+  }
 
-grid.innerHTML="";
 
-Object.entries(
-dancer.attributes
-).forEach(
-([name,value])=>{
+  CREW_MODE.crewXP += xp;
 
-const div=
-document.createElement("div");
 
-div.className="card";
+  CREW_MODE.members.forEach(
+    member => {
 
-div.innerHTML=`
+      member.energy =
+        Math.max(
+          0,
+          member.energy-25
+        );
 
-<div class="muted">
-${name.toUpperCase()}
-</div>
+      if(result==="WIN"){
 
-<div style="
-font-size:35px;
-font-weight:1000;
-margin-top:5px;
-">
-${value}
-</div>
+        member.morale =
+          Math.min(
+            100,
+            member.morale+8
+          );
 
-<div style="
-height:6px;
-margin-top:8px;
-background:#242a38;
-border-radius:10px;
-overflow:hidden;
-">
+      }else{
 
-<div style="
-width:${value}%;
-height:100%;
-background:#9862c8;
-"></div>
+        member.morale =
+          Math.max(
+            0,
+            member.morale-3
+          );
 
-</div>
+      }
 
-<button
-class="btn primary wide"
-style="margin-top:12px"
-onclick="train('${dancer.id}','${name}')">
+    }
+  );
 
-TRAIN • 10 COINS
 
-</button>
+  calculateCrewLevel();
 
-`;
 
-grid.appendChild(div);
+  if(
+    typeof game !== "undefined"
+  ){
 
-});
+    game.coins += coins;
 
-}
+  }
 
-function train(id,attribute){
 
-if(game.coins<10){
+  saveCrew();
 
-toast(
-"Not enough coins"
-);
 
-return;
+  if(typeof save === "function")
+    save();
 
-}
+  if(typeof updateUI === "function")
+    updateUI();
 
-const dancer=
-game.dancers.find(
-d=>d.id===id
-);
 
-if(!dancer)return;
+  modal(
 
-if(
-dancer.attributes[attribute]>=100
-){
+    result==="WIN"
+      ? "CREW VICTORY"
+      : result==="DRAW"
+        ? "CREW DRAW"
+        : "CREW DEFEAT",
 
-toast(
-"Attribute already maxed"
-);
+    `
 
-return;
+      <div style="text-align:center">
 
-}
+        <div style="
+          font-size:48px;
+          font-weight:1000">
 
-dancer.attributes[attribute]=
-Math.min(
-100,
-dancer.attributes[attribute]+2
-);
+          ${result}
 
-dancer.rating=
-Math.round(
-Object.values(
-dancer.attributes
-)
-.reduce(
-(a,b)=>a+b,
-0
-)/5
-);
+        </div>
 
-game.coins-=10;
+        <div style="
+          margin:10px;
+          font-size:20px">
 
-game.xp+=5;
+          ${Math.round(playerRoll)}
+          -
+          ${Math.round(enemyRoll)}
 
-save();
+        </div>
 
-renderTraining();
 
-updateHome();
+        <div class="statGrid">
 
-toast(
-dancer.name+
-" improved"
-);
+          <div class="miniStat">
 
-}
+            <b>
+              +${coins}
+            </b>
 
+            <span>
+              COINS
+            </span>
 
-/* =====================================================
- RECORDS
-===================================================== */
+          </div>
 
-function renderRecords(){
+          <div class="miniStat">
 
-document.getElementById(
-"recordCompetitions"
-).textContent=
-game.record.competitions;
+            <b>
+              +${xp}
+            </b>
 
-document.getElementById(
-"recordWins"
-).textContent=
-game.record.wins;
+            <span>
+              CREW XP
+            </span>
 
-document.getElementById(
-"recordLosses"
-).textContent=
-game.record.losses;
+          </div>
 
-document.getElementById(
-"recordXP"
-).textContent=
-game.xp;
+          <div class="miniStat">
 
-}
+            <b>
+              ${CREW_MODE.level}
+            </b>
 
+            <span>
+              CREW LEVEL
+            </span>
 
-/* =====================================================
- CROWD
-===================================================== */
+          </div>
 
-function createCrowd(){
+          <div class="miniStat">
 
-const crowd=
-document.getElementById("crowd");
+            <b>
+              ${CREW_MODE.reputation}
+            </b>
 
-crowd.innerHTML="";
+            <span>
+              REP
+            </span>
 
-for(let i=0;i<75;i++){
+          </div>
 
-const fan=
-document.createElement("div");
+        </div>
 
-fan.className="fan";
 
-fan.style.height=
-(32+
-Math.random()*40)+"px";
+        <button
+          class="action primary"
+          onclick="openCrew()">
 
-fan.style.animationDuration=
-(.6+
-Math.random()*.9)+"s";
+          CREW HQ
 
-crowd.appendChild(fan);
+        </button>
 
-}
+      </div>
+
+    `
+  );
 
 }
 
 
-/* =====================================================
- BATTLE
-===================================================== */
+/* =========================================================
+   CREW QUICK ACCESS
+========================================================= */
 
-function beginBattle(){
+function addCrewQuickButton(){
 
-clearInterval(
-preparationTimer
-);
+  if(
+    document.getElementById(
+      "crewQuickButton"
+    )
+  )
+    return;
 
-if(!opponent)
-chooseOpponent();
 
-const music=
-MUSIC.find(
-m=>m.id===game.music
-)||MUSIC[0];
+  const quick =
+    document.querySelector(
+      ".quick"
+    );
 
-battleState={
 
-running:true,
+  if(!quick)
+    return;
 
-start:Date.now(),
 
-duration:30000,
+  const button =
+    document.createElement(
+      "button"
+    );
 
-score:0,
 
-enemyScore:0,
+  button.id =
+    "crewQuickButton";
 
-combo:0,
+  button.textContent =
+    "CREW";
 
-maxCombo:0,
+  button.onclick =
+    openCrew;
 
-perfect:0,
 
-good:0,
-
-miss:0,
-
-lastBeat:0,
-
-stats:{
-rhythm:0,
-technique:0,
-power:0,
-creativity:0,
-expression:0
-}
-
-};
-
-document.getElementById(
-"enemyShort"
-).textContent=
-opponent.short;
-
-document.getElementById(
-"playerScore"
-).textContent="0";
-
-document.getElementById(
-"enemyScore"
-).textContent="0";
-
-document.getElementById(
-"battleTimer"
-).textContent="00:30";
-
-createCrowd();
-
-openScreen("battle");
-
-const interval=
-60000/music.bpm;
-
-battleState.beatTimer=
-setInterval(
-beatPulse,
-interval
-);
-
-battleState.clock=
-setInterval(
-updateBattle,
-100
-);
-
-battleState.ai=
-setInterval(
-enemyMove,
-Math.max(
-550,
-interval*1.8
-)
-);
+  quick.appendChild(
+    button
+  );
 
 }
 
 
-/* =====================================================
- BEAT
-===================================================== */
-
-function beatPulse(){
-
-if(
-!battleState||
-!battleState.running
-)return;
-
-const bar=
-document.getElementById(
-"beatbar"
-);
-
-bar.style.transition="none";
-bar.style.width="100%";
+/* =========================================================
+   WORLD DANCE CREW SYSTEM INITIALIZER
+========================================================= */
 
 setTimeout(
-()=>{
-bar.style.transition=
-"width .5s linear";
-bar.style.width="0";
-},
-20
+  addCrewQuickButton,
+  300
 );
-
-}
-
-
-/* =====================================================
- BATTLE CLOCK
-===================================================== */
-
-function updateBattle(){
-
-if(
-!battleState||
-!battleState.running
-)return;
-
-const elapsed=
-Date.now()-
-battleState.start;
-
-const remaining=
-Math.max(
-0,
-battleState.duration-
-elapsed
-);
-
-const seconds=
-Math.ceil(
-remaining/1000
-);
-
-document.getElementById(
-"battleTimer"
-).textContent=
-"00:"+
-String(seconds).padStart(2,"0");
-
-if(remaining<=0){
-
-finishBattle();
-
-}
-
-}
-
-
-/* =====================================================
- PLAYER INPUT
-===================================================== */
-
-function inputMove(type){
-
-if(
-!battleState||
-!battleState.running
-)return;
-
-const music=
-MUSIC.find(
-m=>m.id===game.music
-)||MUSIC[0];
-
-const interval=
-60000/music.bpm;
-
-const now=
-Date.now();
-
-const position=
-now%interval;
-
-const distance=
-Math.min(
-position,
-interval-position
-);
-
-let result;
-
-if(
-distance<interval*.12
-){
-
-result="PERFECT";
-
-}else if(
-distance<interval*.30
-){
-
-result="GOOD";
-
-}else{
-
-result="MISS";
-
-}
-
-scoreMove(
-result,
-type
-);
-
-animateDancer(
-"playerDancer",
-type===3
-);
-
-}
-
-
-/* =====================================================
- SCORE MOVE
-===================================================== */
-
-function scoreMove(result,type){
-
-const state=
-battleState;
-
-if(result==="PERFECT"){
-
-state.perfect++;
-
-state.combo++;
-
-state.maxCombo=
-Math.max(
-state.maxCombo,
-state.combo
-);
-
-state.score+=
-100+
-state.combo*5;
-
-state.stats.rhythm+=5;
-state.stats.technique+=4;
-state.stats.creativity+=3;
-state.stats.power+=
-type===2?6:2;
-state.stats.expression+=
-type===3?5:2;
-
-showMessage(
-"PERFECT",
-"ON BEAT"
-);
-
-}else if(result==="GOOD"){
-
-state.good++;
-
-state.combo++;
-
-state.score+=65;
-
-state.stats.rhythm+=3;
-state.stats.technique+=2;
-state.stats.creativity+=2;
-state.stats.power+=1;
-state.stats.expression+=1;
-
-showMessage(
-"GOOD",
-"KEEP FLOW"
-);
-
-}else{
-
-state.miss++;
-
-state.combo=0;
-
-state.score+=5;
-
-showMessage(
-"MISS",
-"FIND THE BEAT"
-);
-
-}
-
-document.getElementById(
-"playerScore"
-).textContent=
-Math.round(state.score);
-
-}
-
-
-/* =====================================================
- ENEMY AI
-===================================================== */
-
-function enemyMove(){
-
-if(
-!battleState||
-!battleState.running
-)return;
-
-const rating=
-opponent.rating;
-
-const roll=
-Math.random();
-
-let points;
-
-if(roll>.78){
-
-points=
-100+
-Math.random()*65;
-
-}else if(roll>.38){
-
-points=
-55+
-Math.random()*35;
-
-}else{
-
-points=
-10+
-Math.random()*25;
-
-}
-
-points*=
-rating/85;
-
-battleState.enemyScore+=
-Math.round(points);
-
-document.getElementById(
-"enemyScore"
-).textContent=
-Math.round(
-battleState.enemyScore
-);
-
-animateDancer(
-"enemyDancer",
-Math.random()>.75
-);
-
-updateJudges();
-
-}
-
-
-/* =====================================================
- DANCER ANIMATION
-===================================================== */
-
-function animateDancer(id,power){
-
-const dancer=
-document.getElementById(id);
-
-dancer.classList.remove(
-"dance",
-"power"
-);
-
-void dancer.offsetWidth;
-
-dancer.classList.add(
-power?"power":"dance"
-);
-
-if(
-power
-){
-
-const arena=
-document.getElementById("arena");
-
-arena.classList.remove("shake");
-
-void arena.offsetWidth;
-
-arena.classList.add("shake");
-
-}
-
-}
-
-
-/* =====================================================
- MESSAGE
-===================================================== */
-
-function showMessage(main,sub){
-
-const box=
-document.getElementById("message");
-
-document.getElementById(
-"messageMain"
-).textContent=main;
-
-document.getElementById(
-"messageSub"
-).textContent=sub;
-
-box.classList.remove("show");
-
-void box.offsetWidth;
-
-box.classList.add("show");
-
-setTimeout(
-()=>{
-box.classList.remove("show")
-},
-550
-);
-
-}
-
-
-/* =====================================================
- JUDGES
-===================================================== */
-
-function updateJudges(){
-
-if(
-!battleState
-)return;
-
-const actions=
-battleState.perfect+
-battleState.good+
-battleState.miss;
-
-const average=
-actions
-?
-battleState.score/actions
-:0;
-
-const makeScore=>
-Math.min(
-99,
-Math.max(
-50,
-Math.round(
-55+
-average/2+
-Math.random()*10
-)
-)
-);
-
-document.getElementById(
-"j1"
-).textContent=
-makeScore();
-
-document.getElementById(
-"j2"
-).textContent=
-makeScore();
-
-document.getElementById(
-"j3"
-).textContent=
-makeScore();
-
-}
-
-
-/* =====================================================
- FINISH
-===================================================== */
-
-function finishBattle(){
-
-if(
-!battleState||
-!battleState.running
-)return;
-
-battleState.running=false;
-
-clearInterval(
-battleState.beatTimer
-);
-
-clearInterval(
-battleState.clock
-);
-
-clearInterval(
-battleState.ai
-);
-
-const player=
-Math.round(
-battleState.score+
-battleState.maxCombo*20
-);
-
-const enemy=
-Math.round(
-battleState.enemyScore
-);
-
-const won=
-player>=enemy;
-
-if(won){
-
-game.record.wins++;
-
-game.coins+=200;
-
-game.xp+=150;
-
-}else{
-
-game.record.losses++;
-
-game.coins+=60;
-
-game.xp+=50;
-
-}
-
-game.record.competitions++;
-
-save();
-
-renderResult(
-player,
-enemy,
-won
-);
-
-openScreen("result");
-
-}
-
-
-/* =====================================================
- RESULT
-===================================================== */
-
-function renderResult(
-player,
-enemy,
-won
-){
-
-document.getElementById(
-"resultTitle"
-).textContent=
-won
-?"VICTORY"
-:"DEFEAT";
-
-document.getElementById(
-"resultWinner"
-).textContent=
-won
-?"STREET PULSE"
-:opponent.name;
-
-document.getElementById(
-"resultPlayerScore"
-).textContent=
-player;
-
-document.getElementById(
-"resultEnemyName"
-).textContent=
-opponent.name;
-
-document.getElementById(
-"resultEnemyScore"
-).textContent=
-enemy;
-
-const total=
-Math.max(
-1,
-battleState.perfect+
-battleState.good
-);
-
-const scores={
-
-rhythm:
-Math.min(
-100,
-Math.round(
-battleState.stats.rhythm/
-total*4
-)
-),
-
-technique:
-Math.min(
-100,
-Math.round(
-battleState.stats.technique/
-total*5
-)
-),
-
-power:
-Math.min(
-100,
-Math.round(
-battleState.stats.power/
-total*5
-)
-),
-
-creativity:
-Math.min(
-100,
-Math.round(
-battleState.stats.creativity/
-total*5
-)
-),
-
-expression:
-Math.min(
-100,
-Math.round(
-battleState.stats.expression/
-total*5
-)
-)
-
-};
-
-setResultBar(
-"Rhythm",
-scores.rhythm
-);
-
-setResultBar(
-"Technique",
-scores.technique
-);
-
-setResultBar(
-"Power",
-scores.power
-);
-
-setResultBar(
-"Creativity",
-scores.creativity
-);
-
-setResultBar(
-"Expression",
-scores.expression
-);
-
-}
-
-
-function setResultBar(name,value){
-
-document.getElementById(
-"bar"+name
-).style.width=
-value+"%";
-
-document.getElementById(
-"score"+name
-).textContent=
-value;
-
-}
-
-
-/* =====================================================
- KEYBOARD
-===================================================== */
-
-document.addEventListener(
-"keydown",
-event=>{
-
-if(
-!battleState||
-!battleState.running
-)return;
-
-const keys={
-a:0,
-b:1,
-x:2,
-y:3
-};
-
-const key=
-event.key.toLowerCase();
-
-if(
-keys[key]!==undefined
-){
-
-inputMove(
-keys[key]
-);
-
-}
-
-});
-
-
-/* =====================================================
- TOAST
-===================================================== */
-
-let toastTimeout;
-
-function toast(message){
-
-const box=
-document.getElementById("toast");
-
-box.textContent=
-message;
-
-box.classList.add("show");
-
-clearTimeout(
-toastTimeout
-);
-
-toastTimeout=
-setTimeout(
-()=>{
-box.classList.remove("show")
-},
-1800
-);
-
-}
-
-
-/* =====================================================
- INITIALIZE
-===================================================== */
-
-function initialize(){
-
-updateHome();
-
-renderCompetition();
-
-renderCrews();
-
-renderDancers();
-
-renderTraining();
-
-renderRecords();
-
-}
-
-initialize();
-
 </script>
 
 </body>
