@@ -31543,5 +31543,2389 @@ console.log(
 })();
 
 </script>
+<!-- =========================================================
+ WORLD OF DANCE — BUILD 24
+ LIVE CHOREOGRAPHY MODE
+ Player selects moves → enters stage → taps moves →
+ 3 second countdown → dancer performs selected move
+========================================================= -->
+
+<style>
+/* =========================================================
+   CHOREOGRAPHY SELECTOR
+========================================================= */
+
+#wod24Choreo{
+    position:fixed;
+    inset:0;
+    z-index:99500;
+    display:none;
+    overflow:hidden;
+    color:#fff;
+    font-family:Arial,Helvetica,sans-serif;
+    background:
+        radial-gradient(
+            circle at 50% 15%,
+            #273d7b,
+            #0c1228 40%,
+            #02040a 100%
+        );
+}
+
+#wod24Choreo.active{
+    display:block;
+}
+
+.w24-select-bg{
+    position:absolute;
+    inset:0;
+    background:
+        radial-gradient(
+            ellipse at 50% 70%,
+            rgba(62,105,255,.22),
+            transparent 45%
+        );
+}
+
+.w24-select{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    padding:24px;
+}
+
+.w24-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.w24-header small{
+    color:#7e8db5;
+    font-size:8px;
+    letter-spacing:3px;
+}
+
+.w24-header h1{
+    margin:5px 0 0;
+    font-size:24px;
+}
+
+.w24-close{
+    width:38px;
+    height:38px;
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:10px;
+    background:rgba(255,255,255,.05);
+    color:#fff;
+}
+
+.w24-instruction{
+    margin-top:20px;
+    color:#8c99b8;
+    font-size:9px;
+}
+
+.w24-move-grid{
+    flex:1;
+    display:grid;
+    grid-template-columns:
+        repeat(4,1fr);
+    gap:10px;
+    align-content:center;
+    max-width:900px;
+    width:100%;
+    margin:auto;
+}
+
+.w24-move-card{
+    position:relative;
+    min-height:100px;
+    padding:15px;
+
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:15px;
+
+    color:#fff;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(26,37,73,.9),
+            rgba(6,9,20,.9)
+        );
+
+    text-align:left;
+    transition:.18s;
+}
+
+.w24-move-card:active{
+    transform:scale(.95);
+}
+
+.w24-move-card.selected{
+    border-color:#4f83ff;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(48,88,210,.7),
+            rgba(91,46,175,.65)
+        );
+
+    box-shadow:
+        0 0 28px
+        rgba(62,105,255,.25);
+}
+
+.w24-move-number{
+    position:absolute;
+    right:10px;
+    top:8px;
+
+    color:#687796;
+    font-size:7px;
+}
+
+.w24-move-icon{
+    width:36px;
+    height:36px;
+    margin-bottom:10px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:10px;
+
+    background:
+        rgba(255,255,255,.08);
+
+    font-size:12px;
+    font-weight:1000;
+}
+
+.w24-move-card b{
+    display:block;
+    font-size:9px;
+}
+
+.w24-move-card small{
+    display:block;
+    margin-top:5px;
+    color:#7786a8;
+    font-size:6px;
+}
+
+.w24-selected{
+    min-height:65px;
+    padding:10px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    border-radius:13px;
+
+    background:
+        rgba(5,8,18,.72);
+}
+
+.w24-selected-label{
+    color:#7786a8;
+    font-size:6px;
+    letter-spacing:2px;
+}
+
+#w24QueuePreview{
+    display:flex;
+    gap:6px;
+    margin-top:8px;
+    overflow:auto;
+}
+
+.w24-queue-chip{
+    flex:none;
+    padding:7px 9px;
+
+    border-radius:7px;
+
+    background:
+        rgba(65,105,255,.18);
+
+    border:
+        1px solid
+        rgba(85,125,255,.25);
+
+    font-size:6px;
+    font-weight:800;
+}
+
+.w24-start{
+    width:100%;
+    max-width:900px;
+    margin:10px auto 0;
+    padding:14px;
+
+    border:0;
+    border-radius:12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #3978ff,
+            #8d48ff
+        );
+
+    color:#fff;
+    font-size:9px;
+    font-weight:1000;
+    letter-spacing:1px;
+}
+
+
+/* =========================================================
+   LIVE STAGE
+========================================================= */
+
+#wod24Stage{
+    position:fixed;
+    inset:0;
+    z-index:99600;
+    display:none;
+    overflow:hidden;
+
+    color:#fff;
+    font-family:Arial,Helvetica,sans-serif;
+
+    background:
+        radial-gradient(
+            ellipse at 50% 15%,
+            #30457e,
+            #10172f 35%,
+            #03050c 75%
+        );
+}
+
+#wod24Stage.active{
+    display:block;
+}
+
+.w24-light{
+    position:absolute;
+    top:-30%;
+    width:24%;
+    height:130%;
+
+    opacity:.2;
+    filter:blur(8px);
+    transform-origin:top center;
+
+    background:
+        linear-gradient(
+            180deg,
+            #6f9cff,
+            transparent
+        );
+}
+
+.w24-light.left{
+    left:5%;
+    transform:rotate(27deg);
+    animation:w24LightLeft 4s infinite alternate;
+}
+
+.w24-light.right{
+    right:5%;
+    transform:rotate(-27deg);
+    animation:w24LightRight 4s infinite alternate;
+}
+
+@keyframes w24LightLeft{
+    to{transform:rotate(43deg)}
+}
+
+@keyframes w24LightRight{
+    to{transform:rotate(-43deg)}
+}
+
+.w24-stage-floor{
+    position:absolute;
+    left:-15%;
+    right:-15%;
+    bottom:-30%;
+    height:65%;
+
+    border-radius:50%;
+
+    transform:
+        perspective(600px)
+        rotateX(62deg);
+
+    background:
+        radial-gradient(
+            ellipse,
+            rgba(76,116,255,.48),
+            rgba(7,10,24,.95) 60%
+        );
+
+    box-shadow:
+        0 0 120px
+        rgba(65,105,255,.3);
+}
+
+.w24-stage-floor:before{
+    content:"";
+    position:absolute;
+    inset:12%;
+    border-radius:50%;
+    border:1px solid rgba(120,150,255,.4);
+}
+
+
+/* =========================================================
+   AUDIENCE
+========================================================= */
+
+.w24-audience{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:5%;
+    height:15%;
+    opacity:.6;
+
+    background:
+        radial-gradient(
+            circle at 5% 50%,
+            #111827 0 12px,
+            transparent 13px
+        ),
+        radial-gradient(
+            circle at 15% 40%,
+            #111827 0 10px,
+            transparent 11px
+        ),
+        radial-gradient(
+            circle at 25% 60%,
+            #111827 0 13px,
+            transparent 14px
+        ),
+        radial-gradient(
+            circle at 75% 50%,
+            #111827 0 12px,
+            transparent 13px
+        ),
+        radial-gradient(
+            circle at 85% 40%,
+            #111827 0 11px,
+            transparent 12px
+        ),
+        radial-gradient(
+            circle at 95% 60%,
+            #111827 0 13px,
+            transparent 14px
+        );
+}
+
+
+/* =========================================================
+   TOP GAME HUD
+========================================================= */
+
+.w24-hud{
+    position:absolute;
+    left:0;
+    right:0;
+    top:0;
+    z-index:20;
+
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+    align-items:center;
+
+    padding:12px 18px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(2,4,12,.92),
+            transparent
+        );
+}
+
+.w24-hud-player{
+    display:flex;
+    align-items:center;
+    gap:9px;
+}
+
+.w24-hud-player.enemy{
+    justify-content:flex-end;
+}
+
+.w24-avatar{
+    width:38px;
+    height:38px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #3978ff,
+            #8b48ff
+        );
+
+    font-size:10px;
+    font-weight:1000;
+}
+
+.w24-hud-name b{
+    display:block;
+    font-size:9px;
+}
+
+.w24-hud-name small{
+    display:block;
+    margin-top:3px;
+    color:#7786a7;
+    font-size:5px;
+}
+
+.w24-score{
+    text-align:center;
+}
+
+.w24-score small{
+    color:#7786a7;
+    font-size:5px;
+    letter-spacing:2px;
+}
+
+#w24Score{
+    display:block;
+    font-size:25px;
+    font-weight:1000;
+    margin-top:3px;
+}
+
+#w24Timer{
+    position:absolute;
+    top:65px;
+    left:50%;
+    transform:translateX(-50%);
+
+    width:54px;
+    height:54px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:50%;
+
+    background:
+        rgba(5,8,20,.85);
+
+    border:
+        2px solid
+        rgba(82,125,255,.7);
+
+    font-size:16px;
+    font-weight:1000;
+}
+
+
+/* =========================================================
+   DANCER
+========================================================= */
+
+.w24-dancer{
+    position:absolute;
+    bottom:24%;
+    width:150px;
+    height:285px;
+
+    z-index:12;
+
+    transition:.2s;
+}
+
+.w24-dancer.player{
+    left:30%;
+}
+
+.w24-dancer.opponent{
+    right:30%;
+    transform:scaleX(-1);
+}
+
+.w24-head{
+    position:absolute;
+    top:0;
+    left:54px;
+
+    width:42px;
+    height:42px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #f3c6a2,
+            #95573d
+        );
+}
+
+.w24-hair{
+    position:absolute;
+    top:-5px;
+    left:50px;
+
+    width:50px;
+    height:27px;
+
+    border-radius:
+        50% 50% 30% 30%;
+
+    background:#070a12;
+}
+
+.w24-body{
+    position:absolute;
+    top:40px;
+    left:34px;
+
+    width:80px;
+    height:94px;
+
+    border-radius:22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #3978ff,
+            #723eff
+        );
+}
+
+.opponent .w24-body{
+    background:
+        linear-gradient(
+            145deg,
+            #ff536e,
+            #78244f
+        );
+}
+
+.w24-arm{
+    position:absolute;
+    top:49px;
+
+    width:19px;
+    height:94px;
+
+    border-radius:16px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #4a82ff,
+            #171b30
+        );
+
+    transform-origin:50% 8%;
+}
+
+.opponent .w24-arm{
+    background:
+        linear-gradient(
+            180deg,
+            #ff6376,
+            #241526
+        );
+}
+
+.w24-arm.left{
+    left:14px;
+}
+
+.w24-arm.right{
+    right:14px;
+}
+
+.w24-leg{
+    position:absolute;
+    top:122px;
+
+    width:27px;
+    height:112px;
+
+    border-radius:16px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #171d34,
+            #060810
+        );
+
+    transform-origin:50% 0;
+}
+
+.w24-leg.left{
+    left:39px;
+}
+
+.w24-leg.right{
+    right:39px;
+}
+
+.w24-shoe{
+    position:absolute;
+    bottom:2px;
+
+    width:48px;
+    height:16px;
+
+    border-radius:15px;
+
+    background:#060810;
+}
+
+.w24-shoe.left{
+    left:17px;
+}
+
+.w24-shoe.right{
+    right:17px;
+}
+
+
+/* =========================================================
+   MOVE ANIMATIONS
+========================================================= */
+
+.w24-dancer.groove{
+    animation:w24Groove .75s ease;
+}
+
+.w24-dancer.footwork{
+    animation:w24Footwork .75s ease;
+}
+
+.w24-dancer.power{
+    animation:w24Power .9s ease;
+}
+
+.w24-dancer.freestyle{
+    animation:w24Freestyle .85s ease;
+}
+
+.w24-dancer.spin{
+    animation:w24Spin 1s ease;
+}
+
+.w24-dancer.lock{
+    animation:w24Lock .7s ease;
+}
+
+@keyframes w24Groove{
+    0%,100%{
+        transform:translateY(0) rotate(0);
+    }
+    30%{
+        transform:translateY(-18px) rotate(-12deg);
+    }
+    65%{
+        transform:translateY(-5px) rotate(13deg);
+    }
+}
+
+@keyframes w24Footwork{
+    0%,100%{
+        transform:translateX(0) rotate(0);
+    }
+    30%{
+        transform:translateX(-25px) rotate(-9deg);
+    }
+    70%{
+        transform:translateX(25px) rotate(9deg);
+    }
+}
+
+@keyframes w24Power{
+    0%{
+        transform:scale(1);
+    }
+    35%{
+        transform:scale(.82) rotate(-16deg);
+    }
+    65%{
+        transform:scale(1.12) rotate(18deg);
+    }
+    100%{
+        transform:scale(1);
+    }
+}
+
+@keyframes w24Freestyle{
+    0%,100%{
+        transform:translateY(0) rotate(0);
+    }
+    30%{
+        transform:translateY(-30px) rotate(18deg);
+    }
+    65%{
+        transform:translateY(-12px) rotate(-18deg);
+    }
+}
+
+@keyframes w24Spin{
+    0%{
+        transform:rotate(0);
+    }
+    100%{
+        transform:rotate(360deg);
+    }
+}
+
+@keyframes w24Lock{
+    0%{
+        transform:translateX(0);
+    }
+    30%{
+        transform:translateX(-18px) rotate(-10deg);
+    }
+    60%{
+        transform:translateX(18px) rotate(10deg);
+    }
+    100%{
+        transform:translateX(0);
+    }
+}
+
+
+/* =========================================================
+   COUNTDOWN
+========================================================= */
+
+#w24Countdown{
+    position:absolute;
+    left:50%;
+    top:43%;
+
+    transform:
+        translate(-50%,-50%)
+        scale(.5);
+
+    z-index:70;
+
+    opacity:0;
+
+    font-size:65px;
+    font-weight:1000;
+
+    text-shadow:
+        0 0 35px
+        rgba(85,125,255,.8);
+}
+
+#w24Countdown.show{
+    animation:w24Countdown .8s ease;
+}
+
+@keyframes w24Countdown{
+    0%{
+        opacity:0;
+        transform:
+            translate(-50%,-50%)
+            scale(.3);
+    }
+    35%{
+        opacity:1;
+    }
+    100%{
+        opacity:0;
+        transform:
+            translate(-50%,-50%)
+            scale(1.25);
+    }
+}
+
+
+/* =========================================================
+   LIVE CONTROLS
+========================================================= */
+
+.w24-controls{
+    position:absolute;
+    left:50%;
+    bottom:16px;
+
+    transform:translateX(-50%);
+
+    z-index:50;
+
+    width:min(900px,94%);
+
+    display:flex;
+    gap:7px;
+
+    overflow-x:auto;
+    padding:5px;
+
+    scrollbar-width:none;
+}
+
+.w24-controls::-webkit-scrollbar{
+    display:none;
+}
+
+.w24-control{
+    flex:1;
+    min-width:82px;
+    min-height:52px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.1);
+
+    border-radius:11px;
+
+    background:
+        rgba(8,12,27,.94);
+
+    color:#fff;
+
+    font-size:7px;
+    font-weight:1000;
+
+    transition:.15s;
+}
+
+.w24-control.ready{
+    border-color:
+        #5488ff;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(50,94,255,.5),
+            rgba(122,55,220,.45)
+        );
+}
+
+.w24-control:active{
+    transform:scale(.92);
+}
+
+.w24-control.disabled{
+    opacity:.45;
+}
+
+
+/* =========================================================
+   COMBO / STATUS
+========================================================= */
+
+.w24-status{
+    position:absolute;
+    top:128px;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    z-index:40;
+
+    text-align:center;
+}
+
+#w24Combo{
+    font-size:21px;
+    font-weight:1000;
+}
+
+.w24-status small{
+    display:block;
+    color:#7886a7;
+    font-size:5px;
+    letter-spacing:2px;
+}
+
+
+/* =========================================================
+   RESULT
+========================================================= */
+
+#w24Result{
+    position:absolute;
+    inset:0;
+
+    z-index:100;
+
+    display:none;
+    align-items:center;
+    justify-content:center;
+
+    background:
+        rgba(2,4,12,.83);
+
+    backdrop-filter:blur(13px);
+}
+
+#w24Result.show{
+    display:flex;
+}
+
+.w24-result-card{
+    width:min(430px,90%);
+
+    padding:28px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.1);
+
+    border-radius:20px;
+
+    text-align:center;
+
+    background:
+        linear-gradient(
+            145deg,
+            #131d3d,
+            #070a16
+        );
+
+    box-shadow:
+        0 30px 90px
+        rgba(0,0,0,.6);
+}
+
+.w24-result-card small{
+    color:#7d8db5;
+    font-size:6px;
+    letter-spacing:3px;
+}
+
+.w24-result-card h1{
+    margin:10px 0;
+    font-size:30px;
+}
+
+#w24FinalScore{
+    font-size:44px;
+    font-weight:1000;
+}
+
+.w24-result-stats{
+    display:grid;
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:7px;
+
+    margin:18px 0;
+}
+
+.w24-stat{
+    padding:10px;
+    border-radius:9px;
+    background:
+        rgba(255,255,255,.04);
+}
+
+.w24-stat b{
+    display:block;
+    font-size:14px;
+}
+
+.w24-stat small{
+    display:block;
+    margin-top:3px;
+    letter-spacing:0;
+}
+
+.w24-result-card button{
+    width:100%;
+    padding:13px;
+
+    border:0;
+    border-radius:10px;
+
+    color:#fff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #3978ff,
+            #8d48ff
+        );
+
+    font-size:8px;
+    font-weight:1000;
+}
+
+@media(max-width:700px){
+
+    .w24-move-grid{
+        grid-template-columns:
+            repeat(2,1fr);
+        overflow:auto;
+    }
+
+    .w24-dancer.player{
+        left:25%;
+        transform:scale(.75);
+    }
+
+    .w24-dancer.opponent{
+        right:25%;
+        transform:
+            scaleX(-1)
+            scale(.75);
+    }
+
+    .w24-control{
+        min-width:75px;
+    }
+
+}
+</style>
+
+
+<!-- =========================================================
+ CHOREOGRAPHY SELECTION
+========================================================= -->
+
+<div id="wod24Choreo">
+
+    <div class="w24-select-bg"></div>
+
+    <div class="w24-select">
+
+        <div class="w24-header">
+
+            <div>
+                <small>
+                    WORLD OF DANCE
+                </small>
+
+                <h1>
+                    BUILD YOUR PERFORMANCE
+                </h1>
+            </div>
+
+            <button
+                class="w24-close"
+                onclick="WOD24_CLOSE_SELECTOR()">
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="w24-instruction">
+            Select the dance steps you want to perform live.
+            The order you select them becomes your choreography.
+        </div>
+
+
+        <div class="w24-move-grid">
+
+            <button
+                class="w24-move-card"
+                onclick="WOD24_SELECT('GROOVE',this)">
+
+                <span class="w24-move-number">
+                    01
+                </span>
+
+                <div class="w24-move-icon">
+                    G
+                </div>
+
+                <b>
+                    GROOVE
+                </b>
+
+                <small>
+                    Rhythm / Foundation
+                </small>
+
+            </button>
+
+
+            <button
+                class="w24-move-card"
+                onclick="WOD24_SELECT('FOOTWORK',this)">
+
+                <span class="w24-move-number">
+                    02
+                </span>
+
+                <div class="w24-move-icon">
+                    F
+                </div>
+
+                <b>
+                    FOOTWORK
+                </b>
+
+                <small>
+                    Fast Steps
+                </small>
+
+            </button>
+
+
+            <button
+                class="w24-move-card"
+                onclick="WOD24_SELECT('POWER',this)">
+
+                <span class="w24-move-number">
+                    03
+                </span>
+
+                <div class="w24-move-icon">
+                    P
+                </div>
+
+                <b>
+                    POWER
+                </b>
+
+                <small>
+                    High Energy
+                </small>
+
+            </button>
+
+
+            <button
+                class="w24-move-card"
+                onclick="WOD24_SELECT('FREESTYLE',this)">
+
+                <span class="w24-move-number">
+                    04
+                </span>
+
+                <div class="w24-move-icon">
+                    FR
+                </div>
+
+                <b>
+                    FREESTYLE
+                </b>
+
+                <small>
+                    Creative
+                </small>
+
+            </button>
+
+
+            <button
+                class="w24-move-card"
+                onclick="WOD24_SELECT('SPIN',this)">
+
+                <span class="w24-move-number">
+                    05
+                </span>
+
+                <div class="w24-move-icon">
+                    S
+                </div>
+
+                <b>
+                    SPIN
+                </b>
+
+                <small>
+                    Rotation
+                </small>
+
+            </button>
+
+
+            <button
+                class="w24-move-card"
+                onclick="WOD24_SELECT('LOCK',this)">
+
+                <span class="w24-move-number">
+                    06
+                </span>
+
+                <div class="w24-move-icon">
+                    L
+                </div>
+
+                <b>
+                    LOCK
+                </b>
+
+                <small>
+                    Sharp Movement
+                </small>
+
+            </button>
+
+
+            <button
+                class="w24-move-card"
+                onclick="WOD24_SELECT('WAVE',this)">
+
+                <span class="w24-move-number">
+                    07
+                </span>
+
+                <div class="w24-move-icon">
+                    W
+                </div>
+
+                <b>
+                    WAVE
+                </b>
+
+                <small>
+                    Flow
+                </small>
+
+            </button>
+
+
+            <button
+                class="w24-move-card"
+                onclick="WOD24_SELECT('HIT',this)">
+
+                <span class="w24-move-number">
+                    08
+                </span>
+
+                <div class="w24-move-icon">
+                    H
+                </div>
+
+                <b>
+                    HIT
+                </b>
+
+                <small>
+                    Precision
+                </small>
+
+            </button>
+
+        </div>
+
+
+        <div class="w24-selected">
+
+            <div class="w24-selected-label">
+                YOUR CHOREOGRAPHY
+            </div>
+
+            <div id="w24QueuePreview"></div>
+
+        </div>
+
+
+        <button
+            class="w24-start"
+            onclick="WOD24_START_STAGE()">
+
+            ENTER LIVE STAGE
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+ LIVE PERFORMANCE STAGE
+========================================================= -->
+
+<div id="wod24Stage">
+
+    <div class="w24-light left"></div>
+    <div class="w24-light right"></div>
+
+    <div class="w24-stage-floor"></div>
+
+    <div class="w24-audience"></div>
+
+
+    <div class="w24-hud">
+
+        <div class="w24-hud-player">
+
+            <div class="w24-avatar">
+                P
+            </div>
+
+            <div class="w24-hud-name">
+
+                <b>
+                    PIXIE
+                </b>
+
+                <small>
+                    PLAYER
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <div class="w24-score">
+
+            <small>
+                PERFORMANCE SCORE
+            </small>
+
+            <span id="w24Score">
+                0
+            </span>
+
+        </div>
+
+
+        <div class="w24-hud-player enemy">
+
+            <div class="w24-hud-name">
+
+                <b>
+                    ACE
+                </b>
+
+                <small>
+                    OPPONENT
+                </small>
+
+            </div>
+
+            <div class="w24-avatar">
+                A
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div id="w24Timer">
+        0
+    </div>
+
+
+    <div class="w24-status">
+
+        <div id="w24Combo">
+            COMBO × 0
+        </div>
+
+        <small>
+            LIVE PERFORMANCE
+        </small>
+
+    </div>
+
+
+    <!-- PLAYER DANCER -->
+
+    <div
+        id="w24Player"
+        class="w24-dancer player">
+
+        <div class="w24-hair"></div>
+        <div class="w24-head"></div>
+        <div class="w24-body"></div>
+
+        <div class="w24-arm left"></div>
+        <div class="w24-arm right"></div>
+
+        <div class="w24-leg left"></div>
+        <div class="w24-leg right"></div>
+
+        <div class="w24-shoe left"></div>
+        <div class="w24-shoe right"></div>
+
+    </div>
+
+
+    <!-- OPPONENT -->
+
+    <div
+        id="w24Opponent"
+        class="w24-dancer opponent">
+
+        <div class="w24-hair"></div>
+        <div class="w24-head"></div>
+        <div class="w24-body"></div>
+
+        <div class="w24-arm left"></div>
+        <div class="w24-arm right"></div>
+
+        <div class="w24-leg left"></div>
+        <div class="w24-leg right"></div>
+
+        <div class="w24-shoe left"></div>
+        <div class="w24-shoe right"></div>
+
+    </div>
+
+
+    <!-- COUNTDOWN -->
+
+    <div id="w24Countdown">
+        3
+    </div>
+
+
+    <!-- LIVE SELECTED MOVES -->
+
+    <div
+        class="w24-controls"
+        id="w24Controls">
+    </div>
+
+
+    <!-- RESULT -->
+
+    <div id="w24Result">
+
+        <div class="w24-result-card">
+
+            <small>
+                WORLD OF DANCE
+            </small>
+
+            <h1 id="w24ResultTitle">
+                PERFORMANCE COMPLETE
+            </h1>
+
+            <div id="w24FinalScore">
+                0
+            </div>
+
+            <div class="w24-result-stats">
+
+                <div class="w24-stat">
+                    <b id="w24Perfect">
+                        0
+                    </b>
+                    <small>
+                        PERFECT
+                    </small>
+                </div>
+
+                <div class="w24-stat">
+                    <b id="w24Good">
+                        0
+                    </b>
+                    <small>
+                        GOOD
+                    </small>
+                </div>
+
+                <div class="w24-stat">
+                    <b id="w24BestCombo">
+                        0
+                    </b>
+                    <small>
+                        BEST COMBO
+                    </small>
+                </div>
+
+            </div>
+
+            <button
+                onclick="WOD24_RETURN_LOBBY()">
+
+                RETURN TO LOBBY
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+/* =========================================================
+ BUILD 24 ENGINE
+========================================================= */
+
+(function(){
+
+"use strict";
+
+
+const W24 = {
+
+    queue:[],
+
+    current:0,
+
+    score:0,
+
+    combo:0,
+
+    bestCombo:0,
+
+    perfect:0,
+
+    good:0,
+
+    miss:0,
+
+    busy:false,
+
+    active:false,
+
+    opponentTimer:null
+
+};
+
+
+const moveClass = {
+
+    GROOVE:"groove",
+
+    FOOTWORK:"footwork",
+
+    POWER:"power",
+
+    FREESTYLE:"freestyle",
+
+    SPIN:"spin",
+
+    LOCK:"lock",
+
+    WAVE:"freestyle",
+
+    HIT:"power"
+
+};
+
+
+const icons = {
+
+    GROOVE:"G",
+
+    FOOTWORK:"F",
+
+    POWER:"P",
+
+    FREESTYLE:"FR",
+
+    SPIN:"S",
+
+    LOCK:"L",
+
+    WAVE:"W",
+
+    HIT:"H"
+
+};
+
+
+/* =========================================================
+ SELECTOR
+========================================================= */
+
+window.WOD24_OPEN =
+function(){
+
+    document
+        .getElementById("wod24Choreo")
+        .classList.add("active");
+
+};
+
+
+window.WOD24_CLOSE_SELECTOR =
+function(){
+
+    document
+        .getElementById("wod24Choreo")
+        .classList.remove("active");
+
+};
+
+
+window.WOD24_SELECT =
+function(move,button){
+
+    if(
+        W24.queue.length >= 8
+    ){
+
+        return;
+
+    }
+
+
+    W24.queue.push(move);
+
+
+    button.classList.add(
+        "selected"
+    );
+
+
+    updateQueuePreview();
+
+};
+
+
+function updateQueuePreview(){
+
+    const box =
+        document.getElementById(
+            "w24QueuePreview"
+        );
+
+
+    box.innerHTML="";
+
+
+    W24.queue.forEach(
+        function(move,index){
+
+            const chip =
+                document.createElement(
+                    "div"
+                );
+
+            chip.className =
+                "w24-queue-chip";
+
+            chip.textContent =
+                (index+1) +
+                ". " +
+                move;
+
+            box.appendChild(chip);
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+ ENTER STAGE
+========================================================= */
+
+window.WOD24_START_STAGE =
+function(){
+
+    if(
+        W24.queue.length === 0
+    ){
+
+        W24.queue = [
+
+            "GROOVE",
+            "FOOTWORK",
+            "POWER",
+            "FREESTYLE"
+
+        ];
+
+    }
+
+
+    document
+        .getElementById(
+            "wod24Choreo"
+        )
+        .classList.remove(
+            "active"
+        );
+
+
+    document
+        .getElementById(
+            "wod24Stage"
+        )
+        .classList.add(
+            "active"
+        );
+
+
+    W24.current=0;
+
+    W24.score=0;
+
+    W24.combo=0;
+
+    W24.bestCombo=0;
+
+    W24.perfect=0;
+
+    W24.good=0;
+
+    W24.miss=0;
+
+    W24.active=true;
+
+
+    document.getElementById(
+        "w24Score"
+    ).textContent="0";
+
+
+    document.getElementById(
+        "w24Combo"
+    ).textContent="COMBO × 0";
+
+
+    buildLiveControls();
+
+
+    startOpponent();
+
+
+    setTimeout(
+        function(){
+
+            prepareNextMove();
+
+        },
+        500
+    );
+
+};
+
+
+/* =========================================================
+ LIVE CONTROL BAR
+========================================================= */
+
+function buildLiveControls(){
+
+    const controls =
+        document.getElementById(
+            "w24Controls"
+        );
+
+
+    controls.innerHTML="";
+
+
+    W24.queue.forEach(
+        function(move,index){
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+
+            button.className =
+                "w24-control";
+
+
+            button.textContent =
+                icons[move] +
+                "  " +
+                move;
+
+
+            button.dataset.index =
+                index;
+
+
+            button.onclick =
+                function(){
+
+                    pressSelectedMove(
+                        index
+                    );
+
+                };
+
+
+            controls.appendChild(
+                button
+            );
+
+        }
+    );
+
+
+    updateLiveControls();
+
+}
+
+
+/* =========================================================
+ HIGHLIGHT CURRENT MOVE
+========================================================= */
+
+function updateLiveControls(){
+
+    document
+        .querySelectorAll(
+            "#w24Controls .w24-control"
+        )
+        .forEach(
+            function(button){
+
+                button.classList.remove(
+                    "ready"
+                );
+
+
+                const index =
+                    Number(
+                        button.dataset.index
+                    );
+
+
+                if(
+                    index === W24.current
+                ){
+
+                    button.classList.add(
+                        "ready"
+                    );
+
+                }
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+ PREPARE MOVE
+========================================================= */
+
+function prepareNextMove(){
+
+    if(
+        !W24.active
+    )
+        return;
+
+
+    if(
+        W24.current >=
+        W24.queue.length
+    ){
+
+        finishPerformance();
+
+        return;
+
+    }
+
+
+    updateLiveControls();
+
+}
+
+
+/* =========================================================
+ PLAYER PRESSES MOVE
+========================================================= */
+
+function pressSelectedMove(index){
+
+    if(
+        !W24.active ||
+        W24.busy
+    )
+        return;
+
+
+    /*
+     * Player may select any move
+     * from the pre-selected sequence.
+     */
+
+    if(
+        index !== W24.current
+    ){
+
+        W24.combo=0;
+
+        W24.miss++;
+
+        W24.score += 5;
+
+        updateScore();
+
+        return;
+
+    }
+
+
+    W24.busy=true;
+
+
+    countdown(
+        function(){
+
+            executeMove(
+                W24.queue[
+                    W24.current
+                ]
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+ 3 SECOND COUNTDOWN
+========================================================= */
+
+function countdown(done){
+
+    const counter =
+        document.getElementById(
+            "w24Countdown"
+        );
+
+
+    let number=3;
+
+
+    counter.textContent =
+        number;
+
+    counter.classList.remove(
+        "show"
+    );
+
+    void counter.offsetWidth;
+
+    counter.classList.add(
+        "show"
+    );
+
+
+    const timer =
+        setInterval(
+            function(){
+
+                number--;
+
+
+                if(
+                    number > 0
+                ){
+
+                    counter.textContent =
+                        number;
+
+                    counter.classList.remove(
+                        "show"
+                    );
+
+                    void counter.offsetWidth;
+
+                    counter.classList.add(
+                        "show"
+                    );
+
+                }
+                else{
+
+                    clearInterval(
+                        timer
+                    );
+
+
+                    counter.textContent =
+                        "GO";
+
+
+                    counter.classList.remove(
+                        "show"
+                    );
+
+                    void counter.offsetWidth;
+
+                    counter.classList.add(
+                        "show"
+                    );
+
+
+                    setTimeout(
+                        done,
+                        180
+                    );
+
+                }
+
+            },
+            1000
+        );
+
+}
+
+
+/* =========================================================
+ EXECUTE DANCE
+========================================================= */
+
+function executeMove(move){
+
+    const dancer =
+        document.getElementById(
+            "w24Player"
+        );
+
+
+    dancer.classList.remove(
+        "groove",
+        "footwork",
+        "power",
+        "freestyle",
+        "spin",
+        "lock"
+    );
+
+
+    void dancer.offsetWidth;
+
+
+    dancer.classList.add(
+        moveClass[move] ||
+        "freestyle"
+    );
+
+
+    /*
+     * Timing quality.
+     * Because the player selected
+     * the correct queued move,
+     * this is a successful execution.
+     */
+
+    W24.combo++;
+
+
+    W24.bestCombo =
+        Math.max(
+            W24.bestCombo,
+            W24.combo
+        );
+
+
+    if(
+        W24.combo >= 3
+    ){
+
+        W24.score +=
+            150 +
+            W24.combo * 10;
+
+        W24.perfect++;
+
+    }
+    else{
+
+        W24.score += 100;
+
+        W24.good++;
+
+    }
+
+
+    updateScore();
+
+
+    /*
+     * Move the sequence forward.
+     */
+
+    W24.current++;
+
+
+    setTimeout(
+        function(){
+
+            W24.busy=false;
+
+            prepareNextMove();
+
+        },
+        850
+    );
+
+}
+
+
+/* =========================================================
+ SCORE
+========================================================= */
+
+function updateScore(){
+
+    document.getElementById(
+        "w24Score"
+    ).textContent =
+        W24.score;
+
+
+    document.getElementById(
+        "w24Combo"
+    ).textContent =
+        "COMBO × " +
+        W24.combo;
+
+}
+
+
+/* =========================================================
+ OPPONENT
+========================================================= */
+
+function startOpponent(){
+
+    clearInterval(
+        W24.opponentTimer
+    );
+
+
+    W24.opponentTimer =
+        setInterval(
+            function(){
+
+                if(
+                    !W24.active
+                )
+                    return;
+
+
+                const opponent =
+                    document.getElementById(
+                        "w24Opponent"
+                    );
+
+
+                const moves=[
+                    "groove",
+                    "footwork",
+                    "power",
+                    "freestyle",
+                    "spin",
+                    "lock"
+                ];
+
+
+                const selected =
+                    moves[
+                        Math.floor(
+                            Math.random() *
+                            moves.length
+                        )
+                    ];
+
+
+                opponent.classList.remove(
+                    "groove",
+                    "footwork",
+                    "power",
+                    "freestyle",
+                    "spin",
+                    "lock"
+                );
+
+
+                void opponent.offsetWidth;
+
+
+                opponent.classList.add(
+                    selected
+                );
+
+
+            },
+            1200
+        );
+
+}
+
+
+/* =========================================================
+ FINISH
+========================================================= */
+
+function finishPerformance(){
+
+    W24.active=false;
+
+    clearInterval(
+        W24.opponentTimer
+    );
+
+
+    const title =
+        document.getElementById(
+            "w24ResultTitle"
+        );
+
+
+    title.textContent =
+        W24.score >= 700
+        ? "OUTSTANDING PERFORMANCE"
+        : W24.score >= 450
+        ? "GREAT PERFORMANCE"
+        : "PERFORMANCE COMPLETE";
+
+
+    document.getElementById(
+        "w24FinalScore"
+    ).textContent =
+        W24.score;
+
+
+    document.getElementById(
+        "w24Perfect"
+    ).textContent =
+        W24.perfect;
+
+
+    document.getElementById(
+        "w24Good"
+    ).textContent =
+        W24.good;
+
+
+    document.getElementById(
+        "w24BestCombo"
+    ).textContent =
+        W24.bestCombo;
+
+
+    document
+        .getElementById(
+            "w24Result"
+        )
+        .classList.add(
+            "show"
+        );
+
+
+    /*
+     * Connect with existing
+     * progression system if present.
+     */
+
+    if(
+        typeof window.WOD_ADD_XP ===
+        "function"
+    ){
+
+        window.WOD_ADD_XP(
+            Math.round(
+                W24.score / 5
+            )
+        );
+
+    }
+
+
+    if(
+        typeof window.WOD_ADD_COINS ===
+        "function"
+    ){
+
+        window.WOD_ADD_COINS(
+            Math.round(
+                W24.score / 10
+            )
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+ RETURN TO LOBBY
+========================================================= */
+
+window.WOD24_RETURN_LOBBY =
+function(){
+
+    document
+        .getElementById(
+            "w24Result"
+        )
+        .classList.remove(
+            "show"
+        );
+
+
+    document
+        .getElementById(
+            "wod24Stage"
+        )
+        .classList.remove(
+            "active"
+        );
+
+
+    if(
+        typeof window.WOD_SHOW_LOBBY ===
+        "function"
+    ){
+
+        window.WOD_SHOW_LOBBY();
+
+    }
+
+};
+
+
+/* =========================================================
+ MAKE BUILD 22 COMPETE BUTTON
+ OPEN CHOREOGRAPHY SELECTOR
+========================================================= */
+
+window.WOD_START_COMPETITION =
+function(){
+
+    WOD24_OPEN();
+
+};
+
+
+/* =========================================================
+ OPTIONAL AUTOMATIC CONNECTION
+ ========================================================= */
+
+window.addEventListener(
+    "load",
+    function(){
+
+        console.log(
+            "WORLD OF DANCE BUILD 24 — LIVE CHOREOGRAPHY ONLINE"
+        );
+
+    }
+);
+
+})();
+</script>
 </body>
 </html>
