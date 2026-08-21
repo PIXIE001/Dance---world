@@ -23,19 +23,12 @@ html,body{
     font-family:Arial,Helvetica,sans-serif;
 }
 
-button,
-input,
-select{
+button,input,select{
     font:inherit;
 }
 
 button{
     cursor:pointer;
-}
-
-#app{
-    width:100%;
-    height:100%;
 }
 
 .screen{
@@ -48,15 +41,11 @@ button{
     display:flex;
 }
 
-/* =========================================================
-   GLOBAL
-========================================================= */
-
 .panel{
     width:100%;
     height:100%;
     overflow:auto;
-    padding:22px;
+    padding:18px;
     background:
         radial-gradient(circle at 85% 5%,rgba(112,61,180,.25),transparent 28%),
         radial-gradient(circle at 10% 90%,rgba(20,105,160,.12),transparent 25%),
@@ -69,33 +58,29 @@ button{
     align-items:center;
     justify-content:space-between;
     gap:15px;
-    margin-bottom:20px;
+    margin-bottom:18px;
 }
 
 .panel-title{
     font-size:clamp(25px,5vw,45px);
-    font-weight:900;
+    font-weight:1000;
     letter-spacing:1px;
 }
 
 .back-btn{
-    min-width:95px;
+    min-width:90px;
 }
 
 .btn{
-    min-height:48px;
+    min-height:46px;
     border:1px solid #30364c;
     border-radius:12px;
-    padding:10px 16px;
+    padding:9px 15px;
     background:#121622;
     color:#fff;
     font-weight:800;
-    letter-spacing:.6px;
+    letter-spacing:.5px;
     transition:.15s;
-}
-
-.btn:hover{
-    border-color:#7652a9;
 }
 
 .btn:active{
@@ -109,8 +94,8 @@ button{
 }
 
 .btn.purple{
-    background:#6f43b5;
-    border-color:#8f63d1;
+    background:#7045b8;
+    border-color:#9165d0;
 }
 
 .btn.danger{
@@ -122,9 +107,14 @@ button{
     width:100%;
 }
 
-/* =========================================================
-   HOME
-========================================================= */
+.action-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:15px;
+}
+
+/* HOME */
 
 #home{
     flex-direction:column;
@@ -137,13 +127,13 @@ button{
 
 .home-topbar{
     width:100%;
-    padding:15px 20px;
+    padding:13px 18px;
     display:flex;
     justify-content:space-between;
     align-items:center;
     gap:15px;
     border-bottom:1px solid rgba(255,255,255,.07);
-    background:rgba(7,8,16,.72);
+    background:rgba(7,8,16,.75);
     backdrop-filter:blur(12px);
 }
 
@@ -162,8 +152,8 @@ button{
 
 .top-actions{
     display:flex;
-    align-items:center;
     gap:8px;
+    align-items:center;
 }
 
 .coin-pill,
@@ -184,23 +174,19 @@ button{
     width:100%;
     max-width:1400px;
     margin:0 auto;
-    padding:20px;
+    padding:18px;
 }
-
-/* =========================================================
-   PLAYER STRIP
-========================================================= */
 
 .player-strip{
     display:grid;
     grid-template-columns:1.2fr 1fr 1fr 1fr;
-    gap:12px;
-    margin-bottom:14px;
+    gap:10px;
+    margin-bottom:12px;
 }
 
 .info-card{
-    min-height:90px;
-    padding:16px;
+    min-height:88px;
+    padding:15px;
     border-radius:16px;
     border:1px solid #292f43;
     background:linear-gradient(145deg,#111522,#0d1019);
@@ -208,7 +194,7 @@ button{
 
 .info-label{
     color:#858ca1;
-    font-size:11px;
+    font-size:10px;
     font-weight:800;
     letter-spacing:1.2px;
     text-transform:uppercase;
@@ -216,7 +202,7 @@ button{
 
 .info-value{
     margin-top:7px;
-    font-size:22px;
+    font-size:21px;
     font-weight:900;
 }
 
@@ -226,28 +212,23 @@ button{
     font-size:11px;
 }
 
-/* =========================================================
-   EVENT HERO
-========================================================= */
-
 .event-hero{
-    min-height:230px;
+    min-height:220px;
     display:grid;
     grid-template-columns:1.5fr 1fr;
-    gap:20px;
-    padding:25px;
+    gap:18px;
+    padding:23px;
     border:1px solid #39324e;
     border-radius:22px;
     background:
         linear-gradient(125deg,rgba(99,56,153,.34),rgba(14,18,31,.95)),
         #10131e;
-    box-shadow:0 18px 50px rgba(0,0,0,.25);
-    margin-bottom:15px;
+    margin-bottom:14px;
 }
 
 .event-kicker{
     color:#b89ce5;
-    font-size:11px;
+    font-size:10px;
     font-weight:900;
     letter-spacing:2px;
     text-transform:uppercase;
@@ -270,7 +251,7 @@ button{
     flex-direction:column;
     justify-content:center;
     align-items:center;
-    padding:15px;
+    padding:14px;
     border-radius:18px;
     background:rgba(0,0,0,.28);
     border:1px solid rgba(255,255,255,.09);
@@ -278,9 +259,10 @@ button{
 
 .countdown-label{
     color:#858ca1;
-    font-size:11px;
+    font-size:10px;
     letter-spacing:2px;
     font-weight:900;
+    text-align:center;
 }
 
 .countdown{
@@ -290,7 +272,7 @@ button{
 }
 
 .time-unit{
-    min-width:65px;
+    min-width:58px;
     text-align:center;
 }
 
@@ -307,36 +289,32 @@ button{
     letter-spacing:1px;
 }
 
-/* =========================================================
-   QUICK MENU
-========================================================= */
-
 .section-heading{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin:18px 0 10px;
+    margin:17px 0 9px;
 }
 
 .section-heading h2{
     margin:0;
-    font-size:18px;
+    font-size:17px;
 }
 
 .section-heading span{
     color:#697185;
-    font-size:11px;
+    font-size:10px;
 }
 
 .quick-grid{
     display:grid;
     grid-template-columns:repeat(6,1fr);
-    gap:10px;
+    gap:9px;
 }
 
 .quick-card{
-    min-height:105px;
-    padding:14px;
+    min-height:100px;
+    padding:13px;
     border-radius:15px;
     border:1px solid #282e41;
     background:#10131e;
@@ -345,22 +323,21 @@ button{
     transition:.15s;
 }
 
-.quick-card:hover{
-    border-color:#7352a5;
-    transform:translateY(-2px);
-}
-
 .quick-card:active{
     transform:scale(.97);
 }
 
+.quick-card:hover{
+    border-color:#7352a5;
+}
+
 .quick-icon{
-    font-size:24px;
-    margin-bottom:13px;
+    font-size:23px;
+    margin-bottom:12px;
 }
 
 .quick-title{
-    font-size:12px;
+    font-size:11px;
     font-weight:900;
 }
 
@@ -370,33 +347,29 @@ button{
     margin-top:4px;
 }
 
-/* =========================================================
-   DASHBOARD CARDS
-========================================================= */
-
 .dashboard-grid{
     display:grid;
     grid-template-columns:repeat(4,1fr);
-    gap:12px;
+    gap:10px;
 }
 
 .dashboard-card{
-    min-height:155px;
+    min-height:145px;
     border:1px solid #292f42;
     border-radius:17px;
-    padding:18px;
+    padding:16px;
     background:#10131e;
 }
 
 .dashboard-card h3{
-    margin:0 0 15px;
-    font-size:12px;
+    margin:0 0 14px;
+    font-size:11px;
     letter-spacing:1px;
     color:#8a91a4;
 }
 
 .dashboard-number{
-    font-size:32px;
+    font-size:30px;
     font-weight:1000;
 }
 
@@ -406,7 +379,7 @@ button{
     border-radius:10px;
     overflow:hidden;
     background:#252a39;
-    margin-top:10px;
+    margin-top:9px;
 }
 
 .progress-fill{
@@ -431,18 +404,16 @@ button{
     color:#fff;
 }
 
-/* =========================================================
-   GENERIC CARDS
-========================================================= */
+/* GENERIC */
 
 .card-grid{
     display:grid;
     grid-template-columns:repeat(4,1fr);
-    gap:14px;
+    gap:12px;
 }
 
 .card{
-    padding:20px;
+    padding:18px;
     border-radius:18px;
     border:1px solid #292f42;
     background:#10131e;
@@ -473,12 +444,118 @@ button{
     font-size:12px;
 }
 
-/* =========================================================
-   ATTRIBUTES
-========================================================= */
+/* CREW */
+
+.crew-summary{
+    display:grid;
+    grid-template-columns:1.4fr 1fr 1fr;
+    gap:12px;
+    margin-bottom:14px;
+}
+
+.crew-main-card{
+    min-height:150px;
+    padding:20px;
+    border-radius:20px;
+    border:1px solid #3b3152;
+    background:
+        linear-gradient(135deg,rgba(111,67,181,.32),#10131e);
+}
+
+.crew-rating{
+    font-size:48px;
+    font-weight:1000;
+}
+
+.dancer-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+}
+
+.dancer-card{
+    position:relative;
+    min-height:255px;
+    padding:16px;
+    border-radius:18px;
+    border:1px solid #292f42;
+    background:
+        linear-gradient(150deg,#141827,#0d1019);
+}
+
+.dancer-card.selected{
+    border-color:#a26ce1;
+    box-shadow:0 0 0 1px rgba(162,108,225,.18);
+}
+
+.dancer-avatar{
+    width:64px;
+    height:64px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    background:
+        linear-gradient(135deg,#6940a7,#1d2334);
+    border:1px solid #654d83;
+    font-size:26px;
+    font-weight:1000;
+    margin-bottom:12px;
+}
+
+.dancer-name{
+    font-size:18px;
+    font-weight:900;
+}
+
+.dancer-role{
+    color:#a78fc4;
+    font-size:10px;
+    letter-spacing:1px;
+    font-weight:800;
+    margin-top:4px;
+}
+
+.dancer-style{
+    color:#777f93;
+    font-size:10px;
+    margin-top:4px;
+}
+
+.rating-big{
+    position:absolute;
+    top:16px;
+    right:16px;
+    font-size:25px;
+    font-weight:1000;
+}
+
+.mini-stats{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:5px;
+    margin-top:12px;
+}
+
+.mini-stat{
+    padding:7px;
+    border-radius:8px;
+    background:#0b0e16;
+    font-size:9px;
+    color:#838b9e;
+}
+
+.mini-stat strong{
+    display:block;
+    color:#fff;
+    font-size:12px;
+    margin-top:2px;
+}
+
+/* ATTRIBUTES */
 
 .attribute{
-    margin:12px 0;
+    margin:11px 0;
 }
 
 .attribute-row{
@@ -501,14 +578,12 @@ button{
     background:linear-gradient(90deg,#7d55c4,#df58a1);
 }
 
-/* =========================================================
-   FORM
-========================================================= */
+/* FORM */
 
 .form-grid{
     display:grid;
     grid-template-columns:repeat(2,1fr);
-    gap:14px;
+    gap:13px;
 }
 
 .field{
@@ -519,7 +594,7 @@ button{
 
 .field label{
     color:#858ca0;
-    font-size:11px;
+    font-size:10px;
     font-weight:800;
     letter-spacing:1px;
 }
@@ -535,23 +610,16 @@ button{
     color:#fff;
 }
 
-.field input:focus,
-.field select:focus{
-    border-color:#8055be;
-}
-
-/* =========================================================
-   TOAST
-========================================================= */
+/* TOAST */
 
 .toast{
     position:fixed;
     left:50%;
-    bottom:24px;
+    bottom:22px;
     transform:translate(-50%,20px);
     opacity:0;
     pointer-events:none;
-    z-index:999;
+    z-index:9999;
     background:#fff;
     color:#080a10;
     border-radius:30px;
@@ -566,11 +634,9 @@ button{
     transform:translate(-50%,0);
 }
 
-/* =========================================================
-   MOBILE
-========================================================= */
+/* MOBILE */
 
-@media(max-width:950px){
+@media(max-width:1000px){
 
     .quick-grid{
         grid-template-columns:repeat(3,1fr);
@@ -588,17 +654,24 @@ button{
         grid-template-columns:1fr;
     }
 
+    .dancer-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .crew-summary{
+        grid-template-columns:1fr 1fr;
+    }
 }
 
 @media(max-width:650px){
 
     .panel,
     .home-content{
-        padding:14px;
+        padding:13px;
     }
 
     .home-topbar{
-        padding:11px 14px;
+        padding:10px 13px;
     }
 
     .brand-sub{
@@ -615,7 +688,9 @@ button{
 
     .dashboard-grid,
     .card-grid,
-    .form-grid{
+    .form-grid,
+    .dancer-grid,
+    .crew-summary{
         grid-template-columns:1fr;
     }
 
@@ -624,31 +699,12 @@ button{
     }
 
     .time-unit{
-        min-width:55px;
+        min-width:52px;
     }
 
-}
-
-@media(orientation:portrait){
-
-    #home::after{
-        content:"ROTATE TO LANDSCAPE FOR THE BEST EXPERIENCE";
-        position:fixed;
-        left:10px;
-        right:10px;
-        bottom:10px;
-        z-index:1000;
-        padding:9px;
-        text-align:center;
-        font-size:10px;
-        font-weight:900;
-        letter-spacing:1px;
-        border:1px solid #343a50;
-        border-radius:10px;
-        background:#0d1019;
-        color:#b7becf;
+    .crew-rating{
+        font-size:40px;
     }
-
 }
 </style>
 </head>
@@ -657,2663 +713,2920 @@ button{
 
 <div id="app">
 
-<!-- ======================================================
-     HOME / GAME HUB
-====================================================== -->
+<!-- =====================================================
+HOME
+===================================================== -->
 
 <section id="home" class="screen active">
 
-    <header class="home-topbar">
+<header class="home-topbar">
 
-        <div>
-            <div class="brand">
-                WORLD OF DANCE
-            </div>
+<div>
+<div class="brand">WORLD OF DANCE</div>
+<div class="brand-sub">ULTIMATE COMPETITION</div>
+</div>
 
-            <div class="brand-sub">
-                ULTIMATE COMPETITION
-            </div>
-        </div>
+<div class="top-actions">
 
-        <div class="top-actions">
+<div class="rank-pill" id="topRank">
+ROOKIE
+</div>
 
-            <div class="rank-pill"
-                 id="topRank">
-                ROOKIE
-            </div>
+<div class="coin-pill">
+🪙 <span id="coinDisplay">1000</span>
+</div>
 
-            <div class="coin-pill">
-                🪙 <span id="coinDisplay">1000</span>
-            </div>
+</div>
 
-        </div>
+</header>
 
-    </header>
 
+<main class="home-content">
 
-    <main class="home-content">
+<div class="player-strip">
 
-        <!-- PLAYER SUMMARY -->
+<div class="info-card">
 
-        <div class="player-strip">
+<div class="info-label">PLAYER</div>
 
-            <div class="info-card">
+<div class="info-value"
+id="homePlayerName">
+World Dancer
+</div>
 
-                <div class="info-label">
-                    PLAYER
-                </div>
+<div class="info-small"
+id="homeRankText">
+ROOKIE • 0 rank points
+</div>
 
-                <div class="info-value"
-                     id="homePlayerName">
-                    World Dancer
-                </div>
+</div>
 
-                <div class="info-small"
-                     id="homeRankText">
-                    ROOKIE • 0 rank points
-                </div>
 
-            </div>
+<div class="info-card">
 
+<div class="info-label">MY CREW</div>
 
-            <div class="info-card">
+<div class="info-value"
+id="homeCrewName">
+Street Pulse
+</div>
 
-                <div class="info-label">
-                    MY CREW
-                </div>
+<div class="info-small">
+Crew management
+</div>
 
-                <div class="info-value"
-                     id="homeCrewName">
-                    Street Pulse
-                </div>
+</div>
 
-                <div class="info-small">
-                    Crew selection
-                </div>
 
-            </div>
+<div class="info-card">
 
+<div class="info-label">CREW RATING</div>
 
-            <div class="info-card">
+<div class="info-value"
+id="homeCrewRating">
+72
+</div>
 
-                <div class="info-label">
-                    CREW RATING
-                </div>
+<div class="info-small">
+Current lineup
+</div>
 
-                <div class="info-value"
-                     id="homeCrewRating">
-                    72
-                </div>
+</div>
 
-                <div class="info-small">
-                    Overall strength
-                </div>
 
-            </div>
+<div class="info-card">
 
+<div class="info-label">NEXT RANK</div>
 
-            <div class="info-card">
+<div class="info-value"
+id="homeNextRank">
+RISING STAR
+</div>
 
-                <div class="info-label">
-                    NEXT RANK
-                </div>
+<div class="info-small"
+id="homeRankNeeded">
+100 points
+</div>
 
-                <div class="info-value"
-                     id="homeNextRank">
-                    RISING STAR
-                </div>
+</div>
 
-                <div class="info-small"
-                     id="homeRankNeeded">
-                    100 points
-                </div>
+</div>
 
-            </div>
 
-        </div>
+<section class="event-hero">
 
+<div>
 
-        <!-- NEXT EVENT -->
+<div class="event-kicker">
+NEXT COMPETITION
+</div>
 
-        <section class="event-hero">
+<div class="event-title">
+Nairobi Dance Battle
+</div>
 
-            <div>
+<div class="event-description">
+Prepare your dancers, improve their attributes,
+select your lineup and lock your performance setup
+before the preparation period ends.
+</div>
 
-                <div class="event-kicker">
-                    NEXT COMPETITION
-                </div>
+<div class="action-row">
 
-                <div class="event-title">
-                    Nairobi Dance Battle
-                </div>
+<button class="btn primary"
+onclick="showScreen('events')">
+VIEW EVENT
+</button>
 
-                <div class="event-description">
-                    Prepare your crew, improve your attributes
-                    and lock your performance setup before the
-                    preparation period ends.
-                </div>
+<button class="btn"
+onclick="showScreen('training')">
+TRAIN
+</button>
 
-                <div class="action-row">
+</div>
 
-                    <button class="btn primary"
-                            onclick="showScreen('events')">
-                        VIEW EVENT
-                    </button>
+</div>
 
-                    <button class="btn"
-                            onclick="showScreen('training')">
-                        TRAIN CREW
-                    </button>
 
-                </div>
+<div class="countdown-box">
 
-            </div>
+<div class="countdown-label">
+PREPARATION TIME REMAINING
+</div>
 
+<div class="countdown">
 
-            <div class="countdown-box">
+<div class="time-unit">
+<span class="time-number"
+id="days">02</span>
+<span class="time-label">DAYS</span>
+</div>
 
-                <div class="countdown-label">
-                    PREPARATION TIME REMAINING
-                </div>
+<div class="time-unit">
+<span class="time-number"
+id="hours">14</span>
+<span class="time-label">HOURS</span>
+</div>
 
-                <div class="countdown">
+<div class="time-unit">
+<span class="time-number"
+id="minutes">00</span>
+<span class="time-label">MIN</span>
+</div>
 
-                    <div class="time-unit">
-                        <span class="time-number"
-                              id="days">
-                            02
-                        </span>
-                        <span class="time-label">
-                            DAYS
-                        </span>
-                    </div>
+<div class="time-unit">
+<span class="time-number"
+id="seconds">00</span>
+<span class="time-label">SEC</span>
+</div>
 
-                    <div class="time-unit">
-                        <span class="time-number"
-                              id="hours">
-                            14
-                        </span>
-                        <span class="time-label">
-                            HOURS
-                        </span>
-                    </div>
+</div>
 
-                    <div class="time-unit">
-                        <span class="time-number"
-                              id="minutes">
-                            00
-                        </span>
-                        <span class="time-label">
-                            MIN
-                        </span>
-                    </div>
+<div class="info-small"
+id="eventTimerStatus">
+Preparation phase
+</div>
 
-                    <div class="time-unit">
-                        <span class="time-number"
-                              id="seconds">
-                            00
-                        </span>
-                        <span class="time-label">
-                            SEC
-                        </span>
-                    </div>
-
-                </div>
-
-                <div class="info-small"
-                     id="eventTimerStatus">
-                    Preparation phase
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- QUICK ACTIONS -->
-
-        <div class="section-heading">
-
-            <h2>
-                QUICK PLAY
-            </h2>
-
-            <span>
-                SELECT A GAME MODE
-            </span>
-
-        </div>
-
-
-        <div class="quick-grid">
-
-            <button class="quick-card"
-                    onclick="showScreen('performance')">
-
-                <div class="quick-icon">
-                    ▶
-                </div>
-
-                <div class="quick-title">
-                    PLAY
-                </div>
-
-                <div class="quick-desc">
-                    Start a performance
-                </div>
-
-            </button>
-
-
-            <button class="quick-card"
-                    onclick="showScreen('crew')">
-
-                <div class="quick-icon">
-                    ★
-                </div>
-
-                <div class="quick-title">
-                    MY CREW
-                </div>
-
-                <div class="quick-desc">
-                    Manage dancers
-                </div>
-
-            </button>
-
-
-            <button class="quick-card"
-                    onclick="showScreen('training')">
-
-                <div class="quick-icon">
-                    ◆
-                </div>
-
-                <div class="quick-title">
-                    TRAINING
-                </div>
-
-                <div class="quick-desc">
-                    Improve skills
-                </div>
-
-            </button>
-
-
-            <button class="quick-card"
-                    onclick="showScreen('events')">
-
-                <div class="quick-icon">
-                    ◈
-                </div>
-
-                <div class="quick-title">
-                    EVENTS
-                </div>
-
-                <div class="quick-desc">
-                    Competitions
-                </div>
-
-            </button>
-
-
-            <button class="quick-card"
-                    onclick="showScreen('worldTour')">
-
-                <div class="quick-icon">
-                    ◎
-                </div>
-
-                <div class="quick-title">
-                    WORLD TOUR
-                </div>
-
-                <div class="quick-desc">
-                    Travel & compete
-                </div>
-
-            </button>
-
-
-            <button class="quick-card"
-                    onclick="showScreen('collection')">
-
-                <div class="quick-icon">
-                    ◇
-                </div>
-
-                <div class="quick-title">
-                    COLLECTION
-                </div>
-
-                <div class="quick-desc">
-                    Styles & items
-                </div>
-
-            </button>
-
-        </div>
-
-
-        <!-- DASHBOARD -->
-
-        <div class="section-heading">
-
-            <h2>
-                PERFORMANCE DASHBOARD
-            </h2>
-
-            <span>
-                YOUR CURRENT STATUS
-            </span>
-
-        </div>
-
-
-        <div class="dashboard-grid">
-
-            <div class="dashboard-card">
-
-                <h3>
-                    RANK PROGRESS
-                </h3>
-
-                <div class="dashboard-number"
-                     id="dashboardRankPercent">
-                    0%
-                </div>
-
-                <div class="progress">
-
-                    <div class="progress-fill"
-                         id="dashboardRankBar"
-                         style="width:0%">
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="dashboard-card">
-
-                <h3>
-                    CREW POWER
-                </h3>
-
-                <div class="dashboard-number"
-                     id="dashboardCrewRating">
-                    72
-                </div>
-
-                <div class="info-small">
-                    Current overall rating
-                </div>
-
-            </div>
-
-
-            <div class="dashboard-card">
-
-                <h3>
-                    BEST ATTRIBUTES
-                </h3>
-
-                <div class="stat-list"
-                     id="bestAttributes">
-                </div>
-
-            </div>
-
-
-            <div class="dashboard-card">
-
-                <h3>
-                    GAME RECORD
-                </h3>
-
-                <div class="stat-list">
-
-                    <div class="stat-line">
-                        <span>Competitions</span>
-                        <strong id="competitionCount">
-                            0
-                        </strong>
-                    </div>
-
-                    <div class="stat-line">
-                        <span>Wins</span>
-                        <strong id="winCount">
-                            0
-                        </strong>
-                    </div>
-
-                    <div class="stat-line">
-                        <span>Losses</span>
-                        <strong id="lossCount">
-                            0
-                        </strong>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </main>
+</div>
 
 </section>
 
 
-<!-- ======================================================
-     PLAYER
-====================================================== -->
+<div class="section-heading">
 
-<section id="profile" class="screen">
+<h2>QUICK PLAY</h2>
 
-    <div class="panel">
+<span>GAME MODES</span>
 
-        <div class="panel-header">
-
-            <div class="panel-title">
-                PLAYER
-            </div>
-
-            <button class="btn back-btn"
-                    onclick="showScreen('home')">
-                BACK
-            </button>
-
-        </div>
+</div>
 
 
-        <div class="card-grid">
+<div class="quick-grid">
 
-            <div class="card">
+<button class="quick-card"
+onclick="showScreen('performance')">
 
-                <h3>
-                    PLAYER
-                </h3>
+<div class="quick-icon">▶</div>
 
-                <div class="stat"
-                     id="playerName">
-                    World Dancer
-                </div>
+<div class="quick-title">PLAY</div>
 
-                <div class="rank"
-                     id="playerRank">
-                    ROOKIE
-                </div>
+<div class="quick-desc">
+Performance
+</div>
 
-            </div>
+</button>
 
 
-            <div class="card">
+<button class="quick-card"
+onclick="showScreen('crew')">
 
-                <h3>
-                    COINS
-                </h3>
+<div class="quick-icon">★</div>
 
-                <div class="stat"
-                     id="profileCoins">
-                    1000
-                </div>
+<div class="quick-title">MY CREW</div>
 
-            </div>
+<div class="quick-desc">
+Manage dancers
+</div>
 
-
-            <div class="card">
-
-                <h3>
-                    RANK POINTS
-                </h3>
-
-                <div class="stat"
-                     id="profileRankPoints">
-                    0
-                </div>
-
-            </div>
+</button>
 
 
-            <div class="card">
+<button class="quick-card"
+onclick="showScreen('training')">
 
-                <h3>
-                    SELECTED CREW
-                </h3>
+<div class="quick-icon">◆</div>
 
-                <div class="stat"
-                     id="selectedCrew">
-                    Street Pulse
-                </div>
+<div class="quick-title">TRAINING</div>
 
-            </div>
+<div class="quick-desc">
+Develop dancers
+</div>
 
-        </div>
+</button>
 
 
-        <div class="card"
-             style="margin-top:15px">
+<button class="quick-card"
+onclick="showScreen('events')">
 
-            <h3>
-                DANCER ATTRIBUTES
-            </h3>
+<div class="quick-icon">◈</div>
 
-            <div id="attributes">
-            </div>
+<div class="quick-title">EVENTS</div>
 
-        </div>
+<div class="quick-desc">
+Competitions
+</div>
 
-    </div>
+</button>
+
+
+<button class="quick-card"
+onclick="showScreen('worldTour')">
+
+<div class="quick-icon">◎</div>
+
+<div class="quick-title">WORLD TOUR</div>
+
+<div class="quick-desc">
+Travel & compete
+</div>
+
+</button>
+
+
+<button class="quick-card"
+onclick="showScreen('collection')">
+
+<div class="quick-icon">◇</div>
+
+<div class="quick-title">COLLECTION</div>
+
+<div class="quick-desc">
+Styles & items
+</div>
+
+</button>
+
+</div>
+
+
+<div class="section-heading">
+
+<h2>PERFORMANCE DASHBOARD</h2>
+
+<span>YOUR STATUS</span>
+
+</div>
+
+
+<div class="dashboard-grid">
+
+<div class="dashboard-card">
+
+<h3>RANK PROGRESS</h3>
+
+<div class="dashboard-number"
+id="dashboardRankPercent">
+0%
+</div>
+
+<div class="progress">
+
+<div class="progress-fill"
+id="dashboardRankBar"
+style="width:0%">
+</div>
+
+</div>
+
+</div>
+
+
+<div class="dashboard-card">
+
+<h3>CREW POWER</h3>
+
+<div class="dashboard-number"
+id="dashboardCrewRating">
+72
+</div>
+
+<div class="info-small">
+Current lineup rating
+</div>
+
+</div>
+
+
+<div class="dashboard-card">
+
+<h3>BEST ATTRIBUTES</h3>
+
+<div class="stat-list"
+id="bestAttributes">
+</div>
+
+</div>
+
+
+<div class="dashboard-card">
+
+<h3>GAME RECORD</h3>
+
+<div class="stat-list">
+
+<div class="stat-line">
+<span>Competitions</span>
+<strong id="competitionCount">0</strong>
+</div>
+
+<div class="stat-line">
+<span>Wins</span>
+<strong id="winCount">0</strong>
+</div>
+
+<div class="stat-line">
+<span>Losses</span>
+<strong id="lossCount">0</strong>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</main>
 
 </section>
 
 
-<!-- ======================================================
-     CREW
-====================================================== -->
+<!-- =====================================================
+MY CREW
+===================================================== -->
 
 <section id="crew" class="screen">
 
-    <div class="panel">
+<div class="panel">
 
-        <div class="panel-header">
+<div class="panel-header">
 
-            <div class="panel-title">
-                MY CREW
-            </div>
+<div class="panel-title">
+MY CREW
+</div>
 
-            <button class="btn back-btn"
-                    onclick="showScreen('home')">
-                BACK
-            </button>
+<button class="btn back-btn"
+onclick="showScreen('home')">
+BACK
+</button>
 
-        </div>
+</div>
 
-        <div class="card-grid"
-             id="crewList">
-        </div>
 
-    </div>
+<div class="crew-summary">
+
+<div class="crew-main-card">
+
+<div class="event-kicker">
+ACTIVE CREW
+</div>
+
+<h2 id="crewPageName">
+Street Pulse
+</h2>
+
+<p class="muted"
+id="crewPageStyle">
+Urban
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>CREW RATING</h3>
+
+<div class="crew-rating"
+id="crewOverallRating">
+72
+</div>
+
+<div class="info-small">
+Lineup overall
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h3>STARTING LINEUP</h3>
+
+<div class="crew-rating">
+<span id="lineupCount">4</span>
+<span style="font-size:16px;color:#777">
+/ 4
+</span>
+</div>
+
+<div class="info-small">
+Selected dancers
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card"
+style="margin-bottom:14px">
+
+<h3>
+STARTING LINEUP
+</h3>
+
+<p class="muted">
+Choose up to four dancers for your active performance.
+The selected dancers determine your current crew rating.
+</p>
+
+<div class="action-row">
+
+<button class="btn primary"
+onclick="autoBuildLineup()">
+AUTO BUILD
+</button>
+
+<button class="btn"
+onclick="clearLineup()">
+CLEAR LINEUP
+</button>
+
+</div>
+
+</div>
+
+
+<div class="section-heading">
+
+<h2>AVAILABLE DANCERS</h2>
+
+<span>
+TAP SELECT TO ADD / REMOVE
+</span>
+
+</div>
+
+
+<div class="dancer-grid"
+id="dancerList">
+</div>
+
+</div>
 
 </section>
 
 
-<!-- ======================================================
-     TRAINING
-====================================================== -->
+<!-- =====================================================
+PLAYER
+===================================================== -->
+
+<section id="profile" class="screen">
+
+<div class="panel">
+
+<div class="panel-header">
+
+<div class="panel-title">
+PLAYER
+</div>
+
+<button class="btn back-btn"
+onclick="showScreen('home')">
+BACK
+</button>
+
+</div>
+
+
+<div class="card-grid">
+
+<div class="card">
+
+<h3>PLAYER</h3>
+
+<div class="stat"
+id="playerName">
+World Dancer
+</div>
+
+<div class="rank"
+id="playerRank">
+ROOKIE
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h3>COINS</h3>
+
+<div class="stat"
+id="profileCoins">
+1000
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h3>RANK POINTS</h3>
+
+<div class="stat"
+id="profileRankPoints">
+0
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h3>ACTIVE CREW</h3>
+
+<div class="stat"
+id="selectedCrew">
+Street Pulse
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card"
+style="margin-top:14px">
+
+<h3>PLAYER ATTRIBUTES</h3>
+
+<div id="attributes">
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+TRAINING
+===================================================== -->
 
 <section id="training" class="screen">
 
-    <div class="panel">
+<div class="panel">
 
-        <div class="panel-header">
+<div class="panel-header">
 
-            <div class="panel-title">
-                TRAINING CENTRE
-            </div>
+<div class="panel-title">
+TRAINING CENTRE
+</div>
 
-            <button class="btn back-btn"
-                    onclick="showScreen('home')">
-                BACK
-            </button>
+<button class="btn back-btn"
+onclick="showScreen('home')">
+BACK
+</button>
 
-        </div>
-
-
-        <div class="card">
-
-            <h2>
-                Develop Your Dancer
-            </h2>
-
-            <p class="muted">
-                Training currently improves your attributes.
-                The full preparation system will be connected
-                to scheduled competitions in a later build.
-            </p>
-
-        </div>
+</div>
 
 
-        <div class="card-grid"
-             style="margin-top:15px"
-             id="trainingCards">
-        </div>
+<div class="card">
 
-    </div>
+<h2>
+Develop Your Dancers
+</h2>
+
+<p class="muted">
+Select a dancer below and train their individual
+attributes. Training costs coins and is saved locally.
+</p>
+
+<div class="field"
+style="max-width:400px">
+
+<label>
+DANCER
+</label>
+
+<select id="trainingDancer"
+onchange="renderTraining()">
+</select>
+
+</div>
+
+</div>
+
+
+<div class="section-heading">
+
+<h2>ATTRIBUTES</h2>
+
+<span>
+5 COINS PER TRAINING
+</span>
+
+</div>
+
+
+<div class="card-grid"
+id="trainingCards">
+</div>
+
+</div>
 
 </section>
 
 
-<!-- ======================================================
-     PERFORMANCE
-====================================================== -->
+<!-- =====================================================
+PERFORMANCE
+===================================================== -->
 
 <section id="performance" class="screen">
 
-    <div class="panel">
+<div class="panel">
 
-        <div class="panel-header">
+<div class="panel-header">
 
-            <div class="panel-title">
-                PERFORMANCE
-            </div>
+<div class="panel-title">
+PERFORMANCE
+</div>
 
-            <button class="btn back-btn"
-                    onclick="showScreen('home')">
-                BACK
-            </button>
+<button class="btn back-btn"
+onclick="showScreen('home')">
+BACK
+</button>
 
-        </div>
-
-
-        <div class="card">
-
-            <h2>
-                Performance Setup
-            </h2>
-
-            <p class="muted">
-                This is the preparation screen for the future
-                dance-performance engine.
-            </p>
-
-            <div class="form-grid">
-
-                <div class="field">
-
-                    <label>
-                        DANCE STYLE
-                    </label>
-
-                    <select id="styleSelect">
-
-                        <option>Hip-Hop</option>
-                        <option>Popping</option>
-                        <option>Breaking</option>
-                        <option>Contemporary</option>
-                        <option>Afro Fusion</option>
-                        <option>Dancehall</option>
-                        <option>House</option>
-                        <option>Jazz</option>
-
-                    </select>
-
-                </div>
+</div>
 
 
-                <div class="field">
+<div class="card">
 
-                    <label>
-                        CONTROL SET
-                    </label>
+<h2>
+Performance Setup
+</h2>
 
-                    <select id="controlSelect">
-
-                        <option>Touch Controls</option>
-                        <option>A / S / D / F</option>
-                        <option>Swipe Controls</option>
-
-                    </select>
-
-                </div>
-
-            </div>
+<p class="muted">
+Choose your dance style and control system.
+Once the competition preparation period expires,
+the performance setup will become locked.
+</p>
 
 
-            <div class="action-row">
+<div class="form-grid">
 
-                <button class="btn primary"
-                        onclick="lockPerformanceSetup()">
-                    CONFIRM SETUP
-                </button>
+<div class="field">
 
-                <button class="btn"
-                        onclick="showToast('Performance engine arrives in Build 07')">
-                    ENTER BATTLE
-                </button>
+<label>
+DANCE STYLE
+</label>
 
-            </div>
+<select id="styleSelect">
+
+<option>Hip-Hop</option>
+<option>Popping</option>
+<option>Breaking</option>
+<option>Contemporary</option>
+<option>Afro Fusion</option>
+<option>Dancehall</option>
+<option>House</option>
+<option>Jazz</option>
+
+</select>
+
+</div>
 
 
-            <div id="setupStatus"
-                 class="muted"
-                 style="margin-top:15px">
-                Setup is currently editable.
-            </div>
+<div class="field">
 
-        </div>
+<label>
+CONTROL SYSTEM
+</label>
 
-    </div>
+<select id="controlSelect">
+
+<option>Touch Controls</option>
+<option>Swipe Controls</option>
+<option>Tap Rhythm</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+<div class="action-row">
+
+<button class="btn primary"
+onclick="lockPerformanceSetup()">
+CONFIRM SETUP
+</button>
+
+</div>
+
+
+<div id="setupStatus"
+class="muted"
+style="margin-top:14px">
+Setup is editable.
+</div>
+
+</div>
+
+</div>
 
 </section>
 
 
-<!-- ======================================================
-     EVENTS
-====================================================== -->
+<!-- =====================================================
+EVENTS
+===================================================== -->
 
 <section id="events" class="screen">
 
-    <div class="panel">
+<div class="panel">
 
-        <div class="panel-header">
+<div class="panel-header">
 
-            <div class="panel-title">
-                EVENTS
-            </div>
+<div class="panel-title">
+EVENTS
+</div>
 
-            <button class="btn back-btn"
-                    onclick="showScreen('home')">
-                BACK
-            </button>
+<button class="btn back-btn"
+onclick="showScreen('home')">
+BACK
+</button>
 
-        </div>
+</div>
 
 
-        <div class="card">
+<div class="card">
 
-            <div class="event-kicker">
-                UPCOMING
-            </div>
+<div class="event-kicker">
+UPCOMING COMPETITION
+</div>
 
-            <h2>
-                Nairobi Dance Battle
-            </h2>
+<h2>
+Nairobi Dance Battle
+</h2>
 
-            <p class="muted">
-                Preparation is currently available.
-                Train your crew before the competition begins.
-            </p>
+<p class="muted">
+Train your dancers, select your starting lineup and
+prepare your performance before the countdown reaches zero.
+</p>
 
-            <div class="countdown"
-                 style="margin-top:15px">
 
-                <div class="time-unit">
-                    <span class="time-number"
-                          id="eventDays">
-                        02
-                    </span>
-                    <span class="time-label">
-                        DAYS
-                    </span>
-                </div>
+<div class="countdown">
 
-                <div class="time-unit">
-                    <span class="time-number"
-                          id="eventHours">
-                        14
-                    </span>
-                    <span class="time-label">
-                        HOURS
-                    </span>
-                </div>
+<div class="time-unit">
+<span class="time-number"
+id="eventDays">
+02
+</span>
+<span class="time-label">
+DAYS
+</span>
+</div>
 
-                <div class="time-unit">
-                    <span class="time-number"
-                          id="eventMinutes">
-                        00
-                    </span>
-                    <span class="time-label">
-                        MIN
-                    </span>
-                </div>
+<div class="time-unit">
+<span class="time-number"
+id="eventHours">
+14
+</span>
+<span class="time-label">
+HOURS
+</span>
+</div>
 
-                <div class="time-unit">
-                    <span class="time-number"
-                          id="eventSeconds">
-                        00
-                    </span>
-                    <span class="time-label">
-                        SEC
-                    </span>
-                </div>
+<div class="time-unit">
+<span class="time-number"
+id="eventMinutes">
+00
+</span>
+<span class="time-label">
+MIN
+</span>
+</div>
 
-            </div>
+<div class="time-unit">
+<span class="time-number"
+id="eventSeconds">
+00
+</span>
+<span class="time-label">
+SEC
+</span>
+</div>
 
-            <div class="action-row">
+</div>
 
-                <button class="btn primary"
-                        onclick="showScreen('training')">
-                    PREPARE CREW
-                </button>
 
-                <button class="btn"
-                        onclick="showScreen('performance')">
-                    PERFORMANCE SETUP
-                </button>
+<div class="action-row">
 
-            </div>
+<button class="btn primary"
+onclick="showScreen('crew')">
+MANAGE CREW
+</button>
 
-        </div>
+<button class="btn"
+onclick="showScreen('training')">
+TRAIN DANCERS
+</button>
 
-    </div>
+<button class="btn"
+onclick="showScreen('performance')">
+PERFORMANCE SETUP
+</button>
+
+</div>
+
+</div>
+
+</div>
 
 </section>
 
 
-<!-- ======================================================
-     WORLD TOUR
-====================================================== -->
+<!-- =====================================================
+WORLD TOUR
+===================================================== -->
 
 <section id="worldTour" class="screen">
 
-    <div class="panel">
+<div class="panel">
 
-        <div class="panel-header">
+<div class="panel-header">
 
-            <div class="panel-title">
-                WORLD TOUR
-            </div>
+<div class="panel-title">
+WORLD TOUR
+</div>
 
-            <button class="btn back-btn"
-                    onclick="showScreen('home')">
-                BACK
-            </button>
+<button class="btn back-btn"
+onclick="showScreen('home')">
+BACK
+</button>
 
-        </div>
+</div>
 
 
-        <div class="card-grid">
+<div class="card-grid">
 
-            <div class="card">
-                <h3>LOCAL</h3>
-                <div class="stat">OPEN</div>
-                <p class="muted">
-                    Start your journey.
-                </p>
-            </div>
+<div class="card">
+<h3>LOCAL</h3>
+<div class="stat">OPEN</div>
+<p class="muted">
+Start your journey.
+</p>
+</div>
 
-            <div class="card">
-                <h3>CITY</h3>
-                <div class="stat">LOCKED</div>
-                <p class="muted">
-                    Progress required.
-                </p>
-            </div>
+<div class="card">
+<h3>CITY</h3>
+<div class="stat">LOCKED</div>
+<p class="muted">
+Progress required.
+</p>
+</div>
 
-            <div class="card">
-                <h3>REGIONAL</h3>
-                <div class="stat">LOCKED</div>
-                <p class="muted">
-                    Progress required.
-                </p>
-            </div>
+<div class="card">
+<h3>REGIONAL</h3>
+<div class="stat">LOCKED</div>
+<p class="muted">
+Progress required.
+</p>
+</div>
 
-            <div class="card">
-                <h3>NATIONAL</h3>
-                <div class="stat">LOCKED</div>
-                <p class="muted">
-                    Progress required.
-                </p>
-            </div>
+<div class="card">
+<h3>NATIONAL</h3>
+<div class="stat">LOCKED</div>
+<p class="muted">
+Progress required.
+</p>
+</div>
 
-            <div class="card">
-                <h3>CONTINENTAL</h3>
-                <div class="stat">LOCKED</div>
-                <p class="muted">
-                    Progress required.
-                </p>
-            </div>
+<div class="card">
+<h3>CONTINENTAL</h3>
+<div class="stat">LOCKED</div>
+<p class="muted">
+Progress required.
+</p>
+</div>
 
-            <div class="card">
-                <h3>WORLD</h3>
-                <div class="stat">LOCKED</div>
-                <p class="muted">
-                    Progress required.
-                </p>
-            </div>
+<div class="card">
+<h3>WORLD</h3>
+<div class="stat">LOCKED</div>
+<p class="muted">
+Progress required.
+</p>
+</div>
 
-        </div>
+</div>
 
-    </div>
+</div>
 
 </section>
 
 
-<!-- ======================================================
-     COLLECTION
-====================================================== -->
+<!-- =====================================================
+COLLECTION
+===================================================== -->
 
 <section id="collection" class="screen">
 
-    <div class="panel">
+<div class="panel">
 
-        <div class="panel-header">
+<div class="panel-header">
 
-            <div class="panel-title">
-                COLLECTION
-            </div>
+<div class="panel-title">
+COLLECTION
+</div>
 
-            <button class="btn back-btn"
-                    onclick="showScreen('home')">
-                BACK
-            </button>
+<button class="btn back-btn"
+onclick="showScreen('home')">
+BACK
+</button>
 
-        </div>
-
-
-        <div class="card-grid">
-
-            <div class="card">
-                <h3>DANCE STYLES</h3>
-                <div class="stat"
-                     id="styleCount">
-                    8
-                </div>
-            </div>
-
-            <div class="card">
-                <h3>DANCERS</h3>
-                <div class="stat"
-                     id="dancerCount">
-                    1
-                </div>
-            </div>
-
-            <div class="card">
-                <h3>COSTUMES</h3>
-                <div class="stat">
-                    0
-                </div>
-            </div>
-
-            <div class="card">
-                <h3>MUSIC</h3>
-                <div class="stat">
-                    0
-                </div>
-            </div>
-
-        </div>
+</div>
 
 
-        <div class="card"
-             style="margin-top:15px">
+<div class="card-grid">
 
-            <h3>
-                UNLOCKED DANCE STYLES
-            </h3>
+<div class="card">
+<h3>DANCE STYLES</h3>
+<div class="stat"
+id="styleCount">
+8
+</div>
+</div>
 
-            <div id="styleList"
-                 class="action-row">
-            </div>
+<div class="card">
+<h3>DANCERS</h3>
+<div class="stat"
+id="dancerCount">
+5
+</div>
+</div>
 
-        </div>
+<div class="card">
+<h3>COSTUMES</h3>
+<div class="stat">
+0
+</div>
+</div>
 
-    </div>
+<div class="card">
+<h3>MUSIC</h3>
+<div class="stat">
+0
+</div>
+</div>
+
+</div>
+
+
+<div class="card"
+style="margin-top:14px">
+
+<h3>
+UNLOCKED DANCE STYLES
+</h3>
+
+<div id="styleList"
+class="action-row">
+</div>
+
+</div>
+
+</div>
 
 </section>
 
 
-<!-- ======================================================
-     SETTINGS
-====================================================== -->
+<!-- =====================================================
+SETTINGS
+===================================================== -->
 
 <section id="settings" class="screen">
 
-    <div class="panel">
+<div class="panel">
 
-        <div class="panel-header">
+<div class="panel-header">
 
-            <div class="panel-title">
-                SETTINGS
-            </div>
+<div class="panel-title">
+SETTINGS
+</div>
 
-            <button class="btn back-btn"
-                    onclick="showScreen('home')">
-                BACK
-            </button>
+<button class="btn back-btn"
+onclick="showScreen('home')">
+BACK
+</button>
 
-        </div>
-
-
-        <div class="card">
-
-            <h2>
-                LOCAL SAVE
-            </h2>
-
-            <p class="muted">
-                Your World of Dance progress is saved locally
-                on this device.
-            </p>
-
-            <div class="action-row">
-
-                <button class="btn primary"
-                        onclick="saveGame();showToast('Game saved successfully')">
-                    SAVE NOW
-                </button>
-
-                <button class="btn"
-                        onclick="loadGameAndRefresh()">
-                    LOAD SAVE
-                </button>
-
-                <button class="btn danger"
-                        onclick="resetGame()">
-                    RESET GAME
-                </button>
-
-            </div>
-
-        </div>
+</div>
 
 
-        <div class="card"
-             style="margin-top:15px">
+<div class="card">
 
-            <h3>
-                BUILD STATUS
-            </h3>
+<h2>
+LOCAL SAVE
+</h2>
 
-            <p class="muted">
-                Build 02 — Main Game Hub
-            </p>
+<p class="muted">
+Your progress is stored locally on this device.
+No /api/staff or backend is required for this build.
+</p>
 
-            <p class="muted">
-                Local save: ACTIVE
-            </p>
+<div class="action-row">
 
-            <p class="muted">
-                Competition countdown: ACTIVE
-            </p>
+<button class="btn primary"
+onclick="saveGame();showToast('Game saved successfully')">
+SAVE NOW
+</button>
 
-            <p class="muted">
-                Performance engine: NEXT BUILDS
-            </p>
+<button class="btn"
+onclick="loadGameAndRefresh()">
+LOAD SAVE
+</button>
 
-        </div>
+<button class="btn danger"
+onclick="resetGame()">
+RESET GAME
+</button>
 
-    </div>
+</div>
+
+</div>
+
+
+<div class="card"
+style="margin-top:14px">
+
+<h3>
+BUILD STATUS
+</h3>
+
+<p class="muted">
+Build 03 — My Crew
+</p>
+
+<p class="muted">
+Local save: ACTIVE
+</p>
+
+<p class="muted">
+Individual dancers: ACTIVE
+</p>
+
+<p class="muted">
+Starting lineup: ACTIVE
+</p>
+
+<p class="muted">
+Crew rating calculation: ACTIVE
+</p>
+
+</div>
+
+</div>
 
 </section>
-
 
 </div>
 
 
 <div id="toast"
-     class="toast">
+class="toast">
 </div>
 
 
 <script>
 
 /* =========================================================
-   WORLD OF DANCE
-   ULTIMATE COMPETITION
-   BUILD 02
-   ========================================================= */
+WORLD OF DANCE
+BUILD 03
+MY CREW SYSTEM
+========================================================= */
 
 
 /* =========================================================
-   SAVE
+SAVE KEYS
 ========================================================= */
 
 const SAVE_KEY =
-    "world_of_dance_ultimate_save_v2";
+"world_of_dance_ultimate_save_v3";
+
+const PREVIOUS_SAVE_KEYS = [
+"world_of_dance_ultimate_save_v2",
+"world_of_dance_ultimate_save_v1"
+];
 
 
-const OLD_SAVE_KEY =
-    "world_of_dance_ultimate_save_v1";
+/* =========================================================
+DANCER DATABASE
+========================================================= */
 
+const DEFAULT_DANCERS = [
+
+{
+id:"d1",
+name:"Alex",
+role:"Captain",
+style:"Hip-Hop",
+rating:82,
+selected:true,
+attributes:{
+technique:82,
+rhythm:85,
+power:78,
+control:80,
+speed:81,
+stamina:84,
+creativity:87,
+expression:86
+}
+},
+
+{
+id:"d2",
+name:"Nova",
+role:"Freestyle",
+style:"Popping",
+rating:84,
+selected:true,
+attributes:{
+technique:86,
+rhythm:91,
+power:72,
+control:88,
+speed:89,
+stamina:78,
+creativity:94,
+expression:90
+}
+},
+
+{
+id:"d3",
+name:"Kairo",
+role:"Power Dancer",
+style:"Breaking",
+rating:86,
+selected:true,
+attributes:{
+technique:84,
+rhythm:82,
+power:94,
+control:88,
+speed:90,
+stamina:92,
+creativity:81,
+expression:79
+}
+},
+
+{
+id:"d4",
+name:"Zuri",
+role:"Expression",
+style:"Afro Fusion",
+rating:83,
+selected:true,
+attributes:{
+technique:79,
+rhythm:94,
+power:76,
+control:82,
+speed:79,
+stamina:85,
+creativity:91,
+expression:96
+}
+},
+
+{
+id:"d5",
+name:"Milo",
+role:"Technical",
+style:"Contemporary",
+rating:78,
+selected:false,
+attributes:{
+technique:92,
+rhythm:79,
+power:66,
+control:94,
+speed:75,
+stamina:80,
+creativity:88,
+expression:82
+}
+}
+
+];
+
+
+/* =========================================================
+DEFAULT GAME
+========================================================= */
 
 const DEFAULT_GAME = {
 
-    player:{
+player:{
+name:"World Dancer",
+rankPoints:0,
+coins:1000
+},
 
-        name:"World Dancer",
+crews:[
+{
+name:"Street Pulse",
+style:"Urban",
+rating:82
+},
+{
+name:"Afro Flame",
+style:"African",
+rating:84
+},
+{
+name:"Motion Theory",
+style:"Fusion",
+rating:79
+},
+{
+name:"Gravity Breakers",
+style:"Breaking",
+rating:86
+},
+{
+name:"Flow Collective",
+style:"Contemporary",
+rating:78
+}
+],
 
-        rank:"ROOKIE",
+selectedCrew:"Street Pulse",
 
-        rankPoints:0,
+dancers:DEFAULT_DANCERS,
 
-        coins:1000,
+unlockedStyles:[
+"Hip-Hop",
+"Popping",
+"Breaking",
+"Contemporary",
+"Afro Fusion",
+"Dancehall",
+"House",
+"Jazz"
+],
 
-        selectedCrew:"Street Pulse",
+record:{
+competitions:0,
+wins:0,
+losses:0
+},
 
-        attributes:{
+event:{
+name:"Nairobi Dance Battle",
+status:"PREPARATION",
+preparationEndsAt:
+Date.now()+
+(2*24*60*60*1000)+
+(14*60*60*1000),
+setupLocked:false
+},
 
-            technique:50,
-            rhythm:50,
-            power:50,
-            control:50,
-            speed:50,
-            stamina:50,
-            creativity:50,
-            expression:50
-
-        }
-
-    },
-
-
-    crews:[
-
-        {
-            name:"Street Pulse",
-            style:"Urban",
-            rating:72
-        },
-
-        {
-            name:"Afro Flame",
-            style:"African",
-            rating:74
-        },
-
-        {
-            name:"Motion Theory",
-            style:"Fusion",
-            rating:70
-        },
-
-        {
-            name:"Gravity Breakers",
-            style:"Breaking",
-            rating:76
-        },
-
-        {
-            name:"Flow Collective",
-            style:"Contemporary",
-            rating:69
-        }
-
-    ],
-
-
-    unlockedStyles:[
-
-        "Hip-Hop",
-        "Popping",
-        "Breaking",
-        "Contemporary",
-        "Afro Fusion",
-        "Dancehall",
-        "House",
-        "Jazz"
-
-    ],
-
-
-    record:{
-
-        competitions:0,
-        wins:0,
-        losses:0
-
-    },
-
-
-    event:{
-
-        name:"Nairobi Dance Battle",
-
-        status:"PREPARATION",
-
-        preparationEndsAt:
-            Date.now() +
-            (
-                2 * 24 * 60 * 60 * 1000
-            ) +
-            (
-                14 * 60 * 60 * 1000
-            ),
-
-        setupLocked:false
-
-    },
-
-
-    performance:{
-
-        style:"Hip-Hop",
-
-        controls:"Touch Controls",
-
-        locked:false
-
-    },
-
-
-    settings:{
-
-        orientation:"landscape",
-
-        saveType:"local"
-
-    }
+performance:{
+style:"Hip-Hop",
+controls:"Touch Controls",
+locked:false
+}
 
 };
 
 
-let game =
-    loadGame();
-
-
 /* =========================================================
-   CLONE
+DEEP CLONE
 ========================================================= */
 
-function cloneDefault(){
+function clone(obj){
 
-    return JSON.parse(
-        JSON.stringify(DEFAULT_GAME)
-    );
+return JSON.parse(
+JSON.stringify(obj)
+);
 
 }
 
 
 /* =========================================================
-   LOAD
+LOAD GAME
 ========================================================= */
 
 function loadGame(){
 
-    try{
+let raw =
+localStorage.getItem(
+SAVE_KEY
+);
 
-        let raw =
-            localStorage.getItem(
-                SAVE_KEY
-            );
+if(!raw){
 
+for(
+const key of PREVIOUS_SAVE_KEYS
+){
 
-        /*
-         * Preserve the successful Build 01 save
-         * if the player already had one.
-         */
+raw =
+localStorage.getItem(key);
 
-        if(!raw){
+if(raw) break;
 
-            raw =
-                localStorage.getItem(
-                    OLD_SAVE_KEY
-                );
+}
 
-        }
+}
 
+if(!raw){
 
-        if(!raw){
+return clone(
+DEFAULT_GAME
+);
 
-            return cloneDefault();
+}
 
-        }
+try{
 
+const saved =
+JSON.parse(raw);
 
-        const saved =
-            JSON.parse(raw);
+return mergeGame(
+clone(DEFAULT_GAME),
+saved
+);
 
+}catch(error){
 
-        return mergeGame(
-            cloneDefault(),
-            saved
-        );
+console.error(error);
 
-    }
+return clone(
+DEFAULT_GAME
+);
 
-    catch(error){
-
-        console.error(
-            "Unable to load save:",
-            error
-        );
-
-        return cloneDefault();
-
-    }
+}
 
 }
 
 
 /* =========================================================
-   MERGE SAVE
+MERGE
 ========================================================= */
 
 function mergeGame(base,saved){
 
-    return{
+return{
 
-        ...base,
+...base,
+...saved,
 
-        ...saved,
+player:{
+...base.player,
+...(saved.player||{})
+},
 
-        player:{
+crews:
+Array.isArray(saved.crews)
+?saved.crews
+:base.crews,
 
-            ...base.player,
+dancers:
+Array.isArray(saved.dancers)
+?saved.dancers
+:clone(DEFAULT_DANCERS),
 
-            ...(saved.player || {}),
+unlockedStyles:
+Array.isArray(saved.unlockedStyles)
+?saved.unlockedStyles
+:base.unlockedStyles,
 
-            attributes:{
+record:{
+...base.record,
+...(saved.record||{})
+},
 
-                ...base.player.attributes,
+event:{
+...base.event,
+...(saved.event||{})
+},
 
-                ...(saved.player?.attributes || {})
+performance:{
+...base.performance,
+...(saved.performance||{})
+}
 
-            }
-
-        },
-
-
-        crews:
-            Array.isArray(saved.crews)
-                ? saved.crews
-                : base.crews,
-
-
-        unlockedStyles:
-            Array.isArray(saved.unlockedStyles)
-                ? saved.unlockedStyles
-                : base.unlockedStyles,
-
-
-        record:{
-
-            ...base.record,
-
-            ...(saved.record || {})
-
-        },
-
-
-        event:{
-
-            ...base.event,
-
-            ...(saved.event || {})
-
-        },
-
-
-        performance:{
-
-            ...base.performance,
-
-            ...(saved.performance || {})
-
-        },
-
-
-        settings:{
-
-            ...base.settings,
-
-            ...(saved.settings || {})
-
-        }
-
-    };
+};
 
 }
 
 
 /* =========================================================
-   SAVE GAME
+GAME
+========================================================= */
+
+let game =
+loadGame();
+
+
+/* =========================================================
+SAVE
 ========================================================= */
 
 function saveGame(){
 
-    try{
+try{
 
-        localStorage.setItem(
+localStorage.setItem(
+SAVE_KEY,
+JSON.stringify(game)
+);
 
-            SAVE_KEY,
+return true;
 
-            JSON.stringify(game)
+}catch(error){
 
-        );
+console.error(error);
 
-        return true;
+showToast(
+"Save failed"
+);
 
-    }
+return false;
 
-    catch(error){
-
-        console.error(
-            "Save failed:",
-            error
-        );
-
-        showToast(
-            "Unable to save game"
-        );
-
-        return false;
-
-    }
+}
 
 }
 
 
 /* =========================================================
-   LOAD BUTTON
-========================================================= */
-
-function loadGameAndRefresh(){
-
-    game =
-        loadGame();
-
-    updateUI();
-
-    showToast(
-        "Save loaded"
-    );
-
-}
-
-
-/* =========================================================
-   RESET
+RESET
 ========================================================= */
 
 function resetGame(){
 
-    const confirmed =
-        confirm(
-            "Reset all World of Dance progress on this device?"
-        );
+if(
+!confirm(
+"Reset all World of Dance progress?"
+)
+){
 
+return;
 
-    if(!confirmed){
+}
 
-        return;
+game =
+clone(DEFAULT_GAME);
 
-    }
+saveGame();
 
+updateUI();
 
-    game =
-        cloneDefault();
+showScreen("home");
 
-
-    saveGame();
-
-    updateUI();
-
-    showScreen("home");
-
-    showToast(
-        "Game reset"
-    );
+showToast(
+"Game reset"
+);
 
 }
 
 
 /* =========================================================
-   NAVIGATION
+NAVIGATION
 ========================================================= */
 
 function showScreen(id){
 
-    document
-        .querySelectorAll(".screen")
-        .forEach(
-            screen =>
-                screen.classList.remove(
-                    "active"
-                )
-        );
+document
+.querySelectorAll(".screen")
+.forEach(
+s=>s.classList.remove("active")
+);
 
+const screen =
+document.getElementById(id);
 
-    const screen =
-        document.getElementById(id);
+if(screen){
 
+screen.classList.add("active");
 
-    if(screen){
+}
 
-        screen.classList.add(
-            "active"
-        );
-
-    }
-
-
-    updateUI();
+updateUI();
 
 }
 
 
 /* =========================================================
-   RANKS
+RANKS
 ========================================================= */
 
-const RANKS = [
+const RANKS=[
 
-    {
-        name:"ROOKIE",
-        points:0
-    },
-
-    {
-        name:"RISING STAR",
-        points:100
-    },
-
-    {
-        name:"PRO",
-        points:250
-    },
-
-    {
-        name:"ELITE",
-        points:500
-    },
-
-    {
-        name:"MASTER",
-        points:900
-    },
-
-    {
-        name:"LEGEND",
-        points:1500
-    },
-
-    {
-        name:"WORLD ICON",
-        points:2500
-    }
+{name:"ROOKIE",points:0},
+{name:"RISING STAR",points:100},
+{name:"PRO",points:250},
+{name:"ELITE",points:500},
+{name:"MASTER",points:900},
+{name:"LEGEND",points:1500},
+{name:"WORLD ICON",points:2500}
 
 ];
 
 
 function getRank(){
 
-    let current =
-        RANKS[0];
+let current=RANKS[0];
 
+let next=null;
 
-    let next =
-        null;
+for(
+const rank of RANKS
+){
 
+if(
+game.player.rankPoints>=
+rank.points
+){
 
-    for(
-        let i=0;
-        i<RANKS.length;
-        i++
-    ){
-
-        if(
-            game.player.rankPoints >=
-            RANKS[i].points
-        ){
-
-            current =
-                RANKS[i];
-
-            next =
-                RANKS[i+1] || null;
-
-        }
-
-    }
-
-
-    return{
-        current,
-        next
-    };
+current=rank;
 
 }
 
+}
 
-/* =========================================================
-   RANK PROGRESS
-========================================================= */
+const index =
+RANKS.indexOf(current);
+
+next =
+RANKS[index+1]||null;
+
+return{
+current,
+next
+};
+
+}
+
 
 function getRankProgress(){
 
-    const rank =
-        getRank();
+const rank =
+getRank();
 
+if(!rank.next){
 
-    if(!rank.next){
+return 100;
 
-        return 100;
+}
 
-    }
+const range =
+rank.next.points-
+rank.current.points;
 
+const current =
+game.player.rankPoints-
+rank.current.points;
 
-    const range =
-        rank.next.points -
-        rank.current.points;
-
-
-    const progress =
-        game.player.rankPoints -
-        rank.current.points;
-
-
-    return Math.max(
-        0,
-        Math.min(
-            100,
-            Math.round(
-                progress /
-                range *
-                100
-            )
-        )
-    );
+return Math.max(
+0,
+Math.min(
+100,
+Math.round(
+current/range*100
+)
+)
+);
 
 }
 
 
 /* =========================================================
-   CREW
+DANCER FUNCTIONS
 ========================================================= */
 
-function getSelectedCrew(){
+function getDancer(id){
 
-    return game.crews.find(
-        crew =>
-            crew.name ===
-            game.player.selectedCrew
-    ) || game.crews[0];
+return game.dancers.find(
+d=>d.id===id
+);
 
 }
 
 
-function selectCrew(name){
+function getSelectedDancers(){
 
-    game.player.selectedCrew =
-        name;
-
-    saveGame();
-
-    updateUI();
-
-    showToast(
-        name + " selected"
-    );
+return game.dancers.filter(
+d=>d.selected
+);
 
 }
 
 
-/* =========================================================
-   TRAINING
-========================================================= */
+function toggleDancer(id){
 
-function train(attribute){
+const dancer =
+getDancer(id);
 
-    const value =
-        game.player.attributes[
-            attribute
-        ];
+if(!dancer){
 
+return;
 
-    if(
-        typeof value !==
-        "number"
-    ){
+}
 
-        return;
+if(dancer.selected){
 
-    }
+dancer.selected=false;
 
+saveGame();
 
-    if(game.player.coins < 5){
+updateUI();
 
-        showToast(
-            "Not enough coins"
-        );
+showToast(
+dancer.name+
+" removed from lineup"
+);
 
-        return;
+return;
 
-    }
+}
 
+const selected =
+getSelectedDancers();
 
-    if(value >= 100){
+if(selected.length>=4){
 
-        showToast(
-            "Attribute already maxed"
-        );
+showToast(
+"Maximum 4 dancers in lineup"
+);
 
-        return;
+return;
 
-    }
+}
 
+dancer.selected=true;
 
-    game.player.attributes[
-        attribute
-    ] =
-        Math.min(
-            100,
-            value + 2
-        );
+saveGame();
 
+updateUI();
 
-    game.player.coins -= 5;
-
-
-    game.player.rankPoints += 5;
-
-
-    saveGame();
-
-    updateUI();
-
-    showToast(
-        attribute.toUpperCase()
-        + " +2"
-    );
+showToast(
+dancer.name+
+" added to lineup"
+);
 
 }
 
 
 /* =========================================================
-   TRAINING UI
+AUTO BUILD
 ========================================================= */
 
-const TRAINING_INFO = {
+function autoBuildLineup(){
 
-    technique:{
-        title:"TECHNIQUE",
-        description:"Precision, execution and movement quality."
-    },
+game.dancers.forEach(
+d=>d.selected=false
+);
 
-    rhythm:{
-        title:"RHYTHM",
-        description:"Musical timing and beat awareness."
-    },
+game.dancers
+.sort(
+(a,b)=>b.rating-a.rating
+)
+.slice(0,4)
+.forEach(
+d=>d.selected=true
+);
 
-    power:{
-        title:"POWER",
-        description:"Energy, impact and explosive movement."
-    },
+saveGame();
 
-    control:{
-        title:"CONTROL",
-        description:"Body control, balance and stability."
-    },
+updateUI();
 
-    speed:{
-        title:"SPEED",
-        description:"Reaction and movement speed."
-    },
+showToast(
+"Best lineup selected"
+);
 
-    stamina:{
-        title:"STAMINA",
-        description:"Ability to maintain performance intensity."
-    },
+}
 
-    creativity:{
-        title:"CREATIVITY",
-        description:"Originality and freestyle ability."
-    },
 
-    expression:{
-        title:"EXPRESSION",
-        description:"Emotion, character and stage presence."
-    }
+/* =========================================================
+CLEAR
+========================================================= */
+
+function clearLineup(){
+
+game.dancers.forEach(
+d=>d.selected=false
+);
+
+saveGame();
+
+updateUI();
+
+showToast(
+"Lineup cleared"
+);
+
+}
+
+
+/* =========================================================
+CREW RATING
+========================================================= */
+
+function calculateCrewRating(){
+
+const selected =
+getSelectedDancers();
+
+if(!selected.length){
+
+return 0;
+
+}
+
+const total =
+selected.reduce(
+(sum,d)=>sum+d.rating,
+0
+);
+
+return Math.round(
+total/selected.length
+);
+
+}
+
+
+/* =========================================================
+DANCER CARD
+========================================================= */
+
+function renderDancers(){
+
+const container =
+document.getElementById(
+"dancerList"
+);
+
+if(!container){
+
+return;
+
+}
+
+container.innerHTML="";
+
+
+game.dancers.forEach(
+dancer=>{
+
+const card =
+document.createElement(
+"div"
+);
+
+card.className =
+"dancer-card"+
+(dancer.selected
+?" selected"
+:"");
+
+
+const initial =
+dancer.name
+.charAt(0)
+.toUpperCase();
+
+
+card.innerHTML=`
+
+<div class="dancer-avatar">
+${initial}
+</div>
+
+<div class="rating-big">
+${dancer.rating}
+</div>
+
+<div class="dancer-name">
+${escapeHTML(dancer.name)}
+</div>
+
+<div class="dancer-role">
+${escapeHTML(dancer.role)}
+</div>
+
+<div class="dancer-style">
+${escapeHTML(dancer.style)}
+</div>
+
+<div class="mini-stats">
+
+<div class="mini-stat">
+TECHNIQUE
+<strong>
+${dancer.attributes.technique}
+</strong>
+</div>
+
+<div class="mini-stat">
+RHYTHM
+<strong>
+${dancer.attributes.rhythm}
+</strong>
+</div>
+
+<div class="mini-stat">
+POWER
+<strong>
+${dancer.attributes.power}
+</strong>
+</div>
+
+<div class="mini-stat">
+CREATIVITY
+<strong>
+${dancer.attributes.creativity}
+</strong>
+</div>
+
+</div>
+
+<button
+class="btn ${dancer.selected?"primary":""} wide"
+style="margin-top:12px"
+onclick="toggleDancer('${dancer.id}')">
+
+${dancer.selected
+?"✓ IN LINEUP"
+:"ADD TO LINEUP"}
+
+</button>
+
+`;
+
+container.appendChild(
+card
+);
+
+}
+
+);
+
+}
+
+
+/* =========================================================
+TRAINING DANCER SELECT
+========================================================= */
+
+function renderTrainingDancerSelect(){
+
+const select =
+document.getElementById(
+"trainingDancer"
+);
+
+if(!select){
+
+return;
+
+}
+
+const current =
+select.value;
+
+select.innerHTML="";
+
+
+game.dancers.forEach(
+dancer=>{
+
+const option =
+document.createElement(
+"option"
+);
+
+option.value =
+dancer.id;
+
+option.textContent =
+dancer.name+
+" • "+
+dancer.rating+
+" • "+
+dancer.style;
+
+select.appendChild(
+option
+);
+
+}
+
+);
+
+
+if(
+game.dancers.some(
+d=>d.id===current
+)
+){
+
+select.value=current;
+
+}
+
+}
+
+
+/* =========================================================
+TRAINING DATA
+========================================================= */
+
+const TRAINING_INFO={
+
+technique:[
+"TECHNIQUE",
+"Precision and movement execution."
+],
+
+rhythm:[
+"RHYTHM",
+"Musical timing and beat awareness."
+],
+
+power:[
+"POWER",
+"Energy and explosive movement."
+],
+
+control:[
+"CONTROL",
+"Balance and body control."
+],
+
+speed:[
+"SPEED",
+"Reaction and movement speed."
+],
+
+stamina:[
+"STAMINA",
+"Performance endurance."
+],
+
+creativity:[
+"CREATIVITY",
+"Originality and freestyle ability."
+],
+
+expression:[
+"EXPRESSION",
+"Emotion and stage presence."
+]
 
 };
 
 
+/* =========================================================
+TRAIN ATTRIBUTE
+========================================================= */
+
+function trainDancer(attribute){
+
+const select =
+document.getElementById(
+"trainingDancer"
+);
+
+if(!select){
+
+return;
+
+}
+
+const dancer =
+getDancer(
+select.value
+);
+
+if(!dancer){
+
+return;
+
+}
+
+if(game.player.coins<5){
+
+showToast(
+"Not enough coins"
+);
+
+return;
+
+}
+
+const current =
+dancer.attributes[
+attribute
+];
+
+if(current>=100){
+
+showToast(
+"Attribute already maxed"
+);
+
+return;
+
+}
+
+dancer.attributes[
+attribute
+]=Math.min(
+100,
+current+2
+);
+
+dancer.rating =
+calculateDancerRating(
+dancer
+);
+
+game.player.coins-=5;
+
+game.player.rankPoints+=5;
+
+saveGame();
+
+updateUI();
+
+showToast(
+dancer.name+
+" • "+
+attribute+
+" +2"
+);
+
+}
+
+
+/* =========================================================
+CALCULATE DANCER RATING
+========================================================= */
+
+function calculateDancerRating(dancer){
+
+const values =
+Object.values(
+dancer.attributes
+);
+
+const total =
+values.reduce(
+(a,b)=>a+b,
+0
+);
+
+return Math.round(
+total/values.length
+);
+
+}
+
+
+/* =========================================================
+TRAINING UI
+========================================================= */
+
 function renderTraining(){
 
-    const container =
-        document.getElementById(
-            "trainingCards"
-        );
+renderTrainingDancerSelect();
+
+const container =
+document.getElementById(
+"trainingCards"
+);
+
+if(!container){
+
+return;
+
+}
+
+const select =
+document.getElementById(
+"trainingDancer"
+);
+
+if(!select){
+
+return;
+
+}
+
+const dancer =
+getDancer(
+select.value
+);
+
+if(!dancer){
+
+container.innerHTML="";
+
+return;
+
+}
+
+container.innerHTML="";
 
 
-    if(!container){
+Object.entries(
+TRAINING_INFO
+)
+.forEach(
+([key,data])=>{
 
-        return;
+const value =
+dancer.attributes[key];
 
-    }
+const card =
+document.createElement(
+"div"
+);
 
+card.className="card";
 
-    container.innerHTML = "";
+card.innerHTML=`
 
+<h3>
+${data[0]}
+</h3>
 
-    Object.entries(
-        TRAINING_INFO
-    ).forEach(
-        ([key,info]) => {
+<p class="muted">
+${data[1]}
+</p>
 
-            const value =
-                game.player.attributes[
-                    key
-                ];
+<div class="dashboard-number">
+${value}
+</div>
 
+<div class="progress">
+<div class="progress-fill"
+style="width:${value}%">
+</div>
+</div>
 
-            const card =
-                document.createElement(
-                    "div"
-                );
+<button
+class="btn primary wide"
+style="margin-top:14px"
+onclick="trainDancer('${key}')">
 
+TRAIN • 5 COINS
 
-            card.className =
-                "card";
+</button>
 
+`;
 
-            card.innerHTML = `
+container.appendChild(
+card
+);
 
-                <h3>
-                    ${info.title}
-                </h3>
+}
 
-                <p class="muted">
-                    ${info.description}
-                </p>
-
-                <div class="dashboard-number">
-                    ${value}
-                </div>
-
-                <div class="progress">
-                    <div class="progress-fill"
-                         style="width:${value}%">
-                    </div>
-                </div>
-
-                <button class="btn primary wide"
-                        style="margin-top:15px"
-                        onclick="train('${key}')">
-
-                    TRAIN • 5 COINS
-
-                </button>
-
-            `;
-
-
-            container.appendChild(
-                card
-            );
-
-        }
-    );
+);
 
 }
 
 
 /* =========================================================
-   CREW UI
+PLAYER ATTRIBUTES
 ========================================================= */
 
-function renderCrews(){
+function renderPlayerAttributes(){
 
-    const container =
-        document.getElementById(
-            "crewList"
-        );
+const container =
+document.getElementById(
+"attributes"
+);
 
+if(!container){
 
-    if(!container){
+return;
 
-        return;
+}
 
-    }
+const selected =
+getSelectedDancers();
 
+if(!selected.length){
 
-    container.innerHTML = "";
+container.innerHTML=`
+<p class="muted">
+No dancers are currently selected.
+</p>
+`;
 
+return;
 
-    game.crews.forEach(
-        crew => {
+}
 
-            const selected =
-                crew.name ===
-                game.player.selectedCrew;
+const keys =
+Object.keys(
+selected[0].attributes
+);
 
-
-            const card =
-                document.createElement(
-                    "div"
-                );
-
-
-            card.className =
-                "card";
-
-
-            card.innerHTML = `
-
-                <h3>
-                    ${escapeHTML(crew.name)}
-                </h3>
-
-                <p class="muted">
-                    ${escapeHTML(crew.style)}
-                </p>
-
-                <div class="dashboard-number">
-                    ${crew.rating}
-                </div>
-
-                <div class="info-small">
-                    CREW RATING
-                </div>
-
-                <button class="btn ${selected ? "primary" : ""} wide"
-                        style="margin-top:15px"
-                        onclick="selectCrew('${escapeAttribute(crew.name)}')">
-
-                    ${selected ? "SELECTED" : "SELECT CREW"}
-
-                </button>
-
-            `;
+container.innerHTML="";
 
 
-            container.appendChild(
-                card
-            );
+keys.forEach(
+key=>{
 
-        }
-    );
+const average =
+Math.round(
+selected.reduce(
+(sum,d)=>
+sum+d.attributes[key],
+0
+)/
+selected.length
+);
+
+
+const row =
+document.createElement(
+"div"
+);
+
+row.className="attribute";
+
+row.innerHTML=`
+
+<div class="attribute-row">
+
+<span>
+${formatAttribute(key)}
+</span>
+
+<strong>
+${average}
+</strong>
+
+</div>
+
+<div class="bar">
+
+<div class="fill"
+style="width:${average}%">
+</div>
+
+</div>
+
+`;
+
+container.appendChild(
+row
+);
+
+}
+
+);
 
 }
 
 
 /* =========================================================
-   COLLECTION
-========================================================= */
-
-function renderCollection(){
-
-    const list =
-        document.getElementById(
-            "styleList"
-        );
-
-
-    if(!list){
-
-        return;
-
-    }
-
-
-    list.innerHTML = "";
-
-
-    game.unlockedStyles.forEach(
-        style => {
-
-            const tag =
-                document.createElement(
-                    "div"
-                );
-
-
-            tag.style.padding =
-                "9px 13px";
-
-
-            tag.style.border =
-                "1px solid #353b50";
-
-
-            tag.style.borderRadius =
-                "20px";
-
-
-            tag.style.background =
-                "#151927";
-
-
-            tag.style.fontSize =
-                "11px";
-
-
-            tag.style.fontWeight =
-                "800";
-
-
-            tag.textContent =
-                style;
-
-
-            list.appendChild(
-                tag
-            );
-
-        }
-    );
-
-
-    const count =
-        document.getElementById(
-            "styleCount"
-        );
-
-
-    if(count){
-
-        count.textContent =
-            game.unlockedStyles.length;
-
-    }
-
-}
-
-
-/* =========================================================
-   ATTRIBUTES
-========================================================= */
-
-function renderAttributes(){
-
-    const container =
-        document.getElementById(
-            "attributes"
-        );
-
-
-    if(!container){
-
-        return;
-
-    }
-
-
-    container.innerHTML = "";
-
-
-    Object.entries(
-        game.player.attributes
-    ).forEach(
-        ([name,value]) => {
-
-            const row =
-                document.createElement(
-                    "div"
-                );
-
-
-            row.className =
-                "attribute";
-
-
-            row.innerHTML = `
-
-                <div class="attribute-row">
-
-                    <span>
-                        ${formatAttribute(name)}
-                    </span>
-
-                    <strong>
-                        ${value}
-                    </strong>
-
-                </div>
-
-                <div class="bar">
-
-                    <div class="fill"
-                         style="width:${value}%">
-                    </div>
-
-                </div>
-
-            `;
-
-
-            container.appendChild(
-                row
-            );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   BEST ATTRIBUTES
+BEST ATTRIBUTES
 ========================================================= */
 
 function renderBestAttributes(){
 
-    const container =
-        document.getElementById(
-            "bestAttributes"
-        );
+const container =
+document.getElementById(
+"bestAttributes"
+);
+
+if(!container){
+
+return;
+
+}
+
+const selected =
+getSelectedDancers();
+
+if(!selected.length){
+
+container.innerHTML=`
+<div class="stat-line">
+<span>Lineup</span>
+<strong>0</strong>
+</div>
+`;
+
+return;
+
+}
+
+const values={};
+
+Object.keys(
+selected[0].attributes
+)
+.forEach(
+key=>{
+
+values[key]=Math.round(
+selected.reduce(
+(sum,d)=>
+sum+d.attributes[key],
+0
+)/
+selected.length
+);
+
+}
+);
+
+const top =
+Object.entries(values)
+.sort(
+(a,b)=>b[1]-a[1]
+)
+.slice(0,3);
 
 
-    if(!container){
+container.innerHTML="";
 
-        return;
+top.forEach(
+([key,value])=>{
 
-    }
+const row =
+document.createElement(
+"div"
+);
 
+row.className="stat-line";
 
-    const entries =
-        Object.entries(
-            game.player.attributes
-        )
-        .sort(
-            (a,b) => b[1]-a[1]
-        )
-        .slice(0,3);
+row.innerHTML=`
 
+<span>
+${formatAttribute(key)}
+</span>
 
-    container.innerHTML = "";
+<strong>
+${value}
+</strong>
 
+`;
 
-    entries.forEach(
-        ([name,value]) => {
+container.appendChild(
+row
+);
 
-            const row =
-                document.createElement(
-                    "div"
-                );
-
-
-            row.className =
-                "stat-line";
-
-
-            row.innerHTML = `
-
-                <span>
-                    ${formatAttribute(name)}
-                </span>
-
-                <strong>
-                    ${value}
-                </strong>
-
-            `;
-
-
-            container.appendChild(
-                row
-            );
-
-        }
-    );
+}
+);
 
 }
 
 
 /* =========================================================
-   PERFORMANCE SETUP
-========================================================= */
-
-function lockPerformanceSetup(){
-
-    const style =
-        document.getElementById(
-            "styleSelect"
-        ).value;
-
-
-    const controls =
-        document.getElementById(
-            "controlSelect"
-        ).value;
-
-
-    game.performance.style =
-        style;
-
-
-    game.performance.controls =
-        controls;
-
-
-    game.performance.locked =
-        true;
-
-
-    saveGame();
-
-    document.getElementById(
-        "setupStatus"
-    ).textContent =
-        "SETUP LOCKED • "
-        + style
-        + " • "
-        + controls;
-
-
-    showToast(
-        "Performance setup locked"
-    );
-
-}
-
-
-/* =========================================================
-   EVENT COUNTDOWN
+COUNTDOWN
 ========================================================= */
 
 function updateCountdown(){
 
-    const end =
-        Number(
-            game.event.preparationEndsAt
-        );
+let remaining =
+Number(
+game.event.preparationEndsAt
+)-
+Date.now();
 
+if(remaining<0){
 
-    let remaining =
-        end -
-        Date.now();
+remaining=0;
 
+game.event.status="READY";
 
-    if(remaining < 0){
-
-        remaining = 0;
-
-    }
-
-
-    const totalSeconds =
-        Math.floor(
-            remaining / 1000
-        );
-
-
-    const days =
-        Math.floor(
-            totalSeconds /
-            86400
-        );
-
-
-    const hours =
-        Math.floor(
-            (totalSeconds %
-            86400) /
-            3600
-        );
-
-
-    const minutes =
-        Math.floor(
-            (totalSeconds %
-            3600) /
-            60
-        );
-
-
-    const seconds =
-        totalSeconds %
-        60;
-
-
-    setText(
-        "days",
-        pad(days)
-    );
-
-
-    setText(
-        "hours",
-        pad(hours)
-    );
-
-
-    setText(
-        "minutes",
-        pad(minutes)
-    );
-
-
-    setText(
-        "seconds",
-        pad(seconds)
-    );
-
-
-    setText(
-        "eventDays",
-        pad(days)
-    );
-
-
-    setText(
-        "eventHours",
-        pad(hours)
-    );
-
-
-    setText(
-        "eventMinutes",
-        pad(minutes)
-    );
-
-
-    setText(
-        "eventSeconds",
-        pad(seconds)
-    );
-
-
-    if(remaining <= 0){
-
-        game.event.status =
-            "READY";
-
-        game.event.setupLocked =
-            true;
-
-
-        setText(
-            "eventTimerStatus",
-            "Preparation complete • competition ready"
-        );
-
-    }
-    else{
-
-        setText(
-            "eventTimerStatus",
-            "Preparation phase"
-        );
-
-    }
+game.event.setupLocked=true;
 
 }
 
+const total =
+Math.floor(
+remaining/1000
+);
 
-function pad(number){
+const days =
+Math.floor(
+total/86400
+);
 
-    return String(
-        number
-    ).padStart(
-        2,
-        "0"
-    );
+const hours =
+Math.floor(
+(total%86400)/3600
+);
+
+const minutes =
+Math.floor(
+(total%3600)/60
+);
+
+const seconds =
+total%60;
+
+
+setText("days",pad(days));
+setText("hours",pad(hours));
+setText("minutes",pad(minutes));
+setText("seconds",pad(seconds));
+
+setText("eventDays",pad(days));
+setText("eventHours",pad(hours));
+setText("eventMinutes",pad(minutes));
+setText("eventSeconds",pad(seconds));
+
+
+setText(
+"eventTimerStatus",
+remaining<=0
+?"Preparation complete • READY"
+:"Preparation phase"
+);
 
 }
 
 
 /* =========================================================
-   UI
+PERFORMANCE SETUP
+========================================================= */
+
+function lockPerformanceSetup(){
+
+if(game.event.setupLocked){
+
+showToast(
+"Competition setup is locked"
+);
+
+return;
+
+}
+
+const style =
+document.getElementById(
+"styleSelect"
+).value;
+
+const controls =
+document.getElementById(
+"controlSelect"
+).value;
+
+game.performance.style =
+style;
+
+game.performance.controls =
+controls;
+
+game.performance.locked=true;
+
+saveGame();
+
+setText(
+"setupStatus",
+"SETUP LOCKED • "+
+style+
+" • "+
+controls
+);
+
+showToast(
+"Performance setup saved"
+);
+
+}
+
+
+/* =========================================================
+RANK
+========================================================= */
+
+function updateRank(){
+
+const rank =
+getRank();
+
+const progress =
+getRankProgress();
+
+setText(
+"topRank",
+rank.current.name
+);
+
+setText(
+"playerRank",
+rank.current.name
+);
+
+setText(
+"homeRankText",
+rank.current.name+
+" • "+
+game.player.rankPoints+
+" rank points"
+);
+
+setText(
+"dashboardRankPercent",
+progress+"%"
+);
+
+const bar =
+document.getElementById(
+"dashboardRankBar"
+);
+
+if(bar){
+
+bar.style.width=
+progress+"%";
+
+}
+
+if(rank.next){
+
+setText(
+"homeNextRank",
+rank.next.name
+);
+
+setText(
+"homeRankNeeded",
+rank.next.points+
+" points"
+);
+
+}else{
+
+setText(
+"homeNextRank",
+"MAX RANK"
+);
+
+setText(
+"homeRankNeeded",
+"WORLD ICON"
+);
+
+}
+
+}
+
+
+/* =========================================================
+CREW UI
+========================================================= */
+
+function updateCrewUI(){
+
+const selected =
+getSelectedDancers();
+
+const rating =
+calculateCrewRating();
+
+const crew =
+game.crews.find(
+c=>c.name===game.selectedCrew
+)||
+game.crews[0];
+
+crew.rating=rating;
+
+setText(
+"homeCrewName",
+crew.name
+);
+
+setText(
+"homeCrewRating",
+rating
+);
+
+setText(
+"crewPageName",
+crew.name
+);
+
+setText(
+"crewPageStyle",
+crew.style
+);
+
+setText(
+"crewOverallRating",
+rating
+);
+
+setText(
+"lineupCount",
+selected.length
+);
+
+setText(
+"selectedCrew",
+crew.name
+);
+
+setText(
+"dashboardCrewRating",
+rating
+);
+
+renderDancers();
+
+}
+
+
+/* =========================================================
+COLLECTION
+========================================================= */
+
+function renderCollection(){
+
+setText(
+"styleCount",
+game.unlockedStyles.length
+);
+
+setText(
+"dancerCount",
+game.dancers.length
+);
+
+const list =
+document.getElementById(
+"styleList"
+);
+
+if(!list){
+
+return;
+
+}
+
+list.innerHTML="";
+
+game.unlockedStyles.forEach(
+style=>{
+
+const tag =
+document.createElement(
+"div"
+);
+
+tag.style.padding="9px 13px";
+tag.style.border="1px solid #353b50";
+tag.style.borderRadius="20px";
+tag.style.background="#151927";
+tag.style.fontSize="11px";
+tag.style.fontWeight="800";
+
+tag.textContent=style;
+
+list.appendChild(tag);
+
+}
+);
+
+}
+
+
+/* =========================================================
+UPDATE UI
 ========================================================= */
 
 function updateUI(){
 
-    const rank =
-        getRank();
+const rank =
+getRank();
+
+const crew =
+game.crews.find(
+c=>c.name===game.selectedCrew
+)||
+game.crews[0];
+
+const rating =
+calculateCrewRating();
+
+crew.rating=rating;
 
 
-    const crew =
-        getSelectedCrew();
+setText(
+"coinDisplay",
+game.player.coins
+);
 
+setText(
+"homePlayerName",
+game.player.name
+);
 
-    const progress =
-        getRankProgress();
+setText(
+"playerName",
+game.player.name
+);
 
+setText(
+"profileCoins",
+game.player.coins
+);
 
-    setText(
-        "coinDisplay",
-        game.player.coins
-    );
+setText(
+"profileRankPoints",
+game.player.rankPoints
+);
 
+setText(
+"competitionCount",
+game.record.competitions
+);
 
-    setText(
-        "topRank",
-        rank.current.name
-    );
+setText(
+"winCount",
+game.record.wins
+);
 
+setText(
+"lossCount",
+game.record.losses
+);
 
-    setText(
-        "homePlayerName",
-        game.player.name
-    );
+updateRank();
 
+updateCrewUI();
 
-    setText(
-        "homeRankText",
-        rank.current.name
-        + " • "
-        + game.player.rankPoints
-        + " rank points"
-    );
+renderPlayerAttributes();
 
+renderBestAttributes();
 
-    setText(
-        "homeCrewName",
-        crew.name
-    );
+renderTraining();
 
+renderCollection();
 
-    setText(
-        "homeCrewRating",
-        crew.rating
-    );
-
-
-    setText(
-        "dashboardCrewRating",
-        crew.rating
-    );
-
-
-    setText(
-        "playerName",
-        game.player.name
-    );
-
-
-    setText(
-        "playerRank",
-        rank.current.name
-    );
-
-
-    setText(
-        "profileCoins",
-        game.player.coins
-    );
-
-
-    setText(
-        "profileRankPoints",
-        game.player.rankPoints
-    );
-
-
-    setText(
-        "selectedCrew",
-        crew.name
-    );
-
-
-    setText(
-        "dashboardRankPercent",
-        progress + "%"
-    );
-
-
-    const rankBar =
-        document.getElementById(
-            "dashboardRankBar"
-        );
-
-
-    if(rankBar){
-
-        rankBar.style.width =
-            progress + "%";
-
-    }
-
-
-    if(rank.next){
-
-        setText(
-            "homeNextRank",
-            rank.next.name
-        );
-
-
-        setText(
-            "homeRankNeeded",
-            rank.next.points
-            + " points"
-        );
-
-    }
-    else{
-
-        setText(
-            "homeNextRank",
-            "MAX RANK"
-        );
-
-
-        setText(
-            "homeRankNeeded",
-            "World Icon"
-        );
-
-    }
-
-
-    setText(
-        "competitionCount",
-        game.record.competitions
-    );
-
-
-    setText(
-        "winCount",
-        game.record.wins
-    );
-
-
-    setText(
-        "lossCount",
-        game.record.losses
-    );
-
-
-    renderAttributes();
-
-    renderCrews();
-
-    renderTraining();
-
-    renderBestAttributes();
-
-    renderCollection();
-
-    updateCountdown();
+updateCountdown();
 
 }
 
 
 /* =========================================================
-   HELPERS
+HELPERS
 ========================================================= */
 
 function setText(id,value){
 
-    const element =
-        document.getElementById(id);
+const el =
+document.getElementById(id);
+
+if(el){
+
+el.textContent=value;
+
+}
+
+}
 
 
-    if(element){
+function pad(value){
 
-        element.textContent =
-            value;
-
-    }
+return String(value)
+.padStart(2,"0");
 
 }
 
 
 function formatAttribute(name){
 
-    return name
-        .charAt(0)
-        .toUpperCase()
-        + name.slice(1);
+return name
+.charAt(0)
+.toUpperCase()+
+name.slice(1);
 
 }
 
 
 function escapeHTML(value){
 
-    return String(value)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-
-}
-
-
-function escapeAttribute(value){
-
-    return String(value)
-        .replaceAll("'","\\'");
+return String(value)
+.replaceAll("&","&amp;")
+.replaceAll("<","&lt;")
+.replaceAll(">","&gt;")
+.replaceAll('"',"&quot;")
+.replaceAll("'","&#039;");
 
 }
 
 
 /* =========================================================
-   TOAST
+TOAST
 ========================================================= */
 
 let toastTimer;
 
-
 function showToast(message){
 
-    const toast =
-        document.getElementById(
-            "toast"
-        );
+const toast =
+document.getElementById(
+"toast"
+);
 
+toast.textContent=message;
 
-    toast.textContent =
-        message;
+toast.classList.add("show");
 
+clearTimeout(
+toastTimer
+);
 
-    toast.classList.add(
-        "show"
-    );
-
-
-    clearTimeout(
-        toastTimer
-    );
-
-
-    toastTimer =
-        setTimeout(
-            () => {
-
-                toast.classList.remove(
-                    "show"
-                );
-
-            },
-            1900
-        );
+toastTimer=
+setTimeout(
+()=>{
+toast.classList.remove("show");
+},
+1900
+);
 
 }
 
 
 /* =========================================================
-   COUNTDOWN LOOP
+SAVE / LOAD
+========================================================= */
+
+function loadGameAndRefresh(){
+
+game=loadGame();
+
+updateUI();
+
+showToast(
+"Save loaded"
+);
+
+}
+
+
+/* =========================================================
+COUNTDOWN
 ========================================================= */
 
 setInterval(
-    updateCountdown,
-    1000
+updateCountdown,
+1000
 );
 
 
 /* =========================================================
-   INITIALIZE
+INITIALIZE
 ========================================================= */
 
 updateUI();
