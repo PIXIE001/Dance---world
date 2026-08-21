@@ -3,2043 +3,1664 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>WORLD OF DANCE — Dance Battle</title>
+<title>WORLD OF DANCE</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+*{box-sizing:border-box}
 html,body{
+    margin:0;
     width:100%;
     height:100%;
     overflow:hidden;
-    background:#02040a;
-    color:#fff;
-    font-family:Arial,Helvetica,sans-serif;
+    background:#02050a;
+    color:white;
+    font-family:Arial,Helvetica,sans-serif
 }
-button{font:inherit}
+button{font-family:inherit;cursor:pointer}
+
 :root{
     --blue:#168cff;
-    --cyan:#39e7ff;
+    --cyan:#35e7ff;
     --gold:#ffd447;
-    --red:#ff4c68;
-    --green:#42ef9b;
-    --panel:rgba(5,12,24,.91);
-    --line:rgba(255,255,255,.13);
+    --red:#ff4968;
+    --panel:#071322;
 }
 
-/* =========================================================
-   GAME
-========================================================= */
-
-#game{
+#app{
     width:100vw;
     height:100vh;
     position:relative;
     overflow:hidden;
     background:
-        radial-gradient(circle at 50% 25%,rgba(0,150,255,.18),transparent 28%),
-        linear-gradient(135deg,#020711,#071426 52%,#02050a);
+    radial-gradient(circle at 50% 20%,#087cff22,transparent 38%),
+    linear-gradient(135deg,#02050a,#08172b)
 }
 
-/* =========================================================
-   TOP HUD
-========================================================= */
-
-#hud{
+/* TOP BAR */
+#top{
     position:absolute;
     z-index:50;
-    top:0;
     left:0;
     right:0;
-    height:68px;
+    top:0;
+    height:64px;
     display:flex;
     align-items:center;
-    padding:0 22px;
-    background:linear-gradient(#000c,transparent);
+    padding:0 24px;
+    background:linear-gradient(#000c,transparent)
 }
 
-.brand{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    min-width:235px;
-}
-.brandMark{
-    width:42px;
-    height:42px;
-    border:2px solid #fff;
-    transform:skew(-12deg);
-    display:grid;
-    place-items:center;
+.logo{
     font-weight:1000;
+    font-size:17px;
+    letter-spacing:2px
 }
-.brandText{
-    font-size:14px;
-    font-weight:1000;
-    letter-spacing:2px;
-}
-.brandSub{
+
+.logo small{
     display:block;
+    font-size:7px;
     color:var(--cyan);
-    font-size:8px;
-    letter-spacing:3px;
-    margin-top:3px;
+    letter-spacing:4px;
+    margin-top:4px
 }
 
-.hudRight{
+.profile{
     margin-left:auto;
     display:flex;
     align-items:center;
     gap:18px;
+    color:#8e9caf;
+    font-size:9px
 }
-.hudItem{
-    font-size:11px;
-    color:#aebbd0;
-}
-.hudItem b{
-    color:#fff;
-    margin-left:5px;
-}
-.hudAvatar{
-    width:38px;
-    height:38px;
+
+.profile b{color:white}
+
+.avatar{
+    width:36px;
+    height:36px;
     border-radius:50%;
     border:2px solid var(--cyan);
     background:
-        radial-gradient(circle at 50% 30%,#bd835e 0 17%,transparent 18%),
-        radial-gradient(circle at 50% 52%,#17233b 0 29%,transparent 30%),
-        linear-gradient(135deg,#15325b,#050913);
+    radial-gradient(circle at 50% 35%,#b87956 0 17%,transparent 18%),
+    linear-gradient(145deg,#163963,#03070e)
 }
 
-/* =========================================================
-   SCREENS
-========================================================= */
-
+/* SCREENS */
 .screen{
     position:absolute;
-    inset:68px 0 78px;
-    opacity:0;
-    pointer-events:none;
-    transform:translateX(35px);
-    transition:.35s ease;
-}
-.screen.active{
-    opacity:1;
-    pointer-events:auto;
-    transform:none;
+    inset:64px 0 72px;
+    display:none
 }
 
-.screenHead{
-    position:absolute;
-    top:28px;
-    left:5%;
-    right:5%;
-}
-.screenHead h1{
-    font-size:38px;
-    font-weight:1000;
-    text-transform:uppercase;
-}
-.screenHead p{
-    margin-top:5px;
-    color:#8391a6;
-    font-size:10px;
-    letter-spacing:2px;
-}
+.screen.on{display:block}
 
-.screenBody{
-    position:absolute;
-    top:105px;
-    left:5%;
-    right:5%;
-    bottom:25px;
-    overflow:auto;
-}
-
-/* =========================================================
-   HOME
-========================================================= */
-
-#home{
+/* HOME */
+.home{
+    height:100%;
     display:grid;
-    grid-template-columns:47% 53%;
+    grid-template-columns:48% 52%
 }
 
-.homeCopy{
-    padding:9vh 0 0 7vw;
-    z-index:5;
+.homeText{
+    padding:13vh 0 0 7vw;
+    z-index:5
 }
 
 .kicker{
     color:var(--cyan);
-    font-size:11px;
-    letter-spacing:4px;
+    font-size:10px;
     font-weight:bold;
+    letter-spacing:4px
 }
-.homeTitle{
-    margin-top:18px;
-    font-size:clamp(55px,7vw,100px);
-    line-height:.84;
-    letter-spacing:-5px;
+
+.title{
+    font-size:clamp(52px,7vw,100px);
+    line-height:.82;
     font-weight:1000;
+    letter-spacing:-5px;
+    margin-top:18px
 }
-.homeTitle span{
+
+.title span{
     display:block;
     color:transparent;
-    -webkit-text-stroke:1px #fff;
+    -webkit-text-stroke:1px white
 }
-.homeCopy p{
-    max-width:450px;
-    color:#aab8cb;
-    font-size:13px;
+
+.homeText p{
+    max-width:430px;
+    color:#9baabd;
+    font-size:12px;
     line-height:1.6;
-    margin-top:25px;
+    margin:25px 0
 }
-.homeActions{
+
+.actions{
     display:flex;
-    gap:10px;
-    margin-top:28px;
+    gap:10px
 }
 
 .primary,
 .secondary{
-    padding:14px 25px;
-    border:0;
-    cursor:pointer;
-    font-size:10px;
+    padding:13px 24px;
+    font-size:9px;
     font-weight:1000;
-    letter-spacing:1px;
-}
-.primary{
-    background:#fff;
-    color:#030812;
-    clip-path:polygon(0 0,94% 0,100% 30%,100% 100%,6% 100%,0 70%);
-}
-.primary:hover{
-    background:var(--cyan);
-}
-.secondary{
-    background:#ffffff12;
-    color:#fff;
-    border:1px solid #ffffff25;
+    letter-spacing:1px
 }
 
-.homeStage{
-    position:relative;
-    overflow:hidden;
+.primary{
+    border:0;
+    color:#02060d;
+    background:white;
+    clip-path:polygon(0 0,94% 0,100% 30%,100% 100%,6% 100%,0 70%)
 }
+
+.secondary{
+    color:white;
+    background:#ffffff08;
+    border:1px solid #ffffff22
+}
+
+/* STAGE */
+.stage{
+    position:relative;
+    overflow:hidden
+}
+
 .spot{
     position:absolute;
-    top:-20%;
-    left:42%;
-    width:260px;
+    left:45%;
+    top:-10%;
+    width:280px;
     height:650px;
-    background:linear-gradient(#ffffff30,#00bfff02);
+    background:linear-gradient(#fff3,#00bfff00);
     clip-path:polygon(42% 0,58% 0,100% 100%,0 100%);
-    transform:rotate(5deg);
-    animation:spotMove 4s infinite alternate;
+    animation:spot 4s infinite alternate
 }
-@keyframes spotMove{
+
+@keyframes spot{
     to{transform:rotate(-5deg)}
 }
-.stageGrid{
+
+.grid{
     position:absolute;
-    bottom:-12%;
     left:-10%;
+    bottom:-20%;
     width:120%;
-    height:48%;
-    transform:perspective(500px) rotateX(60deg);
+    height:55%;
+    transform:perspective(500px) rotateX(58deg);
     background:
-        linear-gradient(#25dfff30 1px,transparent 1px),
-        linear-gradient(90deg,#25dfff30 1px,transparent 1px);
-    background-size:50px 50px;
+    linear-gradient(#20ddff25 1px,transparent 1px),
+    linear-gradient(90deg,#20ddff25 1px,transparent 1px);
+    background-size:55px 55px
 }
 
-.character{
+/* DANCER */
+.dancer{
     position:absolute;
-    width:260px;
-    height:470px;
+    width:220px;
+    height:410px;
     left:50%;
-    bottom:2%;
+    bottom:3%;
     transform:translateX(-50%);
-    filter:drop-shadow(0 30px 25px #000);
-    animation:characterFloat 2.2s infinite ease-in-out;
-}
-@keyframes characterFloat{
-    50%{transform:translateX(-50%) translateY(-9px)}
+    filter:drop-shadow(0 30px 20px #000);
+    animation:float 2s ease-in-out infinite
 }
 
-.charHead{
+@keyframes float{
+    50%{transform:translateX(-50%) translateY(-8px)}
+}
+
+.head{
     position:absolute;
-    left:101px;
-    top:17px;
-    width:60px;
-    height:70px;
+    left:85px;
+    top:8px;
+    width:53px;
+    height:63px;
     border-radius:45%;
-    background:linear-gradient(135deg,#8d563d,#d49a6e);
-    z-index:4;
+    background:#bd825e;
+    z-index:5
 }
-.charHair{
+
+.hair{
     position:absolute;
-    width:68px;
-    height:54px;
     left:-4px;
-    top:-7px;
+    top:-6px;
+    width:61px;
+    height:48px;
     border-radius:50% 50% 30% 30%;
-    background:#090b10;
+    background:#090b10
 }
-.charNeck{
+
+.neck{
     position:absolute;
-    left:122px;
-    top:78px;
-    width:27px;
-    height:32px;
-    background:#a9694c;
+    left:107px;
+    top:65px;
+    width:24px;
+    height:30px;
+    background:#a96d4f
 }
-.charBody{
+
+.body{
     position:absolute;
-    left:81px;
-    top:96px;
-    width:99px;
-    height:185px;
-    background:linear-gradient(140deg,#111b39,#087cff);
-    clip-path:polygon(23% 0,77% 0,100% 88%,50% 100%,0 88%);
+    left:68px;
+    top:83px;
+    width:85px;
+    height:155px;
+    background:linear-gradient(140deg,#14264b,#087cff);
+    clip-path:polygon(22% 0,78% 0,100% 88%,50% 100%,0 88%)
 }
-.charArm{
+
+.arm{
     position:absolute;
-    width:26px;
-    height:145px;
+    width:23px;
+    height:125px;
     border-radius:18px;
-    background:linear-gradient(#a9694c,#d39a6e);
+    background:linear-gradient(#a96d4f,#d0986c);
     transform-origin:top;
-    z-index:2;
+    z-index:3
 }
-.charArm.l{
-    left:64px;
-    top:106px;
-    transform:rotate(30deg);
+
+.arm.l{
+    left:54px;
+    top:91px;
+    transform:rotate(28deg)
 }
-.charArm.r{
-    right:61px;
-    top:106px;
-    transform:rotate(-55deg);
+
+.arm.r{
+    right:50px;
+    top:91px;
+    transform:rotate(-45deg)
 }
-.charLeg{
+
+.leg{
     position:absolute;
-    width:34px;
-    height:205px;
-    top:267px;
+    width:30px;
+    height:177px;
+    top:225px;
     border-radius:18px;
-    background:linear-gradient(#0c1323,#26375d);
-    transform-origin:top;
+    background:linear-gradient(#0c1426,#293a61);
+    transform-origin:top
 }
-.charLeg.l{left:98px;transform:rotate(9deg)}
-.charLeg.r{left:139px;transform:rotate(-14deg)}
-.charShoe{
+
+.leg.l{
+    left:84px;
+    transform:rotate(9deg)
+}
+
+.leg.r{
+    left:119px;
+    transform:rotate(-12deg)
+}
+
+.shoe{
     position:absolute;
-    top:453px;
-    width:64px;
-    height:23px;
+    top:390px;
+    width:58px;
+    height:20px;
     border-radius:20px 30px 8px 8px;
-    background:#fff;
-}
-.charShoe.l{left:70px;transform:rotate(12deg)}
-.charShoe.r{left:143px;transform:rotate(-17deg)}
-
-.homeCard{
-    position:absolute;
-    right:5%;
-    bottom:8%;
-    width:250px;
-    padding:18px;
-    background:#030914d9;
-    border:1px solid var(--line);
-    backdrop-filter:blur(12px);
-}
-.homeCard small{
-    color:#8090a6;
-    font-size:9px;
-    letter-spacing:2px;
-}
-.homeCard h3{
-    margin:8px 0 15px;
-}
-.homeStat{
-    margin:9px 0;
-}
-.homeStatLine{
-    display:flex;
-    justify-content:space-between;
-    font-size:9px;
-    color:#aab6c8;
-    margin-bottom:5px;
-}
-.homeBar{
-    height:5px;
-    background:#1a2638;
-}
-.homeBar i{
-    display:block;
-    height:100%;
-    background:linear-gradient(90deg,var(--blue),var(--cyan));
+    background:white
 }
 
-/* =========================================================
-   NAV
-========================================================= */
+.shoe.l{
+    left:57px;
+    transform:rotate(12deg)
+}
 
+.shoe.r{
+    left:122px;
+    transform:rotate(-14deg)
+}
+
+/* NAV */
 #nav{
     position:absolute;
     z-index:60;
-    bottom:0;
     left:0;
     right:0;
-    height:78px;
+    bottom:0;
+    height:72px;
     display:flex;
     justify-content:center;
-    background:linear-gradient(0deg,#000,#030914e8);
-    border-top:1px solid #ffffff14;
+    background:#000e;
+    border-top:1px solid #ffffff14
 }
-.navScroller{
+
+.nav{
     display:flex;
-    overflow:auto;
+    overflow-x:auto
 }
-.navButton{
-    min-width:112px;
-    border:0;
+
+.nav button{
+    min-width:95px;
     background:transparent;
-    color:#77859a;
-    cursor:pointer;
-    font-size:9px;
-    font-weight:1000;
-    letter-spacing:1px;
+    border:0;
+    color:#718096;
+    font-size:8px;
+    font-weight:1000
 }
-.navButton:before{
+
+.nav button.on{
+    color:white;
+    background:#008cff15
+}
+
+.nav button.on:before{
     content:"";
     display:block;
-    width:28px;
+    width:25px;
     height:3px;
-    background:transparent;
-    margin:0 auto 11px;
-}
-.navButton.active{
-    color:#fff;
-    background:linear-gradient(#008cff1c,transparent);
-}
-.navButton.active:before{
     background:var(--cyan);
-    box-shadow:0 0 15px var(--cyan);
+    margin:0 auto 10px
 }
 
-/* =========================================================
-   CARDS
-========================================================= */
+/* HEADINGS */
+.headline{
+    position:absolute;
+    top:25px;
+    left:5%;
+    right:5%
+}
 
+.headline h1{
+    margin:0;
+    font-size:36px;
+    font-weight:1000
+}
+
+.headline p{
+    color:#8190a5;
+    font-size:9px;
+    letter-spacing:2px
+}
+
+.content{
+    position:absolute;
+    top:105px;
+    left:5%;
+    right:5%;
+    bottom:15px;
+    overflow:auto
+}
+
+/* CARDS */
 .cards{
     display:grid;
     grid-template-columns:repeat(4,1fr);
-    gap:14px;
+    gap:12px
 }
+
 .card{
-    position:relative;
-    min-height:160px;
+    min-height:150px;
     padding:18px;
-    background:linear-gradient(145deg,#13233d,#040914);
-    border:1px solid #ffffff12;
-    cursor:pointer;
-    overflow:hidden;
-    transition:.25s;
+    position:relative;
+    background:linear-gradient(145deg,#142640,#030812);
+    border:1px solid #ffffff13
 }
-.card:hover{
-    transform:translateY(-4px);
-    border-color:#39e7ff88;
-}
-.card:after{
-    content:"";
-    position:absolute;
-    width:130px;
-    height:130px;
-    right:-45px;
-    bottom:-55px;
-    border-radius:50%;
-    background:#008cff16;
-}
-.cardTag{
+
+.tag{
     color:var(--cyan);
     font-size:8px;
-    letter-spacing:2px;
-    font-weight:bold;
+    letter-spacing:2px
 }
+
 .card h2{
-    margin-top:14px;
-    font-size:22px;
+    font-size:21px;
+    margin:12px 0
 }
+
 .card p{
-    margin-top:8px;
-    color:#8190a5;
+    color:#8492a7;
     font-size:10px;
-    line-height:1.5;
+    line-height:1.5
 }
-.cardAction{
+
+.card button{
     position:absolute;
+    bottom:14px;
     left:18px;
-    bottom:15px;
+    color:white;
+    background:none;
+    border:0;
     font-size:8px;
-    font-weight:bold;
+    font-weight:bold
 }
 
-/* =========================================================
-   TRAINING
-========================================================= */
+/* SETUP */
+.setup{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px
+}
 
-.trainingLayout{
+.box{
+    background:#050c17ee;
+    border:1px solid #ffffff14;
+    padding:16px
+}
+
+.box h3{
+    color:var(--cyan);
+    font-size:9px;
+    letter-spacing:2px
+}
+
+.option{
+    margin:7px 0;
+    padding:10px;
+    font-size:10px;
+    background:#ffffff07;
+    border:1px solid transparent
+}
+
+.option.selected{
+    background:#008cff16;
+    border-color:#36e7ff88
+}
+
+.option small{
+    display:block;
+    color:#718096;
+    font-size:8px;
+    margin-top:4px
+}
+
+.wide{
+    width:100%;
+    margin-top:8px
+}
+
+/* TRAINING */
+.training{
+    height:100%;
     display:grid;
     grid-template-columns:1.3fr .7fr;
-    height:100%;
-    gap:15px;
+    gap:12px
 }
-.trainingStage{
+
+.trainStage{
     position:relative;
     overflow:hidden;
-    background:
-        radial-gradient(circle at 50% 30%,#008cff24,transparent 35%),
-        linear-gradient(#081a31,#02060c);
-    border:1px solid var(--line);
+    background:linear-gradient(#071b32,#02050b);
+    border:1px solid #ffffff14
 }
-.trainingGrid{
-    position:absolute;
-    left:-10%;
-    width:120%;
-    bottom:-15%;
-    height:55%;
-    transform:perspective(450px) rotateX(58deg);
-    background:
-        linear-gradient(#2ddfff28 1px,transparent 1px),
-        linear-gradient(90deg,#2ddfff28 1px,transparent 1px);
-    background-size:45px 45px;
-}
-.trainingStage .character{
-    transform:translateX(-50%) scale(.72);
-    bottom:-80px;
-}
-.trainingPanel{
-    background:var(--panel);
-    border:1px solid var(--line);
+
+.panel{
     padding:20px;
+    background:#050c17ee;
+    border:1px solid #ffffff14
 }
-.trainingPanel h2{font-size:25px}
-.trainingPanel p{
-    margin:6px 0 20px;
-    color:#7f8da1;
-    font-size:10px;
-}
+
 .skill{
-    margin:15px 0;
+    margin:17px 0
 }
+
 .skillTop{
     display:flex;
     justify-content:space-between;
     font-size:9px;
-    margin-bottom:5px;
+    margin-bottom:5px
 }
-.skillBar{
+
+.bar{
     height:6px;
-    background:#1a2638;
+    background:#182536
 }
-.skillBar i{
+
+.bar i{
     display:block;
     height:100%;
-    background:linear-gradient(90deg,var(--blue),var(--cyan));
-}
-.full{
-    width:100%;
-    margin-top:12px;
+    background:linear-gradient(90deg,var(--blue),var(--cyan))
 }
 
-/* =========================================================
-   PERFORMANCE SETUP
-========================================================= */
-
-.setupGrid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:13px;
-}
-.setupBox{
-    background:var(--panel);
-    border:1px solid var(--line);
-    padding:17px;
-}
-.setupBox h3{
-    color:var(--cyan);
-    font-size:10px;
-    letter-spacing:2px;
-    margin-bottom:13px;
-}
-.option{
-    padding:11px;
-    background:#ffffff08;
-    border:1px solid transparent;
-    margin-bottom:7px;
-    cursor:pointer;
-    font-size:11px;
-}
-.option:hover,
-.option.selected{
-    border-color:#39e7ff99;
-    background:#008cff16;
-}
-.option small{
-    display:block;
-    color:#728198;
-    font-size:8px;
-    margin-top:4px;
-}
-
-/* =========================================================
-   COMPETITION
-========================================================= */
-
-.competitionGrid{
-    display:grid;
-    grid-template-columns:1fr 1.2fr 1fr;
-    gap:13px;
-    height:100%;
-}
-.competitor{
-    background:linear-gradient(150deg,#14233c,#030810);
-    border:1px solid var(--line);
-    padding:22px;
-    display:flex;
-    flex-direction:column;
-    justify-content:end;
-    position:relative;
-    overflow:hidden;
-}
-.competitor:before{
-    content:"";
-    position:absolute;
-    width:240px;
-    height:240px;
-    border-radius:50%;
-    background:#008cff14;
-    top:12%;
-    left:50%;
-    transform:translateX(-50%);
-}
-.compTag{
-    color:var(--cyan);
-    font-size:8px;
-    letter-spacing:2px;
-    position:relative;
-}
-.compName{
-    font-size:28px;
-    font-weight:1000;
-    margin:7px 0 16px;
-    position:relative;
-}
-.compStats{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:5px;
-    position:relative;
-}
-.compStats div{
-    background:#0008;
-    text-align:center;
-    padding:9px 2px;
-}
-.compStats b{
-    display:block;
-    font-size:17px;
-}
-.compStats span{
-    font-size:7px;
-    color:#77869b;
-}
-.vsBox{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    flex-direction:column;
-    background:
-        radial-gradient(circle,#008cff28,transparent 55%),
-        #030810;
-    border:1px solid var(--line);
-}
-.vs{
-    font-size:70px;
-    font-weight:1000;
-    font-style:italic;
-    text-shadow:0 0 30px #008cff;
-}
-
-/* =========================================================
-   LIVE BATTLE
-========================================================= */
-
+/* BATTLE */
 #battle{
     background:
-        radial-gradient(circle at 50% 22%,#008cff25,transparent 35%),
-        linear-gradient(#061326,#02050a);
+    radial-gradient(circle at 50% 20%,#008cff24,transparent 40%),
+    linear-gradient(#061528,#02050a)
 }
-.battleTop{
+
+.battleHud{
     position:absolute;
-    top:20px;
+    z-index:20;
+    top:15px;
     left:4%;
     right:4%;
     display:grid;
-    grid-template-columns:1fr 1fr 1fr;
-    gap:15px;
-    z-index:5;
+    grid-template-columns:1fr .5fr 1fr;
+    gap:12px
 }
-.battleScore{
-    padding:10px 16px;
-    background:#0009;
-    border:1px solid #ffffff15;
+
+.score{
+    padding:9px;
+    background:#000b;
+    border:1px solid #ffffff15
 }
-.battleScore.center{
-    text-align:center;
+
+.score.right{text-align:right}
+.score.center{text-align:center}
+
+.score small{
+    color:#9ba8bb;
+    font-size:8px
 }
-.battleScore.right{
-    text-align:right;
+
+.score strong{
+    display:block;
+    font-size:24px
 }
-.scoreName{
-    font-size:9px;
-    color:#9daac0;
-    letter-spacing:1px;
-}
-.scoreNumber{
-    font-size:28px;
-    font-weight:1000;
-    margin-top:2px;
-}
-.health{
-    margin-top:5px;
+
+.energy{
     height:5px;
-    background:#1b2636;
+    margin-top:4px;
+    background:#172334
 }
-.health i{
+
+.energy i{
     display:block;
     height:100%;
-    background:linear-gradient(90deg,var(--blue),var(--cyan));
+    background:linear-gradient(90deg,var(--blue),var(--cyan))
 }
-.battleArena{
+
+.arena{
     position:absolute;
     inset:0;
-    overflow:hidden;
+    overflow:hidden
 }
+
 .audience{
     position:absolute;
-    top:5%;
-    left:0;
-    right:0;
-    height:38%;
+    inset:5% 0 45%;
+    opacity:.4;
     background:
-        radial-gradient(circle,#ffffff20 0 2px,transparent 3px);
-    background-size:70px 55px;
-    opacity:.6;
+    radial-gradient(circle,#fff 0 1px,transparent 2px);
+    background-size:45px 40px
 }
-.battleFloor{
-    position:absolute;
-    bottom:-22%;
-    left:-10%;
-    width:120%;
-    height:65%;
-    transform:perspective(650px) rotateX(55deg);
-    background:
-        linear-gradient(#25dfff2a 1px,transparent 1px),
-        linear-gradient(90deg,#25dfff2a 1px,transparent 1px),
-        linear-gradient(#081a31,#02060b);
-    background-size:65px 65px;
+
+.arena .grid{
+    bottom:-20%;
+    height:62%
 }
-.battleSpot{
-    position:absolute;
-    top:10%;
-    left:50%;
-    width:350px;
-    height:600px;
-    transform:translateX(-50%);
-    background:linear-gradient(#fff2,#00c8ff00);
-    clip-path:polygon(42% 0,58% 0,100% 100%,0 100%);
-}
+
 .battleDancer{
-    position:absolute;
-    width:260px;
-    height:470px;
-    bottom:17%;
+    bottom:15%;
+    width:220px;
+    height:410px;
+    transform:translateX(-50%) scale(.72)
 }
-.playerDancer{
-    left:35%;
-    transform:translateX(-50%) scale(.78);
-}
-.opponentDancer{
+
+.pd{left:35%}
+
+.od{
     left:65%;
-    transform:translateX(-50%) scale(.78) scaleX(-1);
-    filter:hue-rotate(150deg) drop-shadow(0 30px 25px #000);
-}
-.playerDancer.hitAnim{
-    animation:hitPlayer .3s ease;
-}
-.opponentDancer.hitAnim{
-    animation:hitOpponent .3s ease;
-}
-@keyframes hitPlayer{
-    50%{transform:translateX(-50%) scale(.78) translateY(-30px) rotate(-7deg)}
-}
-@keyframes hitOpponent{
-    50%{transform:translateX(-50%) scale(.78) scaleX(-1) translateY(-30px) rotate(7deg)}
+    transform:translateX(-50%) scale(.72) scaleX(-1);
+    filter:hue-rotate(150deg) drop-shadow(0 30px 20px #000)
 }
 
-/* judgement */
-.judgement{
-    position:absolute;
-    z-index:20;
-    left:50%;
-    top:45%;
-    transform:translate(-50%,-50%) scale(.6);
-    font-size:46px;
-    font-weight:1000;
-    font-style:italic;
-    opacity:0;
-    pointer-events:none;
-}
-.judgement.show{
-    animation:judgement .55s ease forwards;
-}
-@keyframes judgement{
-    0%{opacity:0;transform:translate(-50%,-50%) scale(.5)}
-    25%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}
-    100%{opacity:0;transform:translate(-50%,-70%) scale(1)}
-}
-.judgement.perfect{color:var(--gold)}
-.judgement.great{color:var(--cyan)}
-.judgement.good{color:var(--green)}
-.judgement.miss{color:var(--red)}
-
-/* rhythm lane */
-.rhythm{
-    position:absolute;
-    z-index:25;
-    bottom:18px;
-    left:50%;
-    transform:translateX(-50%);
-    width:min(650px,75vw);
-}
-.rhythmLine{
-    height:4px;
-    background:#ffffff22;
-    position:relative;
-}
-.hitZone{
-    position:absolute;
-    left:50%;
-    transform:translateX(-50%);
-    width:92px;
-    height:4px;
-    background:var(--cyan);
-    box-shadow:0 0 18px var(--cyan);
-}
-.notes{
-    position:relative;
-    height:70px;
-    overflow:hidden;
-}
-.note{
-    position:absolute;
-    width:45px;
-    height:45px;
-    border:2px solid #fff;
-    background:#071326;
-    display:grid;
-    place-items:center;
-    font-weight:1000;
-    font-size:17px;
-    border-radius:50%;
-    top:10px;
-}
-.note.player{
-    box-shadow:0 0 20px #008cff66;
+.jump{
+    animation:jump .3s ease!important
 }
 
-/* performance info */
-.battleInfo{
-    position:absolute;
-    left:4%;
-    bottom:24px;
-    z-index:20;
-    color:#93a0b4;
-    font-size:9px;
+@keyframes jump{
+    50%{
+        margin-top:-35px;
+        rotate:5deg
+    }
 }
-.battleInfo b{
-    color:#fff;
-}
-.endBattle{
+
+/* RHYTHM */
+.lane{
     position:absolute;
     z-index:30;
+    bottom:17px;
+    left:50%;
+    transform:translateX(-50%);
+    width:min(650px,75vw)
+}
+
+.notes{
+    height:70px;
+    position:relative;
+    overflow:hidden
+}
+
+.note{
+    position:absolute;
+    top:12px;
+    width:44px;
+    height:44px;
+    border:2px solid white;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    background:#071326;
+    font-weight:1000;
+    box-shadow:0 0 15px #008cff66
+}
+
+.line{
+    height:4px;
+    background:#ffffff22
+}
+
+.target{
+    position:absolute;
+    left:50%;
+    width:90px;
+    height:4px;
+    transform:translateX(-50%);
+    background:var(--cyan);
+    box-shadow:0 0 15px var(--cyan)
+}
+
+.touch{
+    display:flex;
+    justify-content:center;
+    gap:8px;
+    margin-top:8px
+}
+
+.touch button{
+    width:48px;
+    height:36px;
+    background:#071426;
+    border:1px solid #ffffff25;
+    color:white;
+    font-weight:1000
+}
+
+.info{
+    position:absolute;
+    left:4%;
+    bottom:25px;
+    color:#9aa8ba;
+    font-size:8px
+}
+
+.exit{
+    position:absolute;
     right:4%;
     bottom:22px;
-    background:#0009;
+    padding:8px;
+    background:#000b;
     border:1px solid #ffffff22;
-    color:#fff;
-    padding:9px 13px;
-    font-size:8px;
-    cursor:pointer;
+    color:white;
+    font-size:8px
 }
 
-/* =========================================================
-   RESULT
-========================================================= */
-
-#result{
-    background:
-        radial-gradient(circle at 50% 35%,#008cff28,transparent 40%),
-        linear-gradient(#061326,#02050a);
+/* JUDGEMENT */
+.judgement{
+    position:absolute;
+    z-index:40;
+    left:50%;
+    top:42%;
+    transform:translate(-50%,-50%);
+    font-size:45px;
+    font-weight:1000;
+    font-style:italic;
+    opacity:0
 }
+
+.judgement.show{
+    animation:judge .55s ease
+}
+
+.perfect{color:var(--gold)}
+.great{color:var(--cyan)}
+.good{color:#42ef9b}
+.miss{color:var(--red)}
+
+@keyframes judge{
+    0%{
+        opacity:0;
+        scale:.5
+    }
+    25%{
+        opacity:1;
+        scale:1.1
+    }
+    100%{
+        opacity:0;
+        translate:0 -40px
+    }
+}
+
+/* RESULT */
 .resultBox{
     position:absolute;
     left:50%;
     top:50%;
     transform:translate(-50%,-50%);
-    width:min(700px,85%);
+    width:min(680px,86%);
     padding:35px;
-    background:#030a16ee;
-    border:1px solid #ffffff1b;
     text-align:center;
+    background:#030a16f5;
+    border:1px solid #ffffff18
 }
-.resultLabel{
+
+.resultBox .label{
     color:var(--cyan);
-    font-size:10px;
-    letter-spacing:4px;
+    font-size:9px;
+    letter-spacing:4px
 }
+
 .resultBox h1{
-    font-size:60px;
-    margin:10px 0;
+    font-size:55px;
+    margin:10px
 }
-.resultScore{
-    font-size:42px;
-    font-weight:1000;
+
+.final{
+    font-size:40px;
+    font-weight:1000
 }
-.resultStats{
+
+.stats{
     display:grid;
     grid-template-columns:repeat(4,1fr);
-    gap:8px;
-    margin:25px 0;
+    gap:7px;
+    margin:22px 0
 }
-.resultStats div{
+
+.stats div{
     background:#ffffff08;
-    padding:12px;
+    padding:10px
 }
-.resultStats b{
+
+.stats b{
     display:block;
-    font-size:18px;
-}
-.resultStats span{
-    color:#748299;
-    font-size:8px;
-}
-.resultActions{
-    display:flex;
-    justify-content:center;
-    gap:10px;
+    font-size:18px
 }
 
-/* =========================================================
-   TOAST
-========================================================= */
+.stats span{
+    color:#75849a;
+    font-size:7px
+}
 
+/* TOAST */
 #toast{
     position:absolute;
     z-index:100;
+    top:78px;
     left:50%;
-    top:82px;
-    transform:translate(-50%,-20px);
-    background:#030a15f2;
-    border:1px solid var(--cyan);
-    padding:11px 22px;
-    font-size:10px;
-    letter-spacing:1px;
+    transform:translate(-50%,-15px);
     opacity:0;
-    pointer-events:none;
-    transition:.25s;
+    padding:10px 20px;
+    background:#030a15f5;
+    border:1px solid var(--cyan);
+    font-size:9px;
+    transition:.2s
 }
+
 #toast.show{
     opacity:1;
-    transform:translate(-50%,0);
+    transform:translate(-50%,0)
 }
 
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
-@media(max-width:900px){
-    .cards{grid-template-columns:repeat(2,1fr)}
-    .setupGrid{grid-template-columns:repeat(2,1fr)}
-    .trainingLayout{grid-template-columns:1fr}
-    .trainingPanel{
-        position:absolute;
-        right:5%;
-        top:0;
-        width:300px;
-        z-index:10;
-    }
-    .homeCard{display:none}
-}
-@media(max-width:600px){
-    .brandText,.brandSub{display:none}
-    .brand{min-width:auto}
-    .hudItem{display:none}
-    #hud{height:58px;padding:0 12px}
-    .screen{inset:58px 0 65px}
-    #nav{height:65px}
-    .navButton{min-width:88px}
-    #home{display:block}
-    .homeCopy{
-        padding:45px 25px;
-        position:relative;
-        z-index:8;
-    }
-    .homeStage{
+/* MOBILE */
+@media(max-width:850px){
+    .home{display:block}
+    .homeText{padding:70px 25px}
+    .stage{
         position:absolute;
         inset:0;
-        opacity:.55;
+        opacity:.4
     }
-    .homeTitle{font-size:49px}
-    .setupGrid{grid-template-columns:1fr}
-    .competitionGrid{grid-template-columns:1fr}
+    .cards,
+    .setup{
+        grid-template-columns:repeat(2,1fr)
+    }
+    .training{
+        grid-template-columns:1fr
+    }
+}
+
+@media(max-width:550px){
+    #top{
+        height:55px;
+        padding:0 12px
+    }
+
+    .screen{
+        inset:55px 0 62px
+    }
+
+    .cards,
+    .setup{
+        grid-template-columns:1fr
+    }
+
+    .nav button{
+        min-width:80px
+    }
+
+    .title{
+        font-size:48px
+    }
+
     .battleDancer{
-        transform:translateX(-50%) scale(.58);
+        transform:translateX(-50%) scale(.55)
     }
-    .playerDancer{
-        left:34%;
+
+    .od{
+        transform:translateX(-50%) scale(.55) scaleX(-1)
     }
-    .opponentDancer{
-        left:66%;
+
+    .pd{left:32%}
+    .od{left:68%}
+
+    .score strong{
+        font-size:18px
     }
-    .battleScore{
-        padding:7px;
+
+    .touch button{
+        width:43px
     }
-    .scoreNumber{font-size:19px}
-    .resultBox h1{font-size:40px}
 }
 </style>
 </head>
 
 <body>
 
-<div id="game">
+<div id="app">
 
-<!-- =====================================================
-     HUD
-===================================================== -->
+<header id="top">
 
-<header id="hud">
+<div class="logo">
+WORLD OF DANCE
+<small>COMPETITION</small>
+</div>
 
-    <div class="brand">
-        <div class="brandMark">WD</div>
-        <div>
-            <div class="brandText">WORLD OF DANCE</div>
-            <span class="brandSub">COMPETITION</span>
-        </div>
-    </div>
-
-    <div class="hudRight">
-
-        <div class="hudItem">
-            LEVEL <b id="level">07</b>
-        </div>
-
-        <div class="hudItem">
-            XP <b id="xp">1,240</b>
-        </div>
-
-        <div class="hudItem">
-            COINS <b id="coins">8,420</b>
-        </div>
-
-        <div class="hudAvatar"></div>
-
-    </div>
+<div class="profile">
+<span>LV <b id="level">7</b></span>
+<span>XP <b id="xp">1240</b></span>
+<span>COINS <b id="coins">8420</b></span>
+<div class="avatar"></div>
+</div>
 
 </header>
 
 
-<!-- =====================================================
-     HOME
-===================================================== -->
+<!-- HOME -->
 
-<section id="home" class="screen active">
+<section id="home" class="screen on">
 
-    <div class="homeCopy">
+<div class="home">
 
-        <div class="kicker">SEASON 01 • WORLD TOUR</div>
+<div class="homeText">
 
-        <div class="homeTitle">
-            OWN
-            <span>THE STAGE</span>
-        </div>
+<div class="kicker">SEASON 01 • WORLD TOUR</div>
 
-        <p>
-            Train your dancers, build your performance,
-            master different dance styles and battle
-            against rival crews.
-        </p>
+<div class="title">
+OWN
+<span>THE STAGE</span>
+</div>
 
-        <div class="homeActions">
+<p>
+Train dancers, choose your music and dance style,
+build combinations and defeat rival crews in live
+rhythm battles.
+</p>
 
-            <button class="primary"
-                    onclick="show('performance')">
-                PLAY NOW
-            </button>
+<div class="actions">
+<button class="primary" onclick="showScreen('performance')">
+PLAY NOW
+</button>
 
-            <button class="secondary"
-                    onclick="show('training')">
-                TRAIN
-            </button>
+<button class="secondary" onclick="showScreen('training')">
+TRAIN
+</button>
+</div>
 
-        </div>
+</div>
 
-    </div>
+<div class="stage">
 
-    <div class="homeStage">
+<div class="spot"></div>
+<div class="grid"></div>
 
-        <div class="spot"></div>
-        <div class="stageGrid"></div>
+<div class="dancer">
 
-        <div class="character">
+<div class="head"><div class="hair"></div></div>
+<div class="neck"></div>
+<div class="arm l"></div>
+<div class="arm r"></div>
+<div class="body"></div>
+<div class="leg l"></div>
+<div class="leg r"></div>
+<div class="shoe l"></div>
+<div class="shoe r"></div>
 
-            <div class="charHead">
-                <div class="charHair"></div>
-            </div>
+</div>
 
-            <div class="charNeck"></div>
-            <div class="charArm l"></div>
-            <div class="charArm r"></div>
-            <div class="charBody"></div>
-            <div class="charLeg l"></div>
-            <div class="charLeg r"></div>
-            <div class="charShoe l"></div>
-            <div class="charShoe r"></div>
+</div>
 
-        </div>
-
-        <div class="homeCard">
-
-            <small>MAIN DANCER</small>
-            <h3>PIXIE • 87 OVR</h3>
-
-            <div class="homeStat">
-                <div class="homeStatLine">
-                    <span>TECHNIQUE</span><b>89</b>
-                </div>
-                <div class="homeBar">
-                    <i style="width:89%"></i>
-                </div>
-            </div>
-
-            <div class="homeStat">
-                <div class="homeStatLine">
-                    <span>RHYTHM</span><b>92</b>
-                </div>
-                <div class="homeBar">
-                    <i style="width:92%"></i>
-                </div>
-            </div>
-
-            <div class="homeStat">
-                <div class="homeStatLine">
-                    <span>POWER</span><b>81</b>
-                </div>
-                <div class="homeBar">
-                    <i style="width:81%"></i>
-                </div>
-            </div>
-
-        </div>
-
-    </div>
+</div>
 
 </section>
 
 
-<!-- =====================================================
-     TRAINING
-===================================================== -->
+<!-- TRAINING -->
 
 <section id="training" class="screen">
 
-    <div class="screenHead">
-        <h1>Training</h1>
-        <p>MASTER YOUR DANCE MOVES</p>
-    </div>
+<div class="headline">
+<h1>Training</h1>
+<p>DEVELOP YOUR DANCER</p>
+</div>
 
-    <div class="screenBody">
+<div class="content">
 
-        <div class="trainingLayout">
+<div class="training">
 
-            <div class="trainingStage">
+<div class="trainStage">
 
-                <div class="trainingGrid"></div>
+<div class="grid"></div>
 
-                <div class="character">
+<div class="dancer">
 
-                    <div class="charHead">
-                        <div class="charHair"></div>
-                    </div>
+<div class="head"><div class="hair"></div></div>
+<div class="neck"></div>
+<div class="arm l"></div>
+<div class="arm r"></div>
+<div class="body"></div>
+<div class="leg l"></div>
+<div class="leg r"></div>
+<div class="shoe l"></div>
+<div class="shoe r"></div>
 
-                    <div class="charNeck"></div>
-                    <div class="charArm l"></div>
-                    <div class="charArm r"></div>
-                    <div class="charBody"></div>
-                    <div class="charLeg l"></div>
-                    <div class="charLeg r"></div>
-                    <div class="charShoe l"></div>
-                    <div class="charShoe r"></div>
+</div>
 
-                </div>
+</div>
 
-            </div>
 
-            <div class="trainingPanel">
+<div class="panel">
 
-                <h2>PIXIE</h2>
+<h2>PIXIE</h2>
 
-                <p>
-                    Training improves performance attributes
-                    and gives experience.
-                </p>
+<p style="color:#8190a5;font-size:10px">
+Training improves attributes and earns XP.
+</p>
 
-                <div class="skill">
-                    <div class="skillTop">
-                        <span>TECHNIQUE</span><b id="tech">89</b>
-                    </div>
-                    <div class="skillBar">
-                        <i id="techBar" style="width:89%"></i>
-                    </div>
-                </div>
+<div class="skill">
+<div class="skillTop">
+<span>TECHNIQUE</span>
+<b id="tech">89</b>
+</div>
+<div class="bar">
+<i id="techBar" style="width:89%"></i>
+</div>
+</div>
 
-                <div class="skill">
-                    <div class="skillTop">
-                        <span>RHYTHM</span><b id="rhythmSkill">92</b>
-                    </div>
-                    <div class="skillBar">
-                        <i id="rhythmBar" style="width:92%"></i>
-                    </div>
-                </div>
+<div class="skill">
+<div class="skillTop">
+<span>RHYTHM</span>
+<b id="rhythm">92</b>
+</div>
+<div class="bar">
+<i id="rhythmBar" style="width:92%"></i>
+</div>
+</div>
 
-                <div class="skill">
-                    <div class="skillTop">
-                        <span>POWER</span><b id="power">81</b>
-                    </div>
-                    <div class="skillBar">
-                        <i id="powerBar" style="width:81%"></i>
-                    </div>
-                </div>
+<div class="skill">
+<div class="skillTop">
+<span>POWER</span>
+<b id="power">81</b>
+</div>
+<div class="bar">
+<i id="powerBar" style="width:81%"></i>
+</div>
+</div>
 
-                <div class="skill">
-                    <div class="skillTop">
-                        <span>CONTROL</span><b id="control">76</b>
-                    </div>
-                    <div class="skillBar">
-                        <i id="controlBar" style="width:76%"></i>
-                    </div>
-                </div>
+<div class="skill">
+<div class="skillTop">
+<span>CONTROL</span>
+<b id="control">76</b>
+</div>
+<div class="bar">
+<i id="controlBar" style="width:76%"></i>
+</div>
+</div>
 
-                <button class="primary full"
-                        onclick="train()">
-                    TRAIN NOW
-                </button>
+<button class="primary wide" onclick="trainingSession()">
+TRAIN SESSION
+</button>
 
-            </div>
+</div>
 
-        </div>
+</div>
 
-    </div>
+</div>
 
 </section>
 
 
-<!-- =====================================================
-     PERFORMANCE SETUP
-===================================================== -->
+<!-- PERFORMANCE SETUP -->
 
 <section id="performance" class="screen">
 
-    <div class="screenHead">
-        <h1>Performance</h1>
-        <p>CHOOSE YOUR PERFORMANCE</p>
-    </div>
+<div class="headline">
+<h1>Performance Setup</h1>
+<p>BUILD YOUR PERFORMANCE</p>
+</div>
 
-    <div class="screenBody">
+<div class="content">
 
-        <div class="setupGrid">
+<div class="setup">
 
-            <div class="setupBox">
+<div class="box">
 
-                <h3>DANCER</h3>
+<h3>DANCER</h3>
 
-                <div class="option selected"
-                     onclick="choose(this)">
-                    PIXIE
-                    <small>87 OVR</small>
-                </div>
+<div class="option selected" onclick="selectOption(this)">
+PIXIE
+<small>87 OVR</small>
+</div>
 
-                <div class="option"
-                     onclick="choose(this)">
-                    AMARA
-                    <small>82 OVR</small>
-                </div>
+<div class="option" onclick="selectOption(this)">
+AMARA
+<small>82 OVR</small>
+</div>
 
-                <div class="option"
-                     onclick="choose(this)">
-                    KAI
-                    <small>79 OVR</small>
-                </div>
+<div class="option" onclick="selectOption(this)">
+KAI
+<small>79 OVR</small>
+</div>
 
-            </div>
+</div>
 
-            <div class="setupBox">
 
-                <h3>SONG</h3>
+<div class="box">
 
-                <div class="option selected"
-                     onclick="choose(this)">
-                    CITY LIGHTS
-                    <small>118 BPM</small>
-                </div>
+<h3>SONG</h3>
 
-                <div class="option"
-                     onclick="choose(this)">
-                    RISING
-                    <small>104 BPM</small>
-                </div>
+<div class="option selected" onclick="selectOption(this)">
+CITY LIGHTS
+<small>118 BPM</small>
+</div>
 
-                <div class="option"
-                     onclick="choose(this)">
-                    BREAK FREE
-                    <small>96 BPM</small>
-                </div>
+<div class="option" onclick="selectOption(this)">
+RISING
+<small>104 BPM</small>
+</div>
 
-            </div>
+<div class="option" onclick="selectOption(this)">
+BREAK FREE
+<small>96 BPM</small>
+</div>
 
-            <div class="setupBox">
+</div>
 
-                <h3>DANCE STYLE</h3>
 
-                <div class="option selected"
-                     onclick="choose(this)">
-                    HIP HOP
-                    <small>Rhythm / Power</small>
-                </div>
+<div class="box">
 
-                <div class="option"
-                     onclick="choose(this)">
-                    AFRO FUSION
-                    <small>Groove / Footwork</small>
-                </div>
+<h3>DANCE STYLE</h3>
 
-                <div class="option"
-                     onclick="choose(this)">
-                    BREAKING
-                    <small>Power / Tricks</small>
-                </div>
+<div class="option selected" onclick="selectOption(this)">
+HIP HOP
+<small>RHYTHM + POWER</small>
+</div>
 
-                <div class="option"
-                     onclick="choose(this)">
-                    CONTEMPORARY
-                    <small>Control / Expression</small>
-                </div>
+<div class="option" onclick="selectOption(this)">
+AFRO FUSION
+<small>GROOVE + FOOTWORK</small>
+</div>
 
-            </div>
+<div class="option" onclick="selectOption(this)">
+BREAKING
+<small>POWER + TRICKS</small>
+</div>
 
-            <div class="setupBox">
+<div class="option" onclick="selectOption(this)">
+CONTEMPORARY
+<small>CONTROL + EXPRESSION</small>
+</div>
 
-                <h3>COSTUME</h3>
+</div>
 
-                <div class="option selected"
-                     onclick="choose(this)">
-                    URBAN BLUE
-                    <small>Performance Kit</small>
-                </div>
 
-                <div class="option"
-                     onclick="choose(this)">
-                    STREET BLACK
-                    <small>Street Collection</small>
-                </div>
+<div class="box">
 
-                <div class="option"
-                     onclick="choose(this)">
-                    STAGE WHITE
-                    <small>Premium Collection</small>
-                </div>
+<h3>COSTUME</h3>
 
-                <button class="primary full"
-                        onclick="startBattle()">
-                    ENTER BATTLE
-                </button>
+<div class="option selected" onclick="selectOption(this)">
+URBAN BLUE
+<small>EQUIPPED</small>
+</div>
 
-            </div>
+<div class="option" onclick="selectOption(this)">
+STREET BLACK
+<small>UNLOCKED</small>
+</div>
 
-        </div>
+<div class="option" onclick="selectOption(this)">
+STAGE WHITE
+<small>PREMIUM</small>
+</div>
 
-    </div>
+<button class="primary wide" onclick="startBattle()">
+ENTER BATTLE
+</button>
+
+</div>
+
+</div>
+
+</div>
 
 </section>
 
 
-<!-- =====================================================
-     DANCERS
-===================================================== -->
+<!-- DANCERS -->
 
 <section id="dancers" class="screen">
 
-    <div class="screenHead">
-        <h1>My Dancers</h1>
-        <p>BUILD YOUR SQUAD</p>
-    </div>
+<div class="headline">
+<h1>My Dancers</h1>
+<p>BUILD YOUR SQUAD</p>
+</div>
 
-    <div class="screenBody">
+<div class="content">
 
-        <div class="cards">
+<div class="cards">
 
-            <div class="card"
-                 onclick="toast('PIXIE selected')">
-                <div class="cardTag">CAPTAIN</div>
-                <h2>PIXIE</h2>
-                <p>
-                    Urban specialist<br>
-                    Overall rating 87
-                </p>
-                <div class="cardAction">VIEW PROFILE →</div>
-            </div>
+<div class="card">
+<div class="tag">CAPTAIN</div>
+<h2>PIXIE</h2>
+<p>Urban specialist • 87 OVR</p>
+<button onclick="toast('PIXIE SELECTED')">SELECT →</button>
+</div>
 
-            <div class="card"
-                 onclick="toast('AMARA selected')">
-                <div class="cardTag">DANCER</div>
-                <h2>AMARA</h2>
-                <p>
-                    Afro fusion specialist<br>
-                    Overall rating 82
-                </p>
-                <div class="cardAction">VIEW PROFILE →</div>
-            </div>
+<div class="card">
+<div class="tag">DANCER</div>
+<h2>AMARA</h2>
+<p>Afro fusion specialist • 82 OVR</p>
+<button onclick="toast('AMARA SELECTED')">SELECT →</button>
+</div>
 
-            <div class="card"
-                 onclick="toast('KAI selected')">
-                <div class="cardTag">DANCER</div>
-                <h2>KAI</h2>
-                <p>
-                    Breaking specialist<br>
-                    Overall rating 79
-                </p>
-                <div class="cardAction">VIEW PROFILE →</div>
-            </div>
+<div class="card">
+<div class="tag">DANCER</div>
+<h2>KAI</h2>
+<p>Breaking specialist • 79 OVR</p>
+<button onclick="toast('KAI SELECTED')">SELECT →</button>
+</div>
 
-            <div class="card"
-                 onclick="toast('Recruitment opened')">
-                <div class="cardTag">EMPTY SLOT</div>
-                <h2>RECRUIT</h2>
-                <p>
-                    Find another dancer
-                    for your crew.
-                </p>
-                <div class="cardAction">RECRUIT →</div>
-            </div>
+<div class="card">
+<div class="tag">EMPTY SLOT</div>
+<h2>RECRUIT</h2>
+<p>Find another dancer for your crew.</p>
+<button onclick="toast('RECRUITING SOON')">SELECT →</button>
+</div>
 
-        </div>
+</div>
 
-    </div>
+</div>
 
 </section>
 
 
-<!-- =====================================================
-     CREW
-===================================================== -->
+<!-- CREW -->
 
 <section id="crew" class="screen">
 
-    <div class="screenHead">
-        <h1>Dance Crew</h1>
-        <p>URBAN MOTION • WORLD RANKING 428</p>
-    </div>
+<div class="headline">
+<h1>Dance Crew</h1>
+<p>URBAN MOTION • WORLD RANKING 428</p>
+</div>
 
-    <div class="screenBody">
+<div class="content">
 
-        <div class="cards">
+<div class="cards">
 
-            <div class="card">
-                <div class="cardTag">CREW RATING</div>
-                <h2>84</h2>
-                <p>Overall squad rating.</p>
-            </div>
+<div class="card">
+<div class="tag">CREW RATING</div>
+<h2>84</h2>
+<p>Overall squad rating.</p>
+</div>
 
-            <div class="card">
-                <div class="cardTag">VICTORIES</div>
-                <h2>37</h2>
-                <p>Competition wins.</p>
-            </div>
+<div class="card">
+<div class="tag">VICTORIES</div>
+<h2>37</h2>
+<p>Competition wins.</p>
+</div>
 
-            <div class="card">
-                <div class="cardTag">CREW XP</div>
-                <h2>12,840</h2>
-                <p>Experience earned.</p>
-            </div>
+<div class="card">
+<div class="tag">CREW XP</div>
+<h2>12,840</h2>
+<p>Experience earned.</p>
+</div>
 
-            <div class="card">
-                <div class="cardTag">NEXT EVENT</div>
-                <h2>URBAN CUP</h2>
-                <p>Qualification available.</p>
-            </div>
+<div class="card">
+<div class="tag">NEXT EVENT</div>
+<h2>URBAN CUP</h2>
+<p>Qualification available.</p>
+</div>
 
-        </div>
+</div>
 
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     CUSTOMIZE
-===================================================== -->
-
-<section id="customize" class="screen">
-
-    <div class="screenHead">
-        <h1>Customize</h1>
-        <p>COSTUMES AND PERFORMANCE STYLE</p>
-    </div>
-
-    <div class="screenBody">
-
-        <div class="cards">
-
-            <div class="card"
-                 onclick="toast('Urban Blue equipped')">
-                <div class="cardTag">UNLOCKED</div>
-                <h2>URBAN BLUE</h2>
-                <p>Modern performance costume.</p>
-                <div class="cardAction">EQUIP →</div>
-            </div>
-
-            <div class="card"
-                 onclick="toast('Street Black equipped')">
-                <div class="cardTag">UNLOCKED</div>
-                <h2>STREET BLACK</h2>
-                <p>Street collection.</p>
-                <div class="cardAction">EQUIP →</div>
-            </div>
-
-            <div class="card"
-                 onclick="toast('Stage White selected')">
-                <div class="cardTag">PREMIUM</div>
-                <h2>STAGE WHITE</h2>
-                <p>Major competition costume.</p>
-                <div class="cardAction">VIEW →</div>
-            </div>
-
-            <div class="card"
-                 onclick="toast('Costume shop opened')">
-                <div class="cardTag">SHOP</div>
-                <h2>NEW LOOKS</h2>
-                <p>Unlock additional costumes.</p>
-                <div class="cardAction">SHOP →</div>
-            </div>
-
-        </div>
-
-    </div>
+</div>
 
 </section>
 
 
-<!-- =====================================================
-     SONGS
-===================================================== -->
+<!-- COSTUMES -->
+
+<section id="costumes" class="screen">
+
+<div class="headline">
+<h1>Costumes</h1>
+<p>PERFORMANCE LOOKS</p>
+</div>
+
+<div class="content">
+
+<div class="cards">
+
+<div class="card">
+<div class="tag">EQUIPPED</div>
+<h2>URBAN BLUE</h2>
+<p>Modern performance kit.</p>
+<button onclick="toast('URBAN BLUE EQUIPPED')">EQUIP →</button>
+</div>
+
+<div class="card">
+<div class="tag">UNLOCKED</div>
+<h2>STREET BLACK</h2>
+<p>Street collection.</p>
+<button onclick="toast('STREET BLACK EQUIPPED')">EQUIP →</button>
+</div>
+
+<div class="card">
+<div class="tag">PREMIUM</div>
+<h2>STAGE WHITE</h2>
+<p>Major competition kit.</p>
+<button onclick="toast('PREMIUM COSTUME LOCKED')">VIEW →</button>
+</div>
+
+<div class="card">
+<div class="tag">SHOP</div>
+<h2>NEW LOOKS</h2>
+<p>Unlock more costumes.</p>
+<button onclick="toast('COSTUME SHOP')">OPEN →</button>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- SONGS -->
 
 <section id="songs" class="screen">
 
-    <div class="screenHead">
-        <h1>Songs</h1>
-        <p>SELECT YOUR PERFORMANCE MUSIC</p>
-    </div>
+<div class="headline">
+<h1>Songs</h1>
+<p>SELECT PERFORMANCE MUSIC</p>
+</div>
 
-    <div class="screenBody">
+<div class="content">
 
-        <div class="cards">
+<div class="cards">
 
-            <div class="card"
-                 onclick="toast('CITY LIGHTS selected')">
-                <div class="cardTag">118 BPM</div>
-                <h2>CITY LIGHTS</h2>
-                <p>Urban performance track.</p>
-                <div class="cardAction">SELECT →</div>
-            </div>
+<div class="card">
+<div class="tag">118 BPM</div>
+<h2>CITY LIGHTS</h2>
+<p>Urban performance track.</p>
+<button onclick="toast('CITY LIGHTS SELECTED')">SELECT →</button>
+</div>
 
-            <div class="card"
-                 onclick="toast('RISING selected')">
-                <div class="cardTag">104 BPM</div>
-                <h2>RISING</h2>
-                <p>Afro fusion track.</p>
-                <div class="cardAction">SELECT →</div>
-            </div>
+<div class="card">
+<div class="tag">104 BPM</div>
+<h2>RISING</h2>
+<p>Afro fusion track.</p>
+<button onclick="toast('RISING SELECTED')">SELECT →</button>
+</div>
 
-            <div class="card"
-                 onclick="toast('BREAK FREE selected')">
-                <div class="cardTag">96 BPM</div>
-                <h2>BREAK FREE</h2>
-                <p>Hip hop battle track.</p>
-                <div class="cardAction">SELECT →</div>
-            </div>
+<div class="card">
+<div class="tag">96 BPM</div>
+<h2>BREAK FREE</h2>
+<p>Hip hop battle track.</p>
+<button onclick="toast('BREAK FREE SELECTED')">SELECT →</button>
+</div>
 
-            <div class="card"
-                 onclick="toast('Reach Level 10 to unlock')">
-                <div class="cardTag">LOCKED</div>
-                <h2>NEW TRACK</h2>
-                <p>Reach Level 10.</p>
-                <div class="cardAction">LOCKED</div>
-            </div>
+<div class="card">
+<div class="tag">LOCKED</div>
+<h2>NEW TRACK</h2>
+<p>Reach level 10.</p>
+<button onclick="toast('REACH LEVEL 10')">VIEW →</button>
+</div>
 
-        </div>
+</div>
 
-    </div>
+</div>
 
 </section>
 
 
-<!-- =====================================================
-     STYLES
-===================================================== -->
+<!-- STYLES -->
 
 <section id="styles" class="screen">
 
-    <div class="screenHead">
-        <h1>Dance Styles</h1>
-        <p>MASTER DIFFERENT DISCIPLINES</p>
-    </div>
+<div class="headline">
+<h1>Dance Styles</h1>
+<p>MASTER THE DISCIPLINES</p>
+</div>
 
-    <div class="screenBody">
+<div class="content">
 
-        <div class="cards">
+<div class="cards">
 
-            <div class="card"
-                 onclick="toast('Hip Hop selected')">
-                <div class="cardTag">MASTERED</div>
-                <h2>HIP HOP</h2>
-                <p>Groove, rhythm and power.</p>
-                <div class="cardAction">SELECT →</div>
-            </div>
+<div class="card">
+<div class="tag">MASTERED</div>
+<h2>HIP HOP</h2>
+<p>Groove, rhythm and power.</p>
+</div>
 
-            <div class="card"
-                 onclick="toast('Afro Fusion selected')">
-                <div class="cardTag">LEVEL 7</div>
-                <h2>AFRO FUSION</h2>
-                <p>Groove and footwork.</p>
-                <div class="cardAction">SELECT →</div>
-            </div>
+<div class="card">
+<div class="tag">LEVEL 7</div>
+<h2>AFRO FUSION</h2>
+<p>Groove and footwork.</p>
+</div>
 
-            <div class="card"
-                 onclick="toast('BREAKING selected')">
-                <div class="cardTag">LEVEL 5</div>
-                <h2>BREAKING</h2>
-                <p>Power moves and freezes.</p>
-                <div class="cardAction">SELECT →</div>
-            </div>
+<div class="card">
+<div class="tag">LEVEL 5</div>
+<h2>BREAKING</h2>
+<p>Power moves and freezes.</p>
+</div>
 
-            <div class="card"
-                 onclick="toast('Contemporary selected')">
-                <div class="cardTag">LEVEL 3</div>
-                <h2>CONTEMPORARY</h2>
-                <p>Control and expression.</p>
-                <div class="cardAction">SELECT →</div>
-            </div>
+<div class="card">
+<div class="tag">LEVEL 3</div>
+<h2>CONTEMPORARY</h2>
+<p>Control and expression.</p>
+</div>
 
-            <div class="card"
-                 onclick="toast('Popping selected')">
-                <div class="cardTag">LEVEL 2</div>
-                <h2>POPPING</h2>
-                <p>Isolation and musicality.</p>
-                <div class="cardAction">SELECT →</div>
-            </div>
+<div class="card">
+<div class="tag">LEVEL 2</div>
+<h2>POPPING</h2>
+<p>Isolation and musicality.</p>
+</div>
 
-            <div class="card"
-                 onclick="toast('Dancehall selected')">
-                <div class="cardTag">LEVEL 2</div>
-                <h2>DANCEHALL</h2>
-                <p>Groove and bounce.</p>
-                <div class="cardAction">SELECT →</div>
-            </div>
+<div class="card">
+<div class="tag">LEVEL 2</div>
+<h2>DANCEHALL</h2>
+<p>Groove and bounce.</p>
+</div>
 
-            <div class="card"
-                 onclick="toast('House selected')">
-                <div class="cardTag">LEVEL 1</div>
-                <h2>HOUSE</h2>
-                <p>Fast footwork and groove.</p>
-                <div class="cardAction">SELECT →</div>
-            </div>
+<div class="card">
+<div class="tag">LEVEL 1</div>
+<h2>HOUSE</h2>
+<p>Fast footwork and groove.</p>
+</div>
 
-            <div class="card"
-                 onclick="toast('Jazz selected')">
-                <div class="cardTag">LEVEL 1</div>
-                <h2>JAZZ</h2>
-                <p>Performance and lines.</p>
-                <div class="cardAction">SELECT →</div>
-            </div>
+<div class="card">
+<div class="tag">LEVEL 1</div>
+<h2>JAZZ</h2>
+<p>Performance and lines.</p>
+</div>
 
-        </div>
+</div>
 
-    </div>
+</div>
 
 </section>
 
 
-<!-- =====================================================
-     COMPETITION
-===================================================== -->
+<!-- COMPETITION -->
 
 <section id="competition" class="screen">
 
-    <div class="screenHead">
-        <h1>Competition</h1>
-        <p>WORLD DANCE TOUR • ROUND OF 16</p>
-    </div>
+<div class="headline">
+<h1>Competition</h1>
+<p>WORLD TOUR • ROUND OF 16</p>
+</div>
 
-    <div class="screenBody">
+<div class="content">
 
-        <div class="competitionGrid">
+<div class="cards">
 
-            <div class="competitor">
+<div class="card">
+<div class="tag">YOUR CREW</div>
+<h2>URBAN MOTION</h2>
+<p>84 OVR • 37 wins</p>
+</div>
 
-                <div class="compTag">YOUR CREW</div>
-                <div class="compName">URBAN MOTION</div>
+<div class="card">
+<div class="tag">OPPONENT</div>
+<h2>NOVA BEATS</h2>
+<p>82 OVR • 31 wins</p>
+</div>
 
-                <div class="compStats">
-                    <div>
-                        <b>84</b>
-                        <span>OVR</span>
-                    </div>
-                    <div>
-                        <b>89</b>
-                        <span>TECH</span>
-                    </div>
-                    <div>
-                        <b>92</b>
-                        <span>RHYTHM</span>
-                    </div>
-                </div>
+<div class="card">
+<div class="tag">NEXT</div>
+<h2>CITY QUALIFIER</h2>
+<p>Win to advance.</p>
+</div>
 
-            </div>
+<div class="card">
+<div class="tag">PRIZE</div>
+<h2>500 COINS</h2>
+<p>Plus XP and unlocks.</p>
+</div>
 
-            <div class="vsBox">
+</div>
 
-                <div class="vs">VS</div>
+<br>
 
-                <button class="primary"
-                        onclick="startBattle()">
-                    START BATTLE
-                </button>
+<button class="primary" onclick="startBattle()">
+START TOURNAMENT BATTLE
+</button>
 
-            </div>
-
-            <div class="competitor">
-
-                <div class="compTag">OPPONENT</div>
-                <div class="compName">NOVA BEATS</div>
-
-                <div class="compStats">
-                    <div>
-                        <b>82</b>
-                        <span>OVR</span>
-                    </div>
-                    <div>
-                        <b>85</b>
-                        <span>TECH</span>
-                    </div>
-                    <div>
-                        <b>91</b>
-                        <span>RHYTHM</span>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
+</div>
 
 </section>
 
 
-<!-- =====================================================
-     LIVE BATTLE
-===================================================== -->
+<!-- BATTLE -->
 
 <section id="battle" class="screen">
 
-    <div class="battleTop">
+<div class="battleHud">
 
-        <div class="battleScore">
+<div class="score">
+<small>URBAN MOTION • PIXIE</small>
+<strong id="playerScore">00000</strong>
+<div class="energy">
+<i id="playerEnergy" style="width:100%"></i>
+</div>
+</div>
 
-            <div class="scoreName">
-                URBAN MOTION • PIXIE
-            </div>
+<div class="score center">
+<small>ROUND 1</small>
+<strong id="battleTime">30</strong>
+</div>
 
-            <div class="scoreNumber"
-                 id="playerScore">
-                00000
-            </div>
+<div class="score right">
+<small>NOVA BEATS • AI</small>
+<strong id="opponentScore">00000</strong>
+<div class="energy">
+<i id="opponentEnergy" style="width:100%"></i>
+</div>
+</div>
 
-            <div class="health">
-                <i id="playerEnergy"
-                   style="width:100%"></i>
-            </div>
-
-        </div>
-
-        <div class="battleScore center">
-
-            <div class="scoreName">
-                ROUND 1 • LIVE
-            </div>
-
-            <div class="scoreNumber"
-                 id="timer">
-                30
-            </div>
-
-        </div>
-
-        <div class="battleScore right">
-
-            <div class="scoreName">
-                NOVA BEATS • AI
-            </div>
-
-            <div class="scoreNumber"
-                 id="opponentScore">
-                00000
-            </div>
-
-            <div class="health">
-                <i id="opponentEnergy"
-                   style="width:100%"></i>
-            </div>
-
-        </div>
-
-    </div>
+</div>
 
 
-    <div class="battleArena">
+<div class="arena">
 
-        <div class="audience"></div>
-        <div class="battleSpot"></div>
-        <div class="battleFloor"></div>
-
-
-        <!-- PLAYER -->
-
-        <div id="playerDancer"
-             class="battleDancer playerDancer">
-
-            <div class="charHead">
-                <div class="charHair"></div>
-            </div>
-
-            <div class="charNeck"></div>
-            <div class="charArm l"></div>
-            <div class="charArm r"></div>
-            <div class="charBody"></div>
-            <div class="charLeg l"></div>
-            <div class="charLeg r"></div>
-            <div class="charShoe l"></div>
-            <div class="charShoe r"></div>
-
-        </div>
+<div class="audience"></div>
+<div class="spot"></div>
+<div class="grid"></div>
 
 
-        <!-- OPPONENT -->
+<!-- PLAYER -->
 
-        <div id="opponentDancer"
-             class="battleDancer opponentDancer">
+<div id="playerDancer" class="battleDancer pd">
 
-            <div class="charHead">
-                <div class="charHair"></div>
-            </div>
+<div class="head"><div class="hair"></div></div>
+<div class="neck"></div>
+<div class="arm l"></div>
+<div class="arm r"></div>
+<div class="body"></div>
+<div class="leg l"></div>
+<div class="leg r"></div>
+<div class="shoe l"></div>
+<div class="shoe r"></div>
 
-            <div class="charNeck"></div>
-            <div class="charArm l"></div>
-            <div class="charArm r"></div>
-            <div class="charBody"></div>
-            <div class="charLeg l"></div>
-            <div class="charLeg r"></div>
-            <div class="charShoe l"></div>
-            <div class="charShoe r"></div>
-
-        </div>
+</div>
 
 
-        <div id="judgement"
-             class="judgement">
-            PERFECT
-        </div>
+<!-- OPPONENT -->
+
+<div id="opponentDancer" class="battleDancer od">
+
+<div class="head"><div class="hair"></div></div>
+<div class="neck"></div>
+<div class="arm l"></div>
+<div class="arm r"></div>
+<div class="body"></div>
+<div class="leg l"></div>
+<div class="leg r"></div>
+<div class="shoe l"></div>
+<div class="shoe r"></div>
+
+</div>
 
 
-        <div class="battleInfo">
-            <b>PERFORM:</b>
-            use A / S / D / F
-            or tap the moving notes
-        </div>
+<div id="judgement" class="judgement">
+PERFECT
+</div>
 
 
-        <button class="endBattle"
-                onclick="finishBattle(true)">
-            EXIT BATTLE
-        </button>
+<div class="lane">
+
+<div id="notes" class="notes"></div>
+
+<div class="line">
+<div class="target"></div>
+</div>
+
+<div class="touch">
+<button onclick="pressKey('A')">A</button>
+<button onclick="pressKey('S')">S</button>
+<button onclick="pressKey('D')">D</button>
+<button onclick="pressKey('F')">F</button>
+</div>
+
+</div>
 
 
-        <div class="rhythm">
+<div class="info">
+MATCH THE NOTE AT THE TARGET • KEYBOARD A S D F OR TOUCH
+</div>
 
-            <div class="notes"
-                 id="notes"></div>
+<button class="exit" onclick="cancelBattle()">
+EXIT
+</button>
 
-            <div class="rhythmLine">
-                <div class="hitZone"></div>
-            </div>
-
-        </div>
-
-    </div>
+</div>
 
 </section>
 
 
-<!-- =====================================================
-     RESULT
-===================================================== -->
+<!-- RESULT -->
 
 <section id="result" class="screen">
 
-    <div class="resultBox">
+<div class="resultBox">
 
-        <div class="resultLabel">
-            PERFORMANCE COMPLETE
-        </div>
+<div class="label">
+PERFORMANCE COMPLETE
+</div>
 
-        <h1 id="resultTitle">VICTORY</h1>
+<h1 id="resultTitle">
+VICTORY
+</h1>
 
-        <div class="resultScore"
-             id="finalScore">
-            00000
-        </div>
+<div class="final" id="finalScore">
+00000
+</div>
 
-        <div class="resultStats">
+<div class="stats">
 
-            <div>
-                <b id="perfectCount">0</b>
-                <span>PERFECT</span>
-            </div>
+<div>
+<b id="perfectCount">0</b>
+<span>PERFECT</span>
+</div>
 
-            <div>
-                <b id="greatCount">0</b>
-                <span>GREAT</span>
-            </div>
+<div>
+<b id="greatCount">0</b>
+<span>GREAT</span>
+</div>
 
-            <div>
-                <b id="goodCount">0</b>
-                <span>GOOD</span>
-            </div>
+<div>
+<b id="goodCount">0</b>
+<span>GOOD</span>
+</div>
 
-            <div>
-                <b id="missCount">0</b>
-                <span>MISS</span>
-            </div>
+<div>
+<b id="missCount">0</b>
+<span>MISS</span>
+</div>
 
-        </div>
+</div>
 
-        <div class="resultActions">
+<button class="primary" onclick="showScreen('home')">
+CONTINUE
+</button>
 
-            <button class="primary"
-                    onclick="show('home')">
-                CONTINUE
-            </button>
+<button class="secondary" onclick="showScreen('performance')">
+PLAY AGAIN
+</button>
 
-            <button class="secondary"
-                    onclick="show('performance')">
-                PLAY AGAIN
-            </button>
-
-        </div>
-
-    </div>
+</div>
 
 </section>
 
 
-<!-- =====================================================
-     NAV
-===================================================== -->
+<!-- NAVIGATION -->
 
 <nav id="nav">
 
-    <div class="navScroller">
+<div class="nav">
 
-        <button class="navButton active"
-                data-screen="home"
-                onclick="show('home')">
-            HOME
-        </button>
+<button data-screen="home" class="on" onclick="showScreen('home')">
+HOME
+</button>
 
-        <button class="navButton"
-                data-screen="training"
-                onclick="show('training')">
-            TRAINING
-        </button>
+<button data-screen="training" onclick="showScreen('training')">
+TRAIN
+</button>
 
-        <button class="navButton"
-                data-screen="performance"
-                onclick="show('performance')">
-            PLAY
-        </button>
+<button data-screen="performance" onclick="showScreen('performance')">
+PLAY
+</button>
 
-        <button class="navButton"
-                data-screen="dancers"
-                onclick="show('dancers')">
-            DANCERS
-        </button>
+<button data-screen="dancers" onclick="showScreen('dancers')">
+DANCERS
+</button>
 
-        <button class="navButton"
-                data-screen="crew"
-                onclick="show('crew')">
-            CREW
-        </button>
+<button data-screen="crew" onclick="showScreen('crew')">
+CREW
+</button>
 
-        <button class="navButton"
-                data-screen="customize"
-                onclick="show('customize')">
-            CUSTOMIZE
-        </button>
+<button data-screen="costumes" onclick="showScreen('costumes')">
+COSTUMES
+</button>
 
-        <button class="navButton"
-                data-screen="songs"
-                onclick="show('songs')">
-            SONGS
-        </button>
+<button data-screen="songs" onclick="showScreen('songs')">
+SONGS
+</button>
 
-        <button class="navButton"
-                data-screen="styles"
-                onclick="show('styles')">
-            STYLES
-        </button>
+<button data-screen="styles" onclick="showScreen('styles')">
+STYLES
+</button>
 
-        <button class="navButton"
-                data-screen="competition"
-                onclick="show('competition')">
-            COMPETE
-        </button>
+<button data-screen="competition" onclick="showScreen('competition')">
+COMPETE
+</button>
 
-    </div>
+</div>
 
 </nav>
 
@@ -2051,14 +1672,12 @@ button{font:inherit}
 
 <script>
 
-/* =========================================================
+/* =========================
    GAME DATA
-========================================================= */
+========================= */
 
-const state = {
-
+let game={
     xp:1240,
-    level:7,
     coins:8420,
 
     technique:89,
@@ -2066,10 +1685,13 @@ const state = {
     power:81,
     control:76,
 
+    battle:false,
+    time:30,
+
     playerScore:0,
     opponentScore:0,
 
-    energy:100,
+    playerEnergy:100,
     opponentEnergy:100,
 
     combo:0,
@@ -2079,752 +1701,793 @@ const state = {
     good:0,
     miss:0,
 
-    time:30,
-
-    running:false,
-    noteTimer:null,
-    gameTimer:null,
+    timer:null,
+    spawnTimer:null,
     aiTimer:null
-
 };
 
 
-/* =========================================================
-   NAVIGATION
-========================================================= */
-
-function show(id){
-
-    if(state.running && id!=="battle"){
-        finishBattle(true);
-    }
-
-    document.querySelectorAll(".screen")
-        .forEach(s=>s.classList.remove("active"));
-
-    const screen=document.getElementById(id);
-
-    if(screen){
-        screen.classList.add("active");
-    }
-
-    document.querySelectorAll(".navButton")
-        .forEach(btn=>{
-            btn.classList.toggle(
-                "active",
-                btn.dataset.screen===id
-            );
-        });
-}
-
-
-/* =========================================================
-   TOAST
-========================================================= */
-
-let toastTimer;
-
-function toast(message){
-
-    const box=document.getElementById("toast");
-
-    box.textContent=message;
-    box.classList.add("show");
-
-    clearTimeout(toastTimer);
-
-    toastTimer=setTimeout(()=>{
-        box.classList.remove("show");
-    },1700);
-}
-
-
-/* =========================================================
-   OPTION SELECTION
-========================================================= */
-
-function choose(element){
-
-    const parent=element.parentElement;
-
-    parent.querySelectorAll(".option")
-        .forEach(x=>x.classList.remove("selected"));
-
-    element.classList.add("selected");
-
-    toast(
-        element.childNodes[0].textContent.trim()+
-        " selected"
-    );
-}
-
-
-/* =========================================================
-   TRAINING
-========================================================= */
-
-function train(){
-
-    state.xp+=100;
-
-    state.technique=Math.min(99,state.technique+1);
-    state.rhythm=Math.min(99,state.rhythm+1);
-    state.power=Math.min(99,state.power+1);
-
-    updateHUD();
-    updateTraining();
-
-    toast("TRAINING COMPLETE • +100 XP");
-}
-
-function updateTraining(){
-
-    document.getElementById("tech").textContent=state.technique;
-    document.getElementById("rhythmSkill").textContent=state.rhythm;
-    document.getElementById("power").textContent=state.power;
-
-    document.getElementById("techBar").style.width=
-        state.technique+"%";
-
-    document.getElementById("rhythmBar").style.width=
-        state.rhythm+"%";
-
-    document.getElementById("powerBar").style.width=
-        state.power+"%";
-}
-
-
-/* =========================================================
-   HUD
-========================================================= */
-
-function updateHUD(){
-
-    document.getElementById("xp").textContent=
-        state.xp.toLocaleString();
-
-    document.getElementById("coins").textContent=
-        state.coins.toLocaleString();
-
-    state.level=
-        Math.floor(state.xp/200)+1;
-
-    document.getElementById("level").textContent=
-        String(state.level).padStart(2,"0");
-}
-
-
-/* =========================================================
-   START BATTLE
-========================================================= */
-
-function startBattle(){
-
-    show("battle");
-
-    resetBattle();
-
-    state.running=true;
-
-    startBattleTimer();
-    startNoteSpawner();
-    startAI();
-
-    toast("BATTLE STARTED");
-}
-
-
-/* =========================================================
-   RESET
-========================================================= */
-
-function resetBattle(){
-
-    clearInterval(state.gameTimer);
-    clearInterval(state.noteTimer);
-    clearInterval(state.aiTimer);
-
-    state.playerScore=0;
-    state.opponentScore=0;
-
-    state.energy=100;
-    state.opponentEnergy=100;
-
-    state.combo=0;
-
-    state.perfect=0;
-    state.great=0;
-    state.good=0;
-    state.miss=0;
-
-    state.time=30;
-
-    document.getElementById("notes").innerHTML="";
-
-    updateBattleHUD();
-}
-
-
-/* =========================================================
-   TIMER
-========================================================= */
-
-function startBattleTimer(){
-
-    state.gameTimer=setInterval(()=>{
-
-        if(!state.running)return;
-
-        state.time--;
-
-        document.getElementById("timer")
-            .textContent=state.time;
-
-        if(state.time<=0){
-
-            finishBattle();
-
-        }
-
-    },1000);
-}
-
-
-/* =========================================================
-   NOTE SYSTEM
-========================================================= */
-
-const keys=["A","S","D","F"];
-
-function startNoteSpawner(){
-
-    spawnNote();
-
-    state.noteTimer=setInterval(()=>{
-
-        if(state.running){
-            spawnNote();
-        }
-
-    },650);
-}
-
-
-function spawnNote(){
-
-    if(!state.running)return;
-
-    const notes=document.getElementById("notes");
-
-    const note=document.createElement("div");
-
-    note.className="note player";
-
-    const key=
-        keys[Math.floor(Math.random()*keys.length)];
-
-    note.textContent=key;
-    note.dataset.key=key;
-
-    note.style.left="-55px";
-
-    notes.appendChild(note);
-
-    let position=-55;
-
-    const speed=5;
-
-    const animation=setInterval(()=>{
-
-        if(!state.running){
-
-            clearInterval(animation);
-            note.remove();
-            return;
-        }
-
-        position+=speed;
-
-        note.style.left=
-            position+"px";
-
-        const center=
-            notes.clientWidth/2;
-
-        const noteCenter=
-            position+22;
-
-        if(noteCenter>center+70){
-
-            clearInterval(animation);
-
-            if(note.parentNode){
-
-                note.remove();
-
-                missMove();
-
-            }
-
-            return;
-        }
-
-    },16);
-
-    note.addEventListener("click",()=>{
-
-        hitNote(note,key,position,animation);
-
-    });
-
-}
-
-
-/* =========================================================
-   KEYBOARD INPUT
-========================================================= */
-
-document.addEventListener("keydown",event=>{
-
-    if(!state.running)return;
-
-    const key=event.key.toUpperCase();
-
-    if(keys.includes(key)){
-
-        const notes=[
-            ...document.querySelectorAll(".note")
-        ];
-
-        let closest=null;
-        let distance=Infinity;
-
-        const lane=
-            document.getElementById("notes");
-
-        const center=
-            lane.clientWidth/2;
-
-        notes.forEach(note=>{
-
-            if(note.dataset.key!==key)return;
-
-            const x=
-                parseFloat(note.style.left||0)+22;
-
-            const d=Math.abs(x-center);
-
-            if(d<distance){
-
-                distance=d;
-                closest=note;
-
-            }
-
-        });
-
-        if(closest && distance<100){
-
-            const animation=closest._animation;
-
-            hitNote(
-                closest,
-                key,
-                parseFloat(closest.style.left),
-                animation
-            );
-
-        }else{
-
-            missMove();
-
-        }
-
-    }
-
-});
-
-
-/* =========================================================
-   NOTE HIT
-========================================================= */
-
-function hitNote(note,key,position,animation){
-
-    if(!note || note.dataset.hit)return;
-
-    note.dataset.hit="1";
-
-    if(animation){
-        clearInterval(animation);
-    }
-
-    const lane=
-        document.getElementById("notes");
-
-    const center=
-        lane.clientWidth/2;
-
-    const x=
-        parseFloat(note.style.left||0)+22;
-
-    const distance=
-        Math.abs(x-center);
-
-    let result;
-
-    if(distance<20){
-
-        result="PERFECT";
-
-        state.perfect++;
-
-        state.combo++;
-
-        state.playerScore+=
-            300+state.combo*12;
-
-        state.energy=
-            Math.min(100,state.energy+2);
-
-    }else if(distance<50){
-
-        result="GREAT";
-
-        state.great++;
-
-        state.combo++;
-
-        state.playerScore+=
-            200+state.combo*8;
-
-        state.energy=
-            Math.min(100,state.energy+1);
-
-    }else{
-
-        result="GOOD";
-
-        state.good++;
-
-        state.combo++;
-
-        state.playerScore+=
-            100+state.combo*4;
-
-    }
-
-    showJudgement(result);
-
-    animatePlayer();
-
-    note.remove();
-
-    updateBattleHUD();
-
-}
-
-
-/* =========================================================
-   MISS
-========================================================= */
-
-function missMove(){
-
-    if(!state.running)return;
-
-    state.miss++;
-
-    state.combo=0;
-
-    state.playerScore=
-        Math.max(0,state.playerScore-50);
-
-    state.energy=
-        Math.max(0,state.energy-5);
-
-    showJudgement("MISS");
-
-    updateBattleHUD();
-
-}
-
-
-/* =========================================================
-   JUDGEMENT
-========================================================= */
-
-function showJudgement(result){
-
-    const box=
-        document.getElementById("judgement");
-
-    box.textContent=result;
-
-    box.className=
-        "judgement "+
-        result.toLowerCase();
-
-    void box.offsetWidth;
-
-    box.classList.add("show");
-
-}
-
-
-/* =========================================================
-   PLAYER ANIMATION
-========================================================= */
-
-function animatePlayer(){
-
-    const dancer=
-        document.getElementById("playerDancer");
-
-    dancer.classList.remove("hitAnim");
-
-    void dancer.offsetWidth;
-
-    dancer.classList.add("hitAnim");
-
-}
-
-
-/* =========================================================
-   AI OPPONENT
-========================================================= */
-
-function startAI(){
-
-    state.aiTimer=setInterval(()=>{
-
-        if(!state.running)return;
-
-        const quality=
-            Math.random();
-
-        if(quality>.15){
-
-            const gain=
-                Math.floor(
-                    120+
-                    Math.random()*180
-                );
-
-            state.opponentScore+=gain;
-
-            state.opponentEnergy=
-                Math.max(
-                    0,
-                    state.opponentEnergy-
-                    Math.random()*2
-                );
-
-            animateOpponent();
-
-            updateBattleHUD();
-
-        }
-
-    },650);
-
-}
-
-
-function animateOpponent(){
-
-    const dancer=
-        document.getElementById("opponentDancer");
-
-    dancer.classList.remove("hitAnim");
-
-    void dancer.offsetWidth;
-
-    dancer.classList.add("hitAnim");
-
-}
-
-
-/* =========================================================
-   BATTLE HUD
-========================================================= */
-
-function updateBattleHUD(){
-
-    document.getElementById("playerScore")
-        .textContent=
-        String(
-            Math.floor(state.playerScore)
-        ).padStart(5,"0");
-
-    document.getElementById("opponentScore")
-        .textContent=
-        String(
-            Math.floor(state.opponentScore)
-        ).padStart(5,"0");
-
-    document.getElementById("playerEnergy")
-        .style.width=
-        state.energy+"%";
-
-    document.getElementById("opponentEnergy")
-        .style.width=
-        state.opponentEnergy+"%";
-}
-
-
-/* =========================================================
-   FINISH
-========================================================= */
-
-function finishBattle(cancel=false){
-
-    if(!state.running && !cancel)return;
-
-    state.running=false;
-
-    clearInterval(state.gameTimer);
-    clearInterval(state.noteTimer);
-    clearInterval(state.aiTimer);
-
-    if(cancel){
-
-        toast("BATTLE EXITED");
-
-        return;
-    }
-
-    const victory=
-        state.playerScore>=state.opponentScore;
-
-    const resultTitle=
-        document.getElementById("resultTitle");
-
-    resultTitle.textContent=
-        victory?"VICTORY":"DEFEAT";
-
-    resultTitle.style.color=
-        victory?
-        "var(--gold)":
-        "var(--red)";
-
-    document.getElementById("finalScore")
-        .textContent=
-        String(
-            Math.floor(state.playerScore)
-        ).padStart(5,"0");
-
-    document.getElementById("perfectCount")
-        .textContent=state.perfect;
-
-    document.getElementById("greatCount")
-        .textContent=state.great;
-
-    document.getElementById("goodCount")
-        .textContent=state.good;
-
-    document.getElementById("missCount")
-        .textContent=state.miss;
-
-    const earnedXP=
-        victory?300:120;
-
-    state.xp+=earnedXP;
-
-    if(victory){
-
-        state.coins+=500;
-
-    }else{
-
-        state.coins+=150;
-
-    }
-
-    updateHUD();
-
-    show("result");
-
-}
-
-
-/* =========================================================
-   SAVE GAME
-========================================================= */
+/* =========================
+   SAVE
+========================= */
 
 function saveGame(){
 
     localStorage.setItem(
-        "worldOfDanceSave",
+        "WORLD_OF_DANCE_V2",
         JSON.stringify({
-            xp:state.xp,
-            coins:state.coins,
-            technique:state.technique,
-            rhythm:state.rhythm,
-            power:state.power,
-            control:state.control
+            xp:game.xp,
+            coins:game.coins,
+            technique:game.technique,
+            rhythm:game.rhythm,
+            power:game.power,
+            control:game.control
         })
     );
 
 }
 
 
-/* =========================================================
-   LOAD GAME
-========================================================= */
+/* =========================
+   LOAD
+========================= */
 
 function loadGame(){
 
     try{
 
-        const save=
-            JSON.parse(
-                localStorage.getItem(
-                    "worldOfDanceSave"
-                )
-            );
+        let saved=
+        JSON.parse(
+            localStorage.getItem("WORLD_OF_DANCE_V2")
+        );
 
-        if(!save)return;
-
-        state.xp=
-            save.xp ?? state.xp;
-
-        state.coins=
-            save.coins ?? state.coins;
-
-        state.technique=
-            save.technique ?? state.technique;
-
-        state.rhythm=
-            save.rhythm ?? state.rhythm;
-
-        state.power=
-            save.power ?? state.power;
-
-        state.control=
-            save.control ?? state.control;
+        if(saved){
+            Object.assign(game,saved);
+        }
 
     }catch(e){}
+
+    updateUI();
 
 }
 
 
-/* =========================================================
-   AUTO SAVE
-========================================================= */
+/* =========================
+   UI
+========================= */
 
-setInterval(saveGame,3000);
+function updateUI(){
+
+    document.getElementById("xp").textContent=
+        game.xp.toLocaleString();
+
+    document.getElementById("coins").textContent=
+        game.coins.toLocaleString();
+
+    document.getElementById("level").textContent=
+        Math.floor(game.xp/200)+1;
 
 
-/* =========================================================
+    document.getElementById("tech").textContent=
+        game.technique;
+
+    document.getElementById("rhythm").textContent=
+        game.rhythm;
+
+    document.getElementById("power").textContent=
+        game.power;
+
+    document.getElementById("control").textContent=
+        game.control;
+
+
+    document.getElementById("techBar").style.width=
+        game.technique+"%";
+
+    document.getElementById("rhythmBar").style.width=
+        game.rhythm+"%";
+
+    document.getElementById("powerBar").style.width=
+        game.power+"%";
+
+    document.getElementById("controlBar").style.width=
+        game.control+"%";
+
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+function showScreen(id){
+
+    if(game.battle && id!=="battle"){
+        cancelBattle();
+    }
+
+    document
+    .querySelectorAll(".screen")
+    .forEach(
+        s=>s.classList.remove("on")
+    );
+
+    let target=document.getElementById(id);
+
+    if(target){
+        target.classList.add("on");
+    }
+
+    document
+    .querySelectorAll("#nav button")
+    .forEach(button=>{
+        button.classList.toggle(
+            "on",
+            button.dataset.screen===id
+        );
+    });
+
+}
+
+
+/* =========================
+   TOAST
+========================= */
+
+function toast(message){
+
+    let t=document.getElementById("toast");
+
+    t.textContent=message;
+
+    t.classList.add("show");
+
+    clearTimeout(window.toastTimer);
+
+    window.toastTimer=
+    setTimeout(
+        ()=>t.classList.remove("show"),
+        1600
+    );
+
+}
+
+
+/* =========================
+   OPTION SELECT
+========================= */
+
+function selectOption(element){
+
+    element
+    .parentElement
+    .querySelectorAll(".option")
+    .forEach(
+        x=>x.classList.remove("selected")
+    );
+
+    element.classList.add("selected");
+
+    toast(
+        element.childNodes[0].textContent.trim()
+        +" SELECTED"
+    );
+
+}
+
+
+/* =========================
+   TRAINING
+========================= */
+
+function trainingSession(){
+
+    game.xp+=100;
+
+    game.technique=
+        Math.min(99,game.technique+1);
+
+    game.rhythm=
+        Math.min(99,game.rhythm+1);
+
+    game.power=
+        Math.min(99,game.power+1);
+
+    game.control=
+        Math.min(99,game.control+1);
+
+    updateUI();
+
+    saveGame();
+
+    toast("TRAINING COMPLETE • +100 XP");
+
+}
+
+
+/* =========================
+   BATTLE RESET
+========================= */
+
+function resetBattle(){
+
+    clearInterval(game.timer);
+    clearInterval(game.spawnTimer);
+    clearInterval(game.aiTimer);
+
+    game.time=30;
+
+    game.playerScore=0;
+    game.opponentScore=0;
+
+    game.playerEnergy=100;
+    game.opponentEnergy=100;
+
+    game.combo=0;
+
+    game.perfect=0;
+    game.great=0;
+    game.good=0;
+    game.miss=0;
+
+    document.getElementById("notes").innerHTML="";
+
+    renderBattle();
+
+}
+
+
+/* =========================
+   START BATTLE
+========================= */
+
+function startBattle(){
+
+    showScreen("battle");
+
+    resetBattle();
+
+    game.battle=true;
+
+
+    game.timer=setInterval(()=>{
+
+        game.time--;
+
+        if(game.time<=0){
+
+            finishBattle();
+
+        }
+
+        renderBattle();
+
+    },1000);
+
+
+    game.spawnTimer=
+    setInterval(
+        spawnNote,
+        620
+    );
+
+
+    game.aiTimer=
+    setInterval(
+        aiMove,
+        620
+    );
+
+
+    spawnNote();
+
+    toast("BATTLE STARTED");
+
+}
+
+
+/* =========================
+   SPAWN RHYTHM NOTE
+========================= */
+
+const keys=["A","S","D","F"];
+
+function spawnNote(){
+
+    if(!game.battle)return;
+
+
+    let lane=
+        document.getElementById("notes");
+
+    let note=
+        document.createElement("div");
+
+    let key=
+        keys[Math.floor(
+            Math.random()*keys.length
+        )];
+
+
+    note.className="note";
+
+    note.textContent=key;
+
+    note.dataset.key=key;
+
+    note.style.left="-50px";
+
+    lane.appendChild(note);
+
+
+    let x=-50;
+
+    let movement=
+    setInterval(()=>{
+
+        if(!game.battle){
+
+            clearInterval(movement);
+
+            note.remove();
+
+            return;
+
+        }
+
+
+        x+=5;
+
+        note.style.left=x+"px";
+
+
+        if(
+            x>
+            lane.clientWidth/2+100
+        ){
+
+            clearInterval(movement);
+
+            if(note.parentNode){
+                note.remove();
+            }
+
+            registerMiss();
+
+        }
+
+    },16);
+
+
+    note.dataset.timer=movement;
+
+}
+
+
+/* =========================
+   KEYBOARD
+========================= */
+
+document.addEventListener(
+    "keydown",
+    event=>{
+
+        if(!game.battle)return;
+
+        let key=
+            event.key.toUpperCase();
+
+        if(keys.includes(key)){
+            pressKey(key);
+        }
+
+    }
+);
+
+
+/* =========================
+   PRESS
+========================= */
+
+function pressKey(key){
+
+    if(!game.battle)return;
+
+
+    let notes=
+        [...document.querySelectorAll(".note")]
+        .filter(
+            n=>n.dataset.key===key
+        );
+
+
+    let lane=
+        document.getElementById("notes");
+
+    let target=
+        lane.clientWidth/2;
+
+
+    let best=null;
+
+    let distance=999;
+
+
+    notes.forEach(note=>{
+
+        let x=
+            parseFloat(note.style.left)+22;
+
+        let d=
+            Math.abs(x-target);
+
+        if(d<distance){
+
+            distance=d;
+            best=note;
+
+        }
+
+    });
+
+
+    if(best && distance<95){
+
+        hitNote(best,distance);
+
+    }else{
+
+        registerMiss();
+
+    }
+
+}
+
+
+/* =========================
+   HIT NOTE
+========================= */
+
+function hitNote(note,distance){
+
+    if(note.dataset.hit)return;
+
+    note.dataset.hit="1";
+
+    clearInterval(
+        Number(note.dataset.timer)
+    );
+
+
+    let result;
+
+
+    if(distance<20){
+
+        result="PERFECT";
+
+        game.perfect++;
+
+        game.playerScore+=
+            300+(game.combo*10);
+
+    }
+
+    else if(distance<50){
+
+        result="GREAT";
+
+        game.great++;
+
+        game.playerScore+=
+            200+(game.combo*7);
+
+    }
+
+    else{
+
+        result="GOOD";
+
+        game.good++;
+
+        game.playerScore+=
+            100+(game.combo*3);
+
+    }
+
+
+    game.combo++;
+
+    game.playerEnergy=
+        Math.min(
+            100,
+            game.playerEnergy+1
+        );
+
+
+    showJudgement(result);
+
+    animateDancer(
+        "playerDancer"
+    );
+
+
+    note.remove();
+
+    renderBattle();
+
+}
+
+
+/* =========================
+   MISS
+========================= */
+
+function registerMiss(){
+
+    if(!game.battle)return;
+
+    game.miss++;
+
+    game.combo=0;
+
+    game.playerScore=
+        Math.max(
+            0,
+            game.playerScore-50
+        );
+
+    game.playerEnergy=
+        Math.max(
+            0,
+            game.playerEnergy-4
+        );
+
+    showJudgement("MISS");
+
+    renderBattle();
+
+}
+
+
+/* =========================
+   JUDGEMENT
+========================= */
+
+function showJudgement(result){
+
+    let element=
+        document.getElementById(
+            "judgement"
+        );
+
+    element.textContent=result;
+
+    element.className=
+        "judgement "
+        +result.toLowerCase();
+
+    void element.offsetWidth;
+
+    element.classList.add("show");
+
+}
+
+
+/* =========================
+   DANCER ANIMATION
+========================= */
+
+function animateDancer(id){
+
+    let dancer=
+        document.getElementById(id);
+
+    dancer.classList.remove("jump");
+
+    void dancer.offsetWidth;
+
+    dancer.classList.add("jump");
+
+}
+
+
+/* =========================
+   AI
+========================= */
+
+function aiMove(){
+
+    if(!game.battle)return;
+
+
+    game.opponentScore+=
+        120+
+        Math.floor(
+            Math.random()*180
+        );
+
+
+    game.opponentEnergy=
+        Math.max(
+            0,
+            game.opponentEnergy-1
+        );
+
+
+    animateDancer(
+        "opponentDancer"
+    );
+
+
+    renderBattle();
+
+}
+
+
+/* =========================
+   RENDER BATTLE
+========================= */
+
+function renderBattle(){
+
+    document.getElementById(
+        "playerScore"
+    ).textContent=
+        String(
+            Math.floor(game.playerScore)
+        ).padStart(5,"0");
+
+
+    document.getElementById(
+        "opponentScore"
+    ).textContent=
+        String(
+            Math.floor(game.opponentScore)
+        ).padStart(5,"0");
+
+
+    document.getElementById(
+        "battleTime"
+    ).textContent=
+        game.time;
+
+
+    document.getElementById(
+        "playerEnergy"
+    ).style.width=
+        game.playerEnergy+"%";
+
+
+    document.getElementById(
+        "opponentEnergy"
+    ).style.width=
+        game.opponentEnergy+"%";
+
+}
+
+
+/* =========================
+   FINISH BATTLE
+========================= */
+
+function finishBattle(){
+
+    if(!game.battle)return;
+
+
+    game.battle=false;
+
+
+    clearInterval(game.timer);
+    clearInterval(game.spawnTimer);
+    clearInterval(game.aiTimer);
+
+
+    let victory=
+        game.playerScore>=
+        game.opponentScore;
+
+
+    document.getElementById(
+        "resultTitle"
+    ).textContent=
+        victory?"VICTORY":"DEFEAT";
+
+
+    document.getElementById(
+        "resultTitle"
+    ).style.color=
+        victory?
+        "var(--gold)":
+        "var(--red)";
+
+
+    document.getElementById(
+        "finalScore"
+    ).textContent=
+        String(
+            Math.floor(game.playerScore)
+        ).padStart(5,"0");
+
+
+    document.getElementById(
+        "perfectCount"
+    ).textContent=
+        game.perfect;
+
+
+    document.getElementById(
+        "greatCount"
+    ).textContent=
+        game.great;
+
+
+    document.getElementById(
+        "goodCount"
+    ).textContent=
+        game.good;
+
+
+    document.getElementById(
+        "missCount"
+    ).textContent=
+        game.miss;
+
+
+    if(victory){
+
+        game.xp+=300;
+        game.coins+=500;
+
+    }else{
+
+        game.xp+=120;
+        game.coins+=150;
+
+    }
+
+
+    updateUI();
+
+    saveGame();
+
+    showScreen("result");
+
+}
+
+
+/* =========================
+   CANCEL BATTLE
+========================= */
+
+function cancelBattle(){
+
+    game.battle=false;
+
+    clearInterval(game.timer);
+    clearInterval(game.spawnTimer);
+    clearInterval(game.aiTimer);
+
+    document.getElementById(
+        "notes"
+    ).innerHTML="";
+
+    showScreen("home");
+
+}
+
+
+/* =========================
    INITIALIZE
-========================================================= */
+========================= */
 
 loadGame();
 
-updateHUD();
-
-updateTraining();
+setInterval(
+    saveGame,
+    3000
+);
 
 </script>
 
