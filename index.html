@@ -1,353 +1,436 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>World of Dance: Stage Battle</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Impact, sans-serif; }
-    body {
-      background: #08090d;
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      overflow: hidden;
-    }
-    
-    #game-container {
-      width: 960px;
-      height: 640px;
-      position: relative;
-      border: 3px solid #ff0055;
-      border-radius: 12px;
-      box-shadow: 0 0 30px rgba(255, 0, 85, 0.4);
-      overflow: hidden;
-      background: #000;
-    }
-
-    /* REAL DANCE STAGE BACKGROUND */
-    .stage-bg {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background-size: cover;
-      background-position: center;
-      transition: filter 0.2s, transform 0.2s;
-    }
-
-    /* FLASH & STROBE EFFECTS */
-    .stage-overlay {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      pointer-events: none;
-      background: radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.8) 90%);
-    }
-    .flash-effect {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.1s ease-out;
-    }
-
-    /* TOP HUD */
-    .hud {
-      position: absolute;
-      top: 0; left: 0; width: 100%;
-      padding: 15px 25px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: linear-gradient(180deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%);
-      z-index: 10;
-    }
-    .hud-title {
-      font-size: 24px; font-style: italic; font-weight: 900;
-      background: linear-gradient(45deg, #00f0ff, #ff0055);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    .hud-stats { display: flex; gap: 20px; font-size: 18px; font-weight: bold; }
-    .hud-val { color: #00f0ff; }
-
-    /* REAL-TIME DANCE JUDGE METER */
-    .judge-panel {
-      position: absolute;
-      bottom: 25px; left: 25px;
-      background: rgba(13, 14, 21, 0.85);
-      border: 1px solid #00f0ff;
-      border-radius: 8px;
-      padding: 12px 18px;
-      width: 220px;
-      z-index: 10;
-      backdrop-filter: blur(5px);
-    }
-    .judge-label { font-size: 11px; text-transform: uppercase; color: #aaa; letter-spacing: 1px; }
-    .judge-bar { width: 100%; height: 8px; background: #222; border-radius: 4px; overflow: hidden; margin: 4px 0 10px 0; }
-    .judge-fill { height: 100%; width: 0%; transition: width 0.3s; background: linear-gradient(90deg, #ff0055, #00f0ff); }
-
-    /* DYNAMIC STAGE POSE TARGET (NO ARROWS) */
-    .pose-target {
-      position: absolute;
-      width: 110px; height: 110px;
-      border-radius: 50%;
-      border: 4px solid #00f0ff;
-      box-shadow: 0 0 20px #00f0ff, inset 0 0 15px #00f0ff;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      transform: translate(-50%, -50%) scale(0);
-      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.27);
-      z-index: 15;
-      cursor: pointer;
-    }
-    .pose-key { font-size: 36px; font-weight: 900; color: #fff; text-shadow: 0 0 10px #00f0ff; }
-    .pose-action { font-size: 11px; font-weight: bold; text-transform: uppercase; color: #ffd700; letter-spacing: 1px; }
-
-    .pulse-ring {
-      position: absolute;
-      width: 100%; height: 100%;
-      border-radius: 50%;
-      border: 2px solid #ff0055;
-      animation: pulse 0.8s infinite linear;
-    }
-    @keyframes pulse {
-      0% { transform: scale(1); opacity: 1; }
-      100% { transform: scale(1.6); opacity: 0; }
-    }
-
-    /* FEEDBACK POPUP */
-    .feedback {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%) scale(0.8);
-      font-size: 48px; font-weight: 900; font-style: italic;
-      pointer-events: none; opacity: 0;
-      transition: opacity 0.15s, transform 0.15s;
-      z-index: 20;
-      text-shadow: 0 0 20px #000;
-    }
-    .feedback.show { opacity: 1; transform: translate(-50%, -60%) scale(1.1); }
-
-    /* START / END OVERLAY */
-    .overlay {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(8, 9, 13, 0.9);
-      display: flex; flex-direction: column;
-      justify-content: center; align-items: center;
-      z-index: 30;
-      text-align: center;
-      padding: 20px;
-    }
-    .btn {
-      background: linear-gradient(45deg, #ff0055, #00f0ff);
-      border: none; color: white;
-      padding: 14px 36px; font-size: 22px; font-weight: bold;
-      border-radius: 30px; cursor: pointer;
-      box-shadow: 0 0 20px rgba(255, 0, 85, 0.6);
-      margin-top: 25px; transition: transform 0.2s;
-    }
-    .btn:hover { transform: scale(1.08); }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Neon Floor — Dance Competition</title>
+<style>
+  :root{ --pink:#ff4d7e; --cyan:#4dd2ff; --lime:#7cff4d; --gold:#ffd24d; }
+  *{ box-sizing:border-box; }
+  body{
+    margin:0; min-height:100vh; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:14px;
+    background:#07060f; color:#fff;
+    font-family:"Trebuchet MS",Verdana,sans-serif;
+  }
+  #app{ position:relative; width:960px; max-width:98vw; }
+  canvas{ width:100%; display:block; border-radius:18px; box-shadow:0 0 60px rgba(120,60,255,.35); }
+  #overlay{
+    position:absolute; inset:0; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; text-align:center; gap:10px;
+    background:rgba(6,4,18,.86); border-radius:18px; padding:24px; overflow:auto;
+  }
+  h1{ margin:0; font-size:54px; letter-spacing:6px;
+      background:linear-gradient(90deg,var(--pink),var(--cyan),var(--lime));
+      -webkit-background-clip:text; background-clip:text; color:transparent; }
+  h2{ margin:0 0 4px; font-size:28px; color:var(--gold); }
+  p{ margin:2px 0; opacity:.85; max-width:620px; line-height:1.5; }
+  button{
+    margin-top:8px; padding:13px 30px; font-size:18px; font-weight:bold; letter-spacing:2px;
+    border:0; border-radius:999px; cursor:pointer; color:#12021a;
+    background:linear-gradient(90deg,var(--pink),var(--gold));
+  }
+  button:hover{ filter:brightness(1.12); }
+  button.ghost{ background:transparent; color:#fff; border:2px solid rgba(255,255,255,.35); }
+  table{ border-collapse:collapse; margin:6px 0; font-size:15px; }
+  td{ padding:5px 16px; border-bottom:1px solid rgba(255,255,255,.12); }
+  td:last-child{ text-align:right; font-weight:bold; }
+  .keys{ display:flex; gap:8px; justify-content:center; margin-top:6px; }
+  .keys span{ padding:6px 12px; border:1px solid rgba(255,255,255,.25); border-radius:8px; font-size:13px; }
+  #pads{ display:flex; gap:10px; }
+  #pads button{
+    width:76px; height:60px; margin:0; font-size:24px; color:#fff;
+    background:rgba(255,255,255,.08); border:2px solid rgba(255,255,255,.2); border-radius:14px;
+  }
+  #pads button:active{ background:rgba(255,255,255,.3); }
+  @media (max-width:700px){ h1{font-size:34px} #pads button{width:64px} }
+</style>
 </head>
 <body>
 
-<div id="game-container">
-  <!-- Dynamic Stage Image Background -->
-  <div class="stage-bg" id="stage-bg"></div>
-  <div class="stage-overlay"></div>
-  <div class="flash-effect" id="flash"></div>
+<div id="app">
+  <canvas id="game" width="960" height="600"></canvas>
+  <div id="overlay"></div>
+</div>
 
-  <!-- HUD -->
-  <div class="hud">
-    <div class="hud-title">WORLD OF DANCE</div>
-    <div class="hud-stats">
-      <div>SCORE: <span class="hud-val" id="score">0</span></div>
-      <div>COMBO: <span class="hud-val" id="combo">0</span></div>
-    </div>
-  </div>
-
-  <!-- Evaluation Bars -->
-  <div class="judge-panel">
-    <div class="judge-label">Execution</div>
-    <div class="judge-bar"><div class="judge-fill" id="bar-exec"></div></div>
-    <div class="judge-label">Synchronization</div>
-    <div class="judge-bar"><div class="judge-fill" id="bar-sync"></div></div>
-  </div>
-
-  <!-- Target Prompt -->
-  <div class="pose-target" id="target" onclick="triggerHit()">
-    <div class="pulse-ring"></div>
-    <div class="pose-key" id="target-key">J</div>
-    <div class="pose-action" id="target-action">POWER MOVE</div>
-  </div>
-
-  <!-- Text Feedback -->
-  <div class="feedback" id="feedback">PERFECT!</div>
-
-  <!-- Start/Result Overlay -->
-  <div class="overlay" id="overlay">
-    <h1 style="font-size: 52px; font-weight: 900; background: linear-gradient(45deg, #ff0055, #00f0ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-      STAGE PERFORMANCE BATTLE
-    </h1>
-    <p style="color: #aaa; margin-top: 10px; max-width: 500px; font-size: 16px;">
-      Hit the key prompts as B-Boys and B-Girls hit their power moves and freezes on stage!
-    </p>
-    <button class="btn" onclick="startGame()">START PERFORMANCE</button>
-  </div>
+<div id="pads">
+  <button data-lane="0">◀</button>
+  <button data-lane="1">▼</button>
+  <button data-lane="2">▲</button>
+  <button data-lane="3">▶</button>
 </div>
 
 <script>
-  // High-res Stage Image URL
-  const STAGE_IMG = 'watermarked_img_7245008821276142257.png';
+/* ---------- setup ---------- */
+const cv = document.getElementById('game');
+const ctx = cv.getContext('2d');
+const overlay = document.getElementById('overlay');
+const W = 960, H = 600;
 
-  // Hotkeys & Pose Actions
-  const POSE_EVENTS = [
-    { key: 'J', action: 'FREEZE', x: 75, y: 65 },
-    { key: 'K', action: 'POWER MOVE', x: 50, y: 55 },
-    { key: 'L', action: 'TOPROCK', x: 25, y: 60 },
-    { key: 'I', action: 'SYNCHRO', x: 62, y: 50 },
-    { key: 'U', action: 'FLARE', x: 35, y: 65 }
-  ];
+const LANE_X = [360, 440, 520, 600];
+const RECEPTOR_Y = 130, SCROLL = 400;   // px per second
+const LANES = [
+  { keys:['arrowleft','a'],  label:'◀', color:'#ff4d7e' },
+  { keys:['arrowdown','s'],  label:'▼', color:'#4dd2ff' },
+  { keys:['arrowup','w'],    label:'▲', color:'#7cff4d' },
+  { keys:['arrowright','d'], label:'▶', color:'#ffd24d' }
+];
 
-  let score = 0;
-  let combo = 0;
-  let execScore = 50;
-  let syncScore = 50;
-  let currentTarget = null;
-  let promptTimeout = null;
-  let isPlaying = false;
+const ROUNDS = [
+  { name:'Round 1 · Block Party',   rival:'Tiny Tapz',     bpm:96,  beats:88,  eighth:.18, jump:0,   acc:.70, seed:11 },
+  { name:'Round 2 · Club Aurora',   rival:'Mirror Mike',   bpm:120, beats:112, eighth:.45, jump:.06, acc:.84, seed:22 },
+  { name:'Round 3 · The Grand Final', rival:'Queen Voltage', bpm:144, beats:128, eighth:.62, jump:.16, acc:.93, seed:33 }
+];
 
-  const stageBg = document.getElementById('stage-bg');
-  const targetEl = document.getElementById('target');
-  const targetKeyEl = document.getElementById('target-key');
-  const targetActionEl = document.getElementById('target-action');
-  const feedbackEl = document.getElementById('feedback');
-  const flashEl = document.getElementById('flash');
+const POINTS = { perfect:300, great:200, good:100, miss:0 };
+const HYPE   = { perfect:3, great:2, good:1, miss:-11 };
 
-  // Set Background Image
-  stageBg.style.backgroundImage = `url('${STAGE_IMG}')`;
+let state = 'title', game = null, round = 0, wins = 0;
 
-  function startGame() {
-    document.getElementById('overlay').style.display = 'none';
-    score = 0;
-    combo = 0;
-    execScore = 60;
-    syncScore = 60;
-    isPlaying = true;
+/* ---------- audio (synth beat, no files needed) ---------- */
+let ac = null;
+function audio(){
+  if(!ac) ac = new (window.AudioContext || window.webkitAudioContext)();
+  if(ac.state === 'suspended') ac.resume();
+  return ac;
+}
+function env(node, t, dur, peak){
+  const g = ac.createGain();
+  g.gain.setValueAtTime(0, t);
+  g.gain.linearRampToValueAtTime(peak, t + .005);
+  g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+  node.connect(g); g.connect(ac.destination);
+}
+function kick(t){
+  const o = ac.createOscillator(); o.type='sine';
+  o.frequency.setValueAtTime(150,t); o.frequency.exponentialRampToValueAtTime(45,t+.14);
+  env(o,t,.22,.9); o.start(t); o.stop(t+.25);
+}
+function noise(t, dur, freq, peak){
+  const len = Math.ceil(ac.sampleRate * dur);
+  const buf = ac.createBuffer(1, len, ac.sampleRate);
+  const d = buf.getChannelData(0);
+  for(let i=0;i<len;i++) d[i] = (Math.random()*2-1) * (1 - i/len);
+  const src = ac.createBufferSource(); src.buffer = buf;
+  const f = ac.createBiquadFilter(); f.type='highpass'; f.frequency.value=freq;
+  src.connect(f); env(f,t,dur,peak); src.start(t);
+}
+function bass(t, semi, dur){
+  const o = ac.createOscillator(); o.type='sawtooth';
+  o.frequency.value = 55 * Math.pow(2, semi/12);
+  const f = ac.createBiquadFilter(); f.type='lowpass'; f.frequency.value=520;
+  o.connect(f); env(f,t,dur,.32); o.start(t); o.stop(t+dur+.05);
+}
+function blip(ok){
+  const t = audio().currentTime;
+  const o = ac.createOscillator(); o.type = ok ? 'square' : 'sawtooth';
+  o.frequency.setValueAtTime(ok?880:200,t);
+  o.frequency.exponentialRampToValueAtTime(ok?1500:90,t+.09);
+  env(o,t,.11,.14); o.start(t); o.stop(t+.14);
+}
+const KICK  = [1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0];
+const SNARE = [0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1];
+const HAT   = [0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,1];
+const BASSP = [0,0,0,1,0,0,1,0,0,0,1,0,0,0,0,0];
+const CHORD = [0,0,5,3];
 
-    updateUI();
-    nextBeat();
+/* ---------- chart generation ---------- */
+function rng(seed){ return function(){ seed=(seed+0x6D2B79F5)|0; let t=Math.imul(seed^seed>>>15,1|seed); t=(t+Math.imul(t^t>>>7,61|t))^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+
+function makeChart(cfg){
+  const r = rng(cfg.seed), spb = 60/cfg.bpm, notes = [];
+  let last = -1;
+  const pick = () => { let l; do { l = Math.floor(r()*4); } while(l===last && r()<.72); last=l; return l; };
+  for(let b=0; b<cfg.beats; b++){
+    const t = (b + 8) * spb;                      // 8 beats of intro
+    notes.push({ time:t, lane:pick(), hit:false, missed:false });
+    if(r() < cfg.jump) notes.push({ time:t, lane:pick(), hit:false, missed:false });
+    if(r() < cfg.eighth) notes.push({ time:t + spb/2, lane:pick(), hit:false, missed:false });
+  }
+  notes.sort((a,b)=>a.time-b.time);
+  let max = 0;
+  notes.forEach((n,i)=> max += POINTS.perfect + Math.min(i,60)*3);
+  return { notes, maxScore:max, last:notes[notes.length-1].time, spb };
+}
+
+/* ---------- round flow ---------- */
+function startRound(i){
+  const A = audio(), cfg = ROUNDS[i], chart = makeChart(cfg);
+  round = i;
+  game = {
+    cfg, chart, notes:chart.notes, maxScore:chart.maxScore,
+    start:A.currentTime + .2, step:0, nextStep:A.currentTime + .2,
+    score:0, combo:0, maxCombo:0, hype:55, rival:0,
+    counts:{ perfect:0, great:0, good:0, miss:0 },
+    pose:2, poseT:0, rivalPose:0, flash:[0,0,0,0], judge:'', judgeT:0
+  };
+  state = 'play';
+  overlay.style.display = 'none';
+}
+const songTime = () => ac.currentTime - game.start;
+const processed = () => { const c = game.counts; return c.perfect+c.great+c.good+c.miss; };
+
+function register(kind, lane){
+  const g = game, c = g.counts;
+  c[kind]++;
+  g.hype = Math.max(0, Math.min(100, g.hype + HYPE[kind]));
+  if(kind === 'miss'){ g.combo = 0; blip(false); }
+  else {
+    g.score += POINTS[kind] + Math.min(g.combo,60)*3;
+    g.combo++; g.maxCombo = Math.max(g.maxCombo, g.combo);
+    if(lane !== undefined){ g.pose = lane; g.poseT = 1; }
+    blip(true);
+  }
+  g.judge = kind.toUpperCase(); g.judgeT = 1;
+}
+
+function press(lane){
+  if(state !== 'play') return;
+  const now = songTime();
+  game.flash[lane] = 1;
+  let best = null, bd = 9;
+  for(const n of game.notes){
+    if(n.hit || n.missed || n.lane !== lane) continue;
+    const d = Math.abs(n.time - now);
+    if(d < bd){ bd = d; best = n; }
+  }
+  if(best && bd <= .16){
+    best.hit = true;
+    register(bd <= .045 ? 'perfect' : bd <= .09 ? 'great' : 'good', lane);
+  }
+}
+
+function update(){
+  const g = game, now = songTime(), A = ac;
+
+  // schedule the backing track two 16ths ahead
+  const step16 = g.chart.spb / 4;
+  while(g.nextStep < A.currentTime + .12){
+    const s = g.step % 16, bar = Math.floor(g.step/16) % 4, t = g.nextStep;
+    if(KICK[s])  kick(t);
+    if(SNARE[s]) noise(t, .16, 1200, .5);
+    if(HAT[s])   noise(t, .05, 6500, .22);
+    if(BASSP[s]) bass(t, CHORD[bar], step16*1.6);
+    g.step++; g.nextStep += step16;
   }
 
-  function nextBeat() {
-    if (!isPlaying) return;
+  // misses
+  for(const n of g.notes)
+    if(!n.hit && !n.missed && n.time < now - .16){ n.missed = true; register('miss'); }
 
-    // Pick a random dancer on stage to target
-    currentTarget = POSE_EVENTS[Math.floor(Math.random() * POSE_EVENTS.length)];
-    
-    // Position target node over stage location
-    targetEl.style.left = currentTarget.x + '%';
-    targetEl.style.top = currentTarget.y + '%';
-    targetKeyEl.innerText = currentTarget.key;
-    targetActionEl.innerText = currentTarget.action;
-
-    // Show prompt
-    targetEl.style.transform = 'translate(-50%, -50%) scale(1)';
-
-    // Timed Window to hit key
-    promptTimeout = setTimeout(() => {
-      // Missed prompt
-      registerMiss();
-    }, 1200);
+  // rival dances on its own, score scales with its accuracy
+  const prog = processed() / g.notes.length;
+  g.rival = Math.round(g.maxScore * g.cfg.acc * prog * (1 + Math.sin(now*.7)*.02));
+  if(Math.floor(now / g.chart.spb) !== g.rivalBeat){
+    g.rivalBeat = Math.floor(now / g.chart.spb);
+    g.rivalPose = Math.floor(Math.random()*4);
   }
 
-  function triggerHit() {
-    if (!isPlaying || !currentTarget) return;
+  g.poseT = Math.max(0, g.poseT - .05);
+  g.judgeT = Math.max(0, g.judgeT - .022);
+  for(let i=0;i<4;i++) g.flash[i] = Math.max(0, g.flash[i] - .08);
 
-    clearTimeout(promptTimeout);
-    
-    combo++;
-    score += 150 + combo * 20;
-    execScore = Math.min(100, execScore + 8);
-    syncScore = Math.min(100, syncScore + 6);
+  if(g.hype <= 0) return finish(true);
+  if(now > g.chart.last + 1.8) finish(false);
+}
 
-    showFeedback('PERFECT!', '#00ff66');
-    stageFlash('#00f0ff');
-    hideTarget();
+/* ---------- drawing ---------- */
+function bg(t){
+  const grd = ctx.createLinearGradient(0,0,0,H);
+  grd.addColorStop(0,'#150a2e'); grd.addColorStop(1,'#05040d');
+  ctx.fillStyle = grd; ctx.fillRect(0,0,W,H);
+  ctx.save(); ctx.globalAlpha = .16;
+  for(let i=0;i<5;i++){
+    const x = 480 + Math.sin(t*.6 + i)*430;
+    ctx.fillStyle = LANES[i%4].color;
+    ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x-90,H); ctx.lineTo(x+90,H); ctx.closePath(); ctx.fill();
+  }
+  ctx.restore();
+  ctx.strokeStyle = 'rgba(140,110,255,.18)'; ctx.lineWidth = 1;
+  for(let y=430;y<H;y+=22){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+}
 
-    setTimeout(nextBeat, Math.random() * 600 + 400);
+const POSES = [
+  { la:-165, ra:-40, ll:200, rl:-20 },  // left
+  { la: -40, ra:-140, ll:190, rl:-10 }, // down
+  { la:-125, ra: -55, ll:210, rl:-30 }, // up
+  { la: -15, ra:-140, ll:170, rl:-40 }  // right
+];
+function limb(x,y,len,deg,w,col){
+  const a = deg*Math.PI/180;
+  ctx.strokeStyle = col; ctx.lineWidth = w; ctx.lineCap='round';
+  ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x+Math.cos(a)*len, y+Math.sin(a)*len); ctx.stroke();
+}
+function drawDancer(x, floorY, s, pose, bob, body, skin, glow){
+  const p = POSES[pose];
+  const hip = floorY - 90*s + bob, sh = hip - 58*s, head = sh - 26*s;
+  ctx.save();
+  ctx.shadowColor = glow; ctx.shadowBlur = 18;
+  ctx.fillStyle = 'rgba(0,0,0,.35)';
+  ctx.beginPath(); ctx.ellipse(x, floorY, 34*s, 9*s, 0, 0, 7); ctx.fill();
+  limb(x, sh, 58*s, 90, 13*s, body);                 // torso
+  limb(x - 8*s, sh, 40*s, p.la, 8*s, skin);          // arms
+  limb(x + 8*s, sh, 40*s, p.ra, 8*s, skin);
+  limb(x - 5*s, hip, 46*s, p.ll, 10*s, body);        // legs
+  limb(x + 5*s, hip, 46*s, p.rl + 160, 10*s, body);
+  ctx.fillStyle = skin;
+  ctx.beginPath(); ctx.arc(x, head, 15*s, 0, 7); ctx.fill();
+  ctx.restore();
+}
+
+function drawArrow(x, y, lane, size, alpha, filled){
+  ctx.save(); ctx.globalAlpha = alpha; ctx.translate(x,y);
+  ctx.fillStyle = filled ? LANES[lane].color : 'rgba(255,255,255,.10)';
+  ctx.shadowColor = LANES[lane].color; ctx.shadowBlur = filled ? 16 : 4;
+  ctx.beginPath();
+  ctx.roundRect(-size/2, -size/2, size, size, 12); ctx.fill();
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = filled ? 'rgba(15,5,30,.85)' : LANES[lane].color;
+  ctx.font = `bold ${size*.6}px sans-serif`;
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(LANES[lane].label, 0, 2);
+  ctx.restore();
+}
+
+function draw(){
+  const g = game, now = songTime(), t = ac.currentTime;
+  bg(t);
+
+  // highway
+  ctx.fillStyle = 'rgba(8,4,20,.72)'; ctx.fillRect(310,0,340,H);
+  ctx.strokeStyle = 'rgba(255,255,255,.08)';
+  for(let i=0;i<4;i++){ ctx.beginPath(); ctx.moveTo(LANE_X[i]-40,0); ctx.lineTo(LANE_X[i]-40,H); ctx.stroke(); }
+
+  for(let i=0;i<4;i++) drawArrow(LANE_X[i], RECEPTOR_Y, i, 60 + g.flash[i]*10, .55 + g.flash[i]*.45, g.flash[i] > .05);
+
+  for(const n of g.notes){
+    if(n.hit || n.missed) continue;
+    const y = RECEPTOR_Y + (n.time - now) * SCROLL;
+    if(y > -60 && y < H + 60) drawArrow(LANE_X[n.lane], y, n.lane, 56, 1, true);
   }
 
-  function registerMiss() {
-    combo = 0;
-    execScore = Math.max(0, execScore - 12);
-    syncScore = Math.max(0, syncScore - 10);
+  // dancers
+  const beat = (now / g.chart.spb) % 1, bob = Math.abs(Math.sin(beat*Math.PI))*-9;
+  drawDancer(155, 500, 1.15, g.pose, bob - g.poseT*6, '#ff4d7e', '#ffd9c2', 'rgba(255,77,126,.8)');
+  drawDancer(805, 500, 1.15, g.rivalPose, bob, '#4dd2ff', '#e9d6ff', 'rgba(77,210,255,.8)');
 
-    showFeedback('MISS', '#ff0055');
-    stageFlash('#ff0055');
-    hideTarget();
+  // HUD
+  ctx.textAlign='left'; ctx.fillStyle='#fff'; ctx.font='bold 20px Verdana';
+  ctx.fillText('YOU', 40, 60);
+  ctx.font='bold 28px Verdana'; ctx.fillStyle='#ff9dbb';
+  ctx.fillText(g.score.toLocaleString(), 40, 92);
+  ctx.textAlign='right'; ctx.fillStyle='#fff'; ctx.font='bold 20px Verdana';
+  ctx.fillText(g.cfg.rival.toUpperCase(), 920, 60);
+  ctx.font='bold 28px Verdana'; ctx.fillStyle='#a9e9ff';
+  ctx.fillText(g.rival.toLocaleString(), 920, 92);
 
-    if (execScore <= 0) {
-      endGame(false);
-    } else {
-      setTimeout(nextBeat, 600);
-    }
+  ctx.textAlign='center'; ctx.font='14px Verdana'; ctx.fillStyle='rgba(255,255,255,.6)';
+  ctx.fillText(g.cfg.name, 480, 26);
+
+  // crowd hype
+  ctx.fillStyle='rgba(255,255,255,.12)'; ctx.fillRect(268,150,16,330);
+  const h = 330 * g.hype/100;
+  ctx.fillStyle = g.hype > 35 ? '#7cff4d' : '#ff4d4d';
+  ctx.fillRect(268, 480-h, 16, h);
+  ctx.save(); ctx.translate(262,320); ctx.rotate(-Math.PI/2);
+  ctx.fillStyle='rgba(255,255,255,.55)'; ctx.font='11px Verdana';
+  ctx.fillText('CROWD HYPE',0,0); ctx.restore();
+
+  // judgement + combo
+  if(g.judgeT > 0){
+    ctx.globalAlpha = g.judgeT;
+    ctx.font='bold 40px Verdana';
+    ctx.fillStyle = g.judge==='PERFECT' ? '#ffd24d' : g.judge==='GREAT' ? '#7cff4d' : g.judge==='GOOD' ? '#4dd2ff' : '#ff4d6a';
+    ctx.fillText(g.judge, 480, 300);
+    ctx.globalAlpha = 1;
   }
-
-  function hideTarget() {
-    targetEl.style.transform = 'translate(-50%, -50%) scale(0)';
-    updateUI();
+  if(g.combo > 3){
+    ctx.font='bold 30px Verdana'; ctx.fillStyle='#fff';
+    ctx.fillText(g.combo + ' COMBO', 480, 355);
   }
-
-  function stageFlash(color) {
-    flashEl.style.background = color;
-    flashEl.style.opacity = '0.3';
-    stageBg.style.transform = 'scale(1.02)';
-    
-    setTimeout(() => {
-      flashEl.style.opacity = '0';
-      stageBg.style.transform = 'scale(1)';
-    }, 150);
+  if(now < g.chart.notes[0].time - .4){
+    ctx.font='bold 34px Verdana'; ctx.fillStyle='rgba(255,255,255,.85)';
+    ctx.fillText(now < -0 ? 'GET READY' : 'HERE IT COMES!', 480, 420);
   }
+}
 
-  function showFeedback(text, color) {
-    feedbackEl.innerText = text;
-    feedbackEl.style.color = color;
-    feedbackEl.classList.add('show');
-    setTimeout(() => feedbackEl.classList.remove('show'), 250);
-  }
+/* ---------- results ---------- */
+function accuracy(){
+  const c = game.counts, tot = game.notes.length;
+  return (c.perfect + c.great*.75 + c.good*.42) / tot * 100;
+}
+function finish(booed){
+  state = 'results';
+  const g = game, acc = accuracy(), won = !booed && g.score > g.rival;
+  if(won) wins++;
+  const judges = ['Coach Vee','DJ Kito','Madam Sway'].map(n => {
+    const s = Math.max(1, Math.min(10, acc/10 + (Math.random()*1.4-.7))).toFixed(1);
+    return `<tr><td>${n}</td><td>${s} / 10</td></tr>`;
+  }).join('');
+  const verdict = booed
+    ? `<h2>Booed off the floor</h2><p>The crowd lost interest — keep the hype meter alive.</p>`
+    : won
+      ? `<h2>You take the round!</h2><p>${g.cfg.rival} bows out. The floor is yours.</p>`
+      : `<h2>${g.cfg.rival} wins it</h2><p>Closer than it looks — tighten those timings.</p>`;
+  const last = round === ROUNDS.length - 1;
+  const next = booed || !won
+    ? `<button onclick="startRound(${round})">RETRY ROUND</button>`
+    : last
+      ? `<button onclick="champion()">CLAIM THE CROWN</button>`
+      : `<button onclick="startRound(${round+1})">NEXT ROUND</button>`;
+  show(`
+    ${verdict}
+    <table>
+      <tr><td>Your score</td><td>${g.score.toLocaleString()}</td></tr>
+      <tr><td>${g.cfg.rival}</td><td>${g.rival.toLocaleString()}</td></tr>
+      <tr><td>Accuracy</td><td>${acc.toFixed(1)}%</td></tr>
+      <tr><td>Best combo</td><td>${g.maxCombo}</td></tr>
+      <tr><td>Perfect / Great / Good / Miss</td><td>${g.counts.perfect} · ${g.counts.great} · ${g.counts.good} · ${g.counts.miss}</td></tr>
+      ${judges}
+    </table>
+    ${next}
+    <button class="ghost" onclick="title()">MAIN MENU</button>
+  `);
+}
+function champion(){
+  state = 'title';
+  show(`<h1>CHAMPION</h1>
+        <p>Three rounds, three rivals, one floor. Neon Floor belongs to you.</p>
+        <button onclick="startRound(0)">DANCE AGAIN</button>`);
+}
+function show(html){ overlay.innerHTML = html; overlay.style.display='flex'; }
+function title(){
+  state = 'title'; wins = 0;
+  show(`<h1>NEON FLOOR</h1>
+    <p>Three rounds. Three rivals. Hit the arrows on the beat, keep the crowd hyped,
+       and out-score the dancer across the floor.</p>
+    <div class="keys"><span>◀ or A</span><span>▼ or S</span><span>▲ or W</span><span>▶ or D</span></div>
+    <p>Perfect timing = 300 pts, and long combos multiply the payoff. Miss too often and the crowd walks out.</p>
+    <button onclick="startRound(0)">START THE BATTLE</button>`);
+}
 
-  function updateUI() {
-    document.getElementById('score').innerText = score;
-    document.getElementById('combo').innerText = combo;
-    document.getElementById('bar-exec').style.width = execScore + '%';
-    document.getElementById('bar-sync').style.width = syncScore + '%';
-  }
+/* ---------- input & loop ---------- */
+const held = new Set();
+addEventListener('keydown', e => {
+  const k = e.key.toLowerCase();
+  if(['arrowleft','arrowright','arrowup','arrowdown',' '].includes(k)) e.preventDefault();
+  if(held.has(k)) return; held.add(k);
+  if(state !== 'play'){ if(k===' '||k==='enter') overlay.querySelector('button')?.click(); return; }
+  LANES.forEach((l,i)=>{ if(l.keys.includes(k)) press(i); });
+});
+addEventListener('keyup', e => held.delete(e.key.toLowerCase()));
+document.querySelectorAll('#pads button').forEach(b => {
+  const go = e => { e.preventDefault(); press(+b.dataset.lane); };
+  b.addEventListener('touchstart', go, {passive:false});
+  b.addEventListener('mousedown', go);
+});
 
-  document.addEventListener('keydown', (e) => {
-    if (!isPlaying || !currentTarget) return;
-
-    if (e.key.toUpperCase() === currentTarget.key) {
-      triggerHit();
-    }
-  });
-
-  function endGame(win = true) {
-    isPlaying = false;
-    clearTimeout(promptTimeout);
-    
-    const overlay = document.getElementById('overlay');
-    overlay.style.display = 'flex';
-    overlay.innerHTML = `
-      <h1 style="color: ${win ? '#00f0ff' : '#ff0055'}; font-size: 48px;">${win ? 'STAGE CLEARED!' : 'ELIMINATED'}</h1>
-      <p style="font-size: 20px; margin-top: 10px;">FINAL SCORE: <b>${score}</b></p>
-      <p style="color: #aaa; margin-top: 5px;">Execution: ${execScore}% | Synchronization: ${syncScore}%</p>
-      <button class="btn" onclick="startGame()">RETRY STAGE</button>
-    `;
-  }
+(function loop(){
+  requestAnimationFrame(loop);
+  if(state === 'play'){ update(); if(state === 'play') draw(); }
+  else bg(performance.now()/1000);
+})();
+title();
 </script>
 </body>
 </html>
